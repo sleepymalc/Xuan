@@ -38,5 +38,22 @@ update msg model =
 
         _ ->
             ( model, Cmd.none )
+moving brick1 brick2 =
+        if brick1.speed.y != 0 then
+            if brick1.speed.y >0 then
+                if brick1.speed.y+brick1.pos.y1>brick2.pos.y2 then
+                    {brick1|speed = Vector brick1.speed.x -brick1.speed.y, pos = brick1.pos.x1 brick1.pos.x2 brick1.pos.y1+brick1.speed.y brick1.pos.y2+brick1.speed.y}
+                else
+                    {brick1|pos = brick1.pos.x1 brick1.pos.x2 brick1.pos.y1+brick1.speed.y brick1.pos.y2+brick1.speed.y}
+            else
+                
+            if brick1.speed.x+brick1.pos.x1<brick2.pos.x2 || brick1.speed.x+brick1.pos.x2>brick2.pos.x1 then
+                {brick1|speed = Vector -brick1.speed.x brick1.speed.y, pos = brick1.pos.x1+brick1.speed.x brick1.pos.x2+brick1.speed.x brick1.pos.y1 brick1.pos.y2}
+            else 
+                {brick1|pos = brick1.pos.x1+brick1.speed.x brick1.pos.x2+brick1.speed.x brick1.pos.y1 brick1.pos.y2}
+        else 
+            {brick1|pos = brick1.pos.x1+brick1.speed.x brick1.pos.x2+brick1.speed.x}
+        
+
 
 run player = player
