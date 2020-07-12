@@ -29,20 +29,28 @@ type State
     = Playing
 
 type alias Brick =
-    { pos: Pos,
-      speed: Speed
+    { pos: Pos
+      --speed: Speed
     }
 
 type alias Map = 
     { bricks: List Brick
-     ,characters: List Player
+     ,characters: List Character
      ,exit: Pos
     }
-
+type alias Character = 
+    { pos: Pos
+    , anim: AnimState
+    , hp: Int
+    , speed: Speed
+    , xleft: Int
+    , xright: Int
+    }
 type alias Player =
     { pos: Pos,
       anim: AnimState,
-      speed: Speed
+      speed: Speed,
+      hp: Int
     }
 
 type AnimState =
@@ -51,6 +59,7 @@ type AnimState =
 
 type alias Model =
     { player: Player
+    , character: List Character
     , map: List Map
     , state: State
     , size: Vector Float
@@ -67,7 +76,8 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
-      ,map = []--initMap
+      ,character = initCharacter
+      ,map = []
       ,state = Playing
       ,size = Vector 0 0
       ,audioList = []
@@ -75,11 +85,65 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos 1200 1400 800 1000,
-      anim = Run 0,
-      speed = Vector 0 0
+    { pos = Pos 1200 1400 800 1000
+     ,anim = Run 0
+     ,speed = Vector 0 0
+     ,hp = 1
     }
+initCharacter =
+    [
+    { pos = Pos 1200 1400 800 1000 
+    , anim = Run 0
+    , hp = 1
+    , speed = Vector 0 0
+    , xleft = 0
+    , xright = 0 
+    }
+    ]
+
 
 initMap =
-    { 
-    }
+    [ initMap1
+    , initMap2
+    , initMap3
+    ]
+
+initMap1 =
+    let
+        bricks = 
+            [ Pos 1 3 4 5
+            , Pos 1 3 4 5
+            ]
+        characters = []
+        exit = Pos 0 0 0 0
+    in
+        { bricks = bricks
+        ,characters = characters
+        ,exit = exit
+        }
+initMap2 =
+    let
+        bricks = 
+            [ Pos 1 3 4 5
+            , Pos 1 3 4 5
+            ]
+        characters = []
+        exit = Pos 0 0 0 0
+    in
+        { bricks = bricks
+        ,characters = characters
+        ,exit = exit
+        }
+initMap3 =
+    let
+        bricks = 
+            [ Pos 1 3 4 5
+            , Pos 1 3 4 5
+            ]
+        characters = []
+        exit = Pos 0 0 0 0
+    in
+        { bricks = bricks
+        ,characters = characters
+        ,exit = exit
+        }
