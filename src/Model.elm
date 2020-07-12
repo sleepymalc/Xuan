@@ -51,9 +51,9 @@ type AnimState =
 
 type alias Model =
     { player: Player
-    , map: Map
+    , map: List Map
     , state: State
-    , size: Vector
+    , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
     }
@@ -67,7 +67,7 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
-      ,map = initMap
+      ,map = []--initMap
       ,state = Playing
       ,size = Vector 0 0
       ,audioList = []
@@ -81,7 +81,5 @@ initPlayer =
     }
 
 initMap =
-    { bricks = []
-     ,characters = []
-     ,exit = Pos 0 0 0 0
+    { 
     }
