@@ -81,5 +81,6 @@ initPlayer =
     }
 
 initMap =
-    { 
+    { bricks = []
+    , 
     }
