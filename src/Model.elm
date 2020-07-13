@@ -58,7 +58,7 @@ type AnimState =
 
 type alias Model =
     { player: Player
-    , map: List Map
+    , map: Map
     , state: State
     , size: Vector Float
     , audioList: List String
@@ -82,7 +82,7 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos 1200 1400 800 1000
+    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
     , anim =Stand
     , frame = 0
     , direction = Left
@@ -91,7 +91,7 @@ initPlayer =
     }
 initCharacter =
     [
-    { pos = Pos 1200 1400 600 800
+    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
     , anim = Run
     , frame = 0
     , hp = 1
@@ -100,15 +100,9 @@ initCharacter =
     , xright = 0 
     }
     ]
-
+    
 
 initMap =
-    [ initMap1
-    , initMap2
-    , initMap3
-    ]
-
-initMap1 =
     let
         bricks = 
             [ Pos 3135 3200 800 4000
@@ -151,41 +145,4 @@ initMap1 =
         ,characters = characters
         ,exit = exit
         }
-initMap2 =
-    let
-        bricks = 
-            [ Pos 1 3 4 5
-            , Pos 1 3 4 5
-            ] |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
-        characters = [] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
-            , anim =Stand
-            , frame = 0
-            , direction = Left
-            , speed = Vector 0 0
-            , hp = 1
-            })
-        exit = Pos 0 0 0 0
-    in
-        { bricks = bricks
-        ,characters = characters
-        ,exit = exit
-        }
-initMap3 =
-    let
-        bricks = 
-            [ Pos 1 3 4 5
-            , Pos 1 3 4 5
-            ] |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
-        characters = [] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
-            , anim =Stand
-            , frame = 0
-            , direction = Left
-            , speed = Vector 0 0
-            , hp = 1
-            })
-        exit = Pos 0 0 0 0
-    in
-        { bricks = bricks
-        ,characters = characters
-        ,exit = exit
-        }
+

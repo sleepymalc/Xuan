@@ -30,7 +30,7 @@ update msg model =
                     },Cmd.none)
                False -> 
                     ({model|
-                        player=model.player 
+                        player=model.player |> stand
                     },Cmd.none)
 
 
@@ -83,38 +83,54 @@ jump player =
 walk moveDirection player = 
     case moveDirection of
         Left ->
-            { player| anim = Walk, frame = 0, direction= moveDirection, speed = Vector -0.1 0 }
+            { player| anim = Walk,  direction= moveDirection, speed = Vector -0.1 0 }
         Right ->
-            { player| anim = Walk, frame = 0, direction= moveDirection, speed = Vector 0.1 0 }
+            { player| anim = Walk,  direction= moveDirection, speed = Vector 0.1 0 }
 
 animate time model =
     let
         player = model.player
+            |> changeAnim model.map.bricks time
+            |> changeSpeed time model.map.bricks
             |> changePos time
-            
-            |> changeSpeed time
-
-            |> changeAnim
-            
+            --|> changeAnim model.map.bricks time
             |> changeFrame time
     in
         { model| player = player}
 
-onFloor player= player.pos.y1 >= 800
+onFloor bricks time player= 
+    let
+        posList = List.map .pos bricks
+    in
+        (((player.pos.y2 + player.speed.y*time)>(4000)))
+        ||(onBricks player time posList)
 
+onBricks player time posList =
+    (posList|> List.filter (\pos -> (pos.x1<player.pos.x1) && (player.pos.x2-100<pos.x2))
+            |> List.filter (\pos -> (player.pos.y2-25<pos.y1) && ((player.pos.y2-25 + 2)>pos.y1))
+            |> List.isEmpty) == False
 
-changeAnim player=
-    if player.anim == Jump && (player |> onFloor) then
+changeAnim map time player=
+    if player.anim == Jump && (player |> onFloor map time) then
         player |> stand
     else player
 
 
 
-changeSpeed time player =
+changeSpeed time map player =
     let
-        dx = 0
-        dy = if player |> onFloor then
-                -player.speed.y/2
+        minX = toFloat(floor (player.pos.x1/1600) * 1600)
+        maxX = minX + 1600
+        dx = if ((player.speed.x * time + player.pos.x1) >= minX 
+                && (player.speed.x * time + player.pos.x2-100) <= maxX)then
+                0
+            else
+                -2 * player.speed.x
+        dy = if (player |> onFloor map time) then
+                if  player.speed.y > 0 then
+                    -player.speed.y
+                else 
+                    0
             else 
                 0.0002 * time
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
@@ -122,8 +138,9 @@ changeSpeed time player =
         {player | speed = speed}
 changePos time player =
     let
-        dx = player.speed.x * time
-        dy = player.speed.y * time
+        dx = player.speed.x * time 
+        
+        dy = player.speed.y * time 
         pos = Pos (player.pos.x1 + dx) (player.pos.x2 + dx) 
             ( player.pos.y1 + dy) (player.pos.y2 + dy)
     in

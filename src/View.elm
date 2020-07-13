@@ -17,7 +17,10 @@ view model =
     let
         renderSvg =[ svg
                         (gameUIAttribute model.size)
-                        [renderPlayer model.player]
+                        ([ renderBackground 
+                        , renderPlayer model.player]
+                        ++ (renderbricks (List.map .pos model.map.bricks) model.player)
+                        )
                     ]
         renderHtml = []
     in        
@@ -26,6 +29,48 @@ view model =
             [ span[]renderSvg
             , span[]renderHtml
             ]
+
+offset player pos =
+    let
+        dx = toFloat(floor (player.pos.x1/1600) * 1600)
+        dy = toFloat(floor (player.pos.y1/800)* 800)
+    in
+        Pos (pos.x1-dx) (pos.x2-dx) (pos.y1-dy) (pos.y2-dy)
+
+renderbricks posList player=
+    List.map (renderbrick player) posList
+
+renderbrick player pos=
+    let
+        viewpos = pos |> offset player
+        x1 = if viewpos.x1<0 then
+                    0
+                else
+                    viewpos.x1
+        x2 = if viewpos.x2>1600 then
+                    1600
+                else
+                    viewpos.x2
+        y1 = if viewpos.y1<0 then
+                    0
+                else
+                    viewpos.y1
+        y2 = if viewpos.y2>800 then
+                    800
+                else
+                    viewpos.y2
+    in
+    rect
+        [ x (String.fromFloat x1)
+        , y (String.fromFloat y1)
+        , width (String.fromFloat (x2-x1))
+        , height (String.fromFloat (y2-y1))
+        , fill "#000000"
+        ]
+        []
+
+renderBackground =
+    renderImage "img/background.jpg" (Pos 0 1600 0 800) []
 
 renderPlayer player= 
     let
@@ -49,14 +94,14 @@ renderPlayer player=
            Right ->
             [ transform "scale (-1 1)"]
     in
-        renderImage (prefix ++ name ++ surfix) player.pos attr
+        renderImage (prefix ++ name ++ surfix) (player.pos |> offset player) attr
 
 
 
 gameUIAttribute size= 
     [ width (String.fromFloat size.x)
     , height (String.fromFloat size.y)
-    , viewBox "0 0 1600 1000"
+    , viewBox "0 0 1600 800"
     ]
 
 
