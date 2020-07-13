@@ -39,13 +39,13 @@ subscriptions model =
 key on keycode =
     case keycode of 
         65 ->
-            Move Left on     
+            AnimWalk Left on     
 
         68 ->
-            Move Right on
+            AnimWalk Right on
 
         32 ->
-            Jump on
+            AnimJump on
 
         _ ->
             Noop

@@ -9,7 +9,7 @@ import Html.Attributes exposing (style,src,controls,autoplay,loop,attribute)
 import Html.Events exposing (on, onClick, onMouseDown, onMouseUp)
 
 import Model exposing (..)
-import Message exposing (Msg(..))
+import Message exposing (..)
 
 
 view : Model -> Html Msg
@@ -28,7 +28,28 @@ view model =
             ]
 
 renderPlayer player= 
-    renderImage "img/character/stand.png" player.pos []
+    let
+        prefix = "img/character/"
+        surfix = ".png"
+        name = case player.anim of
+            Stand -> 
+                "stand/stand_0000"
+            Run ->
+                "run/run_"
+            Walk ->
+                "walk/walk_00" ++ (String.fromInt (
+                    if player.frame <= 33 then 
+                        player.frame
+                    else (modBy 33 player.frame) + 33))
+            Jump -> 
+                "jump/jump_000"
+        attr = case player.direction of
+           Left ->
+            []
+           Right ->
+            [ transform "scale (-1 1)"]
+    in
+        renderImage (prefix ++ name ++ surfix) player.pos attr
 
 
 
@@ -78,7 +99,10 @@ renderImage url pos attr=
         ([  xlinkHref url
         , width (String.fromFloat (pos.x2-pos.x1))
         , height (String.fromFloat (pos.y2-pos.y1))
-        , x (String.fromFloat pos.x1)
+        , if List.member (transform "scale (-1 1)") attr then
+             x (String.fromFloat (-pos.x2+100))
+            else
+            x (String.fromFloat pos.x1)
         , y (String.fromFloat pos.y1)
         ]
         ++ attr)

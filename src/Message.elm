@@ -4,8 +4,8 @@ import Browser.Dom exposing (Viewport)
 type MoveDirection = Left | Right
 
 type Msg
-    = Move MoveDirection Bool
-    | Jump Bool
+    = AnimWalk MoveDirection Bool
+    | AnimJump Bool
     | Resize Int Int
     | Tick Float
     | Noop

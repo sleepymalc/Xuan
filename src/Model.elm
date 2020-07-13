@@ -10,6 +10,7 @@ import Random
 import Html.Attributes exposing (value)
 import Dict exposing (values)
 import Json.Decode exposing (Value)
+import Svg.Attributes exposing (direction)
 
 type alias Vector =
     { x: Float
@@ -34,12 +35,17 @@ type alias Brick =
 
 
 type alias Player =
-    { pos: Pos,
-      anim: AnimState,
-      speed: Speed
+    { pos: Pos
+    , anim: AnimState
+    , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
     }
 type AnimState =
-    Run Int
+    Stand 
+    | Run 
+    | Walk 
+    | Jump 
 
 
 type alias Model =
@@ -67,6 +73,8 @@ init _=
 
 initPlayer =
     { pos = Pos 1200 1400 800 1000,
-      anim = Run 0,
+      anim =Stand,
+      frame = 0,
+      direction = Left,
       speed = Vector 0 0
     }
