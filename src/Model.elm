@@ -12,6 +12,7 @@ import Dict exposing (values)
 import Json.Decode exposing (Value)
 import Svg.Attributes exposing (direction)
 
+
 type alias Vector a=
     { x:a
     , y:a
@@ -74,7 +75,7 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
-      ,map = initMap
+      ,map = initMap1
       ,state = Playing
       ,size = Vector 0 0
       ,audioList = []
@@ -100,11 +101,10 @@ initCharacter =
     , xright = 0 
     }
     ]
-    
 
-initMap =
+initMap1 =
     let
-        bricks = 
+        bricks =
             [ Pos 3135 3200 800 4000
             , Pos 3200 3600 800 900
             , Pos 1600 1700 0 3200
@@ -145,4 +145,74 @@ initMap =
         ,characters = characters
         ,exit = exit
         }
+initMap2 =
+    let
+        bricks =
+            [ Pos 0 100 0 2000
+            , Pos 0 100 2200 4800
+            , Pos 100 1500 4735 4800
+            , Pos 1500 1600 0 4800
+            , Pos 500 800 4600 4735   --[0,1600]*[4000,4800]
+            , Pos 100 350 4250 4350
+            , Pos 900 1100 4150 4250
+            , Pos 1300 1500 4000 4100 --[0,1600]*[4000,4800]
+            , Pos 250 500 3835 3900   --[0,1600]*[3200,4000]
+            , Pos 1000 1200 3750 3835
+            , Pos 650 850 3535 3600
+            , Pos 250 700 3200 3300
+            , Pos 1100 1400 3300 3400 --[0,1600]*[3200,4000]
+            , Pos 100 350 2900 3000   --[0,1600]*[2400,3200]
+            , Pos 1250 1500 2935 3000
+            , Pos 1400 1500 2670 2735
+            , Pos 900 1250 2670 2735
+            , Pos 550 750 2600 2670
+            , Pos 500 550 2575 2670
+            , Pos 250 550 2500 2575   --[0,1600]*[2400,3200]
+            , Pos 950 1300 2200 2500  --[0,1600]*[1600,2400]
+            , Pos 1200 1300 2100 2200
+            , Pos 600 950 1650 2300
+            , Pos 100 600 2200 2300
+            , Pos 350 600 1900 1965
+            , Pos 100 250 1700 1765
+            , Pos 600 1250 1550 1650  --[0,1600]*[1600,2400]
+            , Pos 250 750 1200 1300   --[0,1600]*[800,1600]
+            , Pos 1250 1500 1250 1350
+            , Pos 900 1250 950 1050   --[0,1600]*[800,1600]
+            , Pos 100 600 700 800     --[0,1600]*[0,800]
+            , Pos 400 1200 300 400    --[0,1600]*[0,800]
+            ] |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
+        characters =
+            [ Pos 150 250 4150 4250
+            , Pos 300 400 3735 3835
+            , Pos 300 400 3100 3200
+            , Pos 1200 1300 3200 3300
+            , Pos 1300 1400 2835 2935
+            , Pos 1000 1100 2570 2670
+            , Pos 600 700 2500 2600
+            , Pos 1000 1100 2100 2200
+            , Pos 150 250 2100 2200
+            , Pos 400 500 1800 1900
+            , Pos 125 225 1600 1700
+            , Pos 650 750 1450 1550
+            , Pos 800 900 1450 1550
+            , Pos 400 500 1100 1200
+            , Pos 425 525 200 300
+            , Pos 1075 1175 200 300
+            , Pos 750 850 100 300
+            ] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
+            , anim =Stand
+            , frame = 0
+            , direction = Left
+            , speed = Vector 0 0
+            , hp = 1
+            })
+        exit = Pos 0 0 0 0
+    in
+        { bricks = bricks
+        ,characters = characters
+        ,exit = exit
+        }
+    
+
+
 
