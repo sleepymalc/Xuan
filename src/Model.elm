@@ -90,6 +90,7 @@ initPlayer =
     , speed = Vector 0 0
     , hp = 1
     }
+
 initCharacter =
     [
     { pos = Pos (700+1600) (900+1600) (4000-200) 4000
@@ -102,7 +103,12 @@ initCharacter =
     }
     ]
 
+standcollisionPos =    
+    [ Pos (710+1600) (810+1600) (4000-140) 4000
+    , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
+    
 initMap1 =
+
     let
         bricks =
             [ Pos 3135 3200 800 4000
