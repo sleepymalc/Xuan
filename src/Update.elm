@@ -109,13 +109,15 @@ changeSpeed time bricks player =
         posList = List.map .pos bricks
         dx = if List.any (rightImpact player.speed time posList) player.collisionPos 
                 || List.any (leftImpact player.speed time posList) player.collisionPos then
-                -2 * player.speed.x
+                if player.anim == Walk then
+                    -player.speed.x
+                else -2 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
                 -2* player.speed.y
             else 
-                0.0002 * time
+                    0.0002 * time
 
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
@@ -156,4 +158,3 @@ changeFrame time player =
 
 -- hitted hit()
 -- jump speed && xuli contorl 
--- walk and jump collision
