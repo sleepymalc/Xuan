@@ -66,8 +66,15 @@ animate time model =
             |> touchdown time model.map.bricks 
             |> changePos time
             |> changeFrame time
+        characters = List.map
+            (\character-> character
+            |> changePos time
+            |> changeFrame time) model.map.characters
+
+        map = model.map
+        newMap = {map |characters = characters}
     in
-        { model| player = player}
+        { model| player = player, map = newMap}
 
 
 changeChargeTime time player = 
