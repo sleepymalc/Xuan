@@ -90,6 +90,9 @@ renderPlayer player=
                     else (modBy 33 player.frame) + 33))-}
             Jump -> 
                 "color/jump/jump_0000"
+
+            Attack ->
+                "color/attack/attack_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 60 player.frame)))
         attr = case player.direction of
            Left ->
             [ transform "scale (-1 1)"]

@@ -48,5 +48,7 @@ key on keycode =
         32 ->
             AnimJump on --
 
+        74 ->
+            AnimAttack on
         _ ->
             Noop

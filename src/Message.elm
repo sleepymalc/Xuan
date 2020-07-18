@@ -8,6 +8,7 @@ type MoveDirection = Left | Right
 type Msg
     = AnimWalk MoveDirection Bool
     | AnimJump Bool
+    | AnimAttack Bool
     | Resize Int Int
     | Tick Float
     | Noop

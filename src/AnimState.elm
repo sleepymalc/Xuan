@@ -21,3 +21,8 @@ walk moveDirection player =
             Right ->
                 { player| anim = Walk,  direction= moveDirection, speed = Vector 0.1 0 }
     else player
+
+attack player =
+    if player.anim == Stand then
+        { player| anim = Attack, frame = 0, speed = Vector 0 0 }
+    else player

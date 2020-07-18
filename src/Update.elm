@@ -45,6 +45,10 @@ update msg model =
                 Playing ->
                     ( model |> animate time, Cmd.none )
 
+        AnimAttack on->
+            ( {model |
+                player=model.player |> AnimState.attack}, Cmd.none )
+
         _ ->
             ( model, Cmd.none )
 
@@ -66,7 +70,8 @@ changeAnim bricks time player=
     let
         posList = List.map .pos bricks
     in
-        if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos then--||onWall map time player then
+        if (player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos)
+            || (player.anim == Attack && player.frame >= 60) then--||onWall map time player then
             player |> stand
         else player
 

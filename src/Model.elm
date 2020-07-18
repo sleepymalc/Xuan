@@ -20,6 +20,7 @@ type AnimState =
     | Run 
     | Walk 
     | Jump 
+    | Attack
 
 
 type alias Vector a=
