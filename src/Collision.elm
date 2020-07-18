@@ -1,23 +1,25 @@
 module Collision exposing (..)
 
-rightImpact player time posList =
-    (posList|> List.filter (projectionOverlap .y1 .y2 player.pos)
-            |> List.filter (\pos -> (player.pos.x2 < pos.x1) && (player.pos.x2 + player.speed.x * time > pos.x1))
+
+
+rightImpact speed time posList playerPos =
+    (posList|> List.filter (projectionOverlap .y1 .y2 playerPos)
+            |> List.filter (\pos -> (playerPos.x2 < pos.x1) && (playerPos.x2 + speed.x * time > pos.x1))
             |> List.isEmpty) == False
 
-leftImpact player time posList =
-    (posList|> List.filter (projectionOverlap .y1 .y2 player.pos)
-            |> List.filter (\pos -> (player.pos.x1 > pos.x2) && (player.pos.x1 + player.speed.x * time < pos.x2))
+leftImpact speed time posList playerPos =
+    (posList|> List.filter (projectionOverlap .y1 .y2 playerPos)
+            |> List.filter (\pos -> (playerPos.x1 > pos.x2) && (playerPos.x1 + speed.x * time < pos.x2))
             |> List.isEmpty) == False
 
-downImpact player time posList =
-    (posList|> List.filter (projectionOverlap .x1 .x2 player.pos)
-            |> List.filter (\pos -> (player.pos.y2 < pos.y1) && (player.pos.y2 + player.speed.y * time >pos.y1))
+downImpact speed time posList playerPos =
+    (posList|> List.filter (projectionOverlap .x1 .x2 playerPos)
+            |> List.filter (\pos -> (playerPos.y2 < pos.y1) && (playerPos.y2 + speed.y * time >pos.y1))
             |> List.isEmpty) == False
 
-upImpact player time posList =
-    (posList|> List.filter (projectionOverlap .x1 .x2 player.pos)
-            |> List.filter (\pos -> (player.pos.y1 > pos.y2) && (player.pos.y1 + player.speed.y * time < pos.y2))
+upImpact speed time posList playerPos =
+    (posList|> List.filter (projectionOverlap .x1 .x2 playerPos)
+            |> List.filter (\pos -> (playerPos.y1 > pos.y2) && (playerPos.y1 + speed.y * time < pos.y2))
             |> List.isEmpty) == False
 
 

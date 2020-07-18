@@ -18,8 +18,8 @@ view model =
         renderSvg =[ svg
                         (gameUIAttribute model.size)
                         ([ renderBackground 
-                        , renderPlayer model.player
-                        , debugCollision model.player]
+                        , renderPlayer model.player]
+                        ++ debugCollision model.player
                         ++ (renderbricks (List.map .pos model.map.bricks) model.player)
                         )
                     ]
@@ -100,17 +100,18 @@ renderPlayer player=
 
 debugCollision player=
     let
-        pos = player.pos |> offset player
+        collisionPos = List.map (offset player) player.collisionPos
     in
-      rect
-        [ x (String.fromFloat pos.x1)
-        , y (String.fromFloat pos.y1)
-        , width (String.fromFloat (pos.x2-pos.x1))
-        , height (String.fromFloat (pos.y2-pos.y1))
-        , opacity "0.2"
-        , fill "#000000"
-        ]
-        []  
+        List.map (\pos ->
+                    rect
+                        [ x (String.fromFloat pos.x1)
+                        , y (String.fromFloat pos.y1)
+                        , width (String.fromFloat (pos.x2-pos.x1))
+                        , height (String.fromFloat (pos.y2-pos.y1))
+                        , opacity "0.2"
+                        , fill "#000000"
+                        ]
+                        []) collisionPos  
 
 resizePlayer pos =
     let

@@ -51,6 +51,7 @@ type alias Map =
 
 type alias Player =
     { pos: Pos
+    , collisionPos: List Pos
     , anim: AnimState
     , frame: Int
     , direction: MoveDirection
@@ -85,26 +86,18 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos (700+1600) (830+1600) (4000-200) 4000 -- 455 -> 130; 700 ->200
+    { pos = Pos (700+1600) (830+1600) (4000-200) 4000  -- 455 -> 130; 700 ->200
+    , collisionPos = standcollisionPos
     , anim =Stand
     , frame = 0
     , direction = Left
     , speed = Vector 0 0
     , hp = 1
     }
-initCharacter =
-    [
-    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
-    , anim = Run
-    , frame = 0
-    , hp = 1
-    , speed = Vector 0 0
-    , xleft = 0
-    , xright = 0 
-    }
-    ]
-    
 
+standcollisionPos =    
+    [ Pos (710+1600) (810+1600) (4000-140) 4000
+    , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
 initMap =
     let
         bricks = 
@@ -137,6 +130,7 @@ initMap =
             , Pos 2000 2100 1200 1300
             , Pos 2700 2800 1200 1300
             ] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
+            , collisionPos = [Pos 1200 1400 800 1000]
             , anim =Stand
             , frame = 0
             , direction = Left
@@ -146,7 +140,7 @@ initMap =
         exit = Pos 0 0 0 0
     in
         { bricks = bricks
-        ,characters = characters
-        ,exit = exit
+        , characters = characters
+        , exit = exit
         }
 

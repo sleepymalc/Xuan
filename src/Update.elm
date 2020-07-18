@@ -63,19 +63,23 @@ animate time model =
 
 
 changeAnim bricks time player=
-    if player.anim == Jump && downImpact player time (List.map .pos bricks) then--||onWall map time player then
-        player |> stand
-    else player
+    let
+        posList = List.map .pos bricks
+    in
+        if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos then--||onWall map time player then
+            player |> stand
+        else player
 
 
 changeSpeed time bricks player =
     let
         posList = List.map .pos bricks
-        dx = if rightImpact player time posList || leftImpact player time posList then
+        dx = if List.any (rightImpact player.speed time posList) player.collisionPos 
+                || List.any (leftImpact player.speed time posList) player.collisionPos then
                 -2 * player.speed.x
             else
                 0
-        dy = if upImpact player time posList then
+        dy = if List.any (upImpact player.speed time posList) player.collisionPos then
                     -2* player.speed.y
             else 
                     0.0002 * time
@@ -87,7 +91,7 @@ changeSpeed time bricks player =
 touchdown time bricks player =
     let
         posList = List.map .pos bricks
-        dy = if downImpact player time posList  then
+        dy = if List.any (downImpact player.speed time posList) player.collisionPos  then
                     -player.speed.y
             else 0
         speed = Vector player.speed.x (player.speed.y + dy) 
@@ -96,13 +100,20 @@ touchdown time bricks player =
 
 changePos time player =
     let
-        dx = player.speed.x * time 
-        
-        dy = player.speed.y * time 
-        pos = Pos (player.pos.x1 + dx) (player.pos.x2 + dx) 
-            ( player.pos.y1 + dy) (player.pos.y2 + dy)
+        pos = nextPos player.speed time player.pos
+        collisionPos = List.map (nextPos player.speed time) player.collisionPos
     in
-        {player | pos = pos}
+        {player | pos = pos
+                , collisionPos = collisionPos}
+
+nextPos speed time pos=
+    let
+        dx = speed.x * time 
+        
+        dy = speed.y * time 
+    in
+        Pos (pos.x1 + dx) (pos.x2 + dx)
+            (pos.y1 + dy) (pos.y2 + dy)
 
 changeFrame time player =
     {player | frame = player.frame + 1}
