@@ -67,9 +67,9 @@ moving brick1 brick2 =
 run moveDirection player = 
     case moveDirection of
         Left ->
-            { player| anim = Run, frame = 0, direction= moveDirection, speed = Vector -0.5 0 }
+            { player| anim = Run, frame = 0, direction= moveDirection, speed = Vector -1 0 }
         Right ->
-            { player| anim = Run, frame = 0, direction= moveDirection, speed = Vector 0.5 0 }
+            { player| anim = Run, frame = 0, direction= moveDirection, speed = Vector 1 0 }
 
 stand player = 
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
@@ -149,8 +149,7 @@ touchBricks player time posList =
 
 changeSpeed time map player =
     let
-    
-        dx = if onWall map time player then
+        dx = if onWall map time player  then
                 -2 * player.speed.x
             else
                 0
