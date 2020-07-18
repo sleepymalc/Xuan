@@ -19,6 +19,7 @@ type AnimState =
     Stand 
     | Run 
     | Walk 
+    | Charge
     | Jump 
     | Attack
 
@@ -59,8 +60,8 @@ type alias Player =
     , direction: MoveDirection
     , speed: Speed
     , hp: Int
+    , chargetime: Float
     }
-
 
 type alias Model =
     { player: Player
@@ -88,13 +89,14 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos (700+1600) (830+1600) (4000-200) 4000  -- 455 -> 130; 700 ->200
+    { pos = Pos (700+1600) (830+1600) (4000-200) (4000-1)  -- 455 -> 130; 700 ->200
     , collisionPos = standcollisionPos
     , anim =Stand
     , frame = 0
     , direction = Left
     , speed = Vector 0 0
     , hp = 1
+    , chargetime = 0
     }
 
 standcollisionPos =    
@@ -131,13 +133,14 @@ initMap1 =
             , Pos 1750 1850 2300 2400
             , Pos 2000 2100 1200 1300
             , Pos 2700 2800 1200 1300
-            ] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
+            ] |> List.map (\pos-> { pos = pos
             , collisionPos = [Pos 1200 1400 800 1000]
-            , anim =Stand
+            , anim =Walk
             , frame = 0
             , direction = Left
-            , speed = Vector 0 0
+            , speed = Vector -0.1 0
             , hp = 1
+            , chargetime=0
             })
         exit = Pos 0 0 0 0
     in
@@ -199,11 +202,11 @@ initMap2 =
             , Pos 425 525 200 300
             , Pos 1075 1175 200 300
             , Pos 750 850 100 300
-            ] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
-            , anim =Stand
+            ] |> List.map (\pos-> { pos = pos
+            , anim =Walk
             , frame = 0
             , direction = Left
-            , speed = Vector 0 0
+            , speed = Vector -0.1 0
             , hp = 1
             })
         exit = Pos 0 0 0 0
