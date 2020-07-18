@@ -1,5 +1,4 @@
 module Model exposing(..)
-import Message exposing (..)
 import Browser.Dom exposing (getViewport)
 import Task
 import Svg.Attributes exposing (speed)
@@ -11,6 +10,16 @@ import Html.Attributes exposing (value)
 import Dict exposing (values)
 import Json.Decode exposing (Value)
 import Svg.Attributes exposing (direction)
+import Message exposing (..)
+
+
+
+
+type AnimState =
+    Stand 
+    | Run 
+    | Walk 
+    | Jump 
 
 
 type alias Vector a=
@@ -43,18 +52,13 @@ type alias Map =
 
 type alias Player =
     { pos: Pos
+    , collisionPos: List Pos
     , anim: AnimState
     , frame: Int
     , direction: MoveDirection
     , speed: Speed
     , hp: Int
     }
-
-type AnimState =
-    Stand 
-    | Run 
-    | Walk 
-    | Jump 
 
 
 type alias Model =
@@ -83,25 +87,18 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
+    { pos = Pos (700+1600) (830+1600) (4000-200) 4000  -- 455 -> 130; 700 ->200
+    , collisionPos = standcollisionPos
     , anim =Stand
     , frame = 0
     , direction = Left
     , speed = Vector 0 0
     , hp = 1
     }
-initCharacter =
-    [
-    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
-    , anim = Run
-    , frame = 0
-    , hp = 1
-    , speed = Vector 0 0
-    , xleft = 0
-    , xright = 0 
-    }
-    ]
 
+standcollisionPos =    
+    [ Pos (710+1600) (810+1600) (4000-140) 4000
+    , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
 initMap1 =
     let
         bricks =
@@ -125,6 +122,7 @@ initMap1 =
             , Pos 2500 2900 1300 1365
             , Pos 1900 2300 800 1000
             , Pos 2500 2900 800 1000  --[1600,3200]*[800,1600]
+            , Pos 0 4000 4001 4020 
             ] |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
         characters =
             [ Pos 2900 3000 3205 3305
@@ -133,6 +131,7 @@ initMap1 =
             , Pos 2000 2100 1200 1300
             , Pos 2700 2800 1200 1300
             ] |> List.map (\pos-> { pos = Pos 1200 1400 800 1000
+            , collisionPos = [Pos 1200 1400 800 1000]
             , anim =Stand
             , frame = 0
             , direction = Left
@@ -142,8 +141,8 @@ initMap1 =
         exit = Pos 0 0 0 0
     in
         { bricks = bricks
-        ,characters = characters
-        ,exit = exit
+        , characters = characters
+        , exit = exit
         }
 initMap2 =
     let
