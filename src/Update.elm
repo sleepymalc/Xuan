@@ -26,19 +26,26 @@ update msg model =
             )
         
         AnimWalk moveDirection on->
-            if on then
+            if on && model.player.anim == Stand then
                 ({model|
                     player=model.player |> walk moveDirection
                 },Cmd.none)
-            else
+            else if not on && model.player.anim /= Jump then
                 ({model|
                     player=model.player |> stand
                 },Cmd.none)
+            else 
+                (model,Cmd.none)
 
-
-        AnimJump on ->
-            ( {model |
-                player=model.player |> jump}, Cmd.none )
+        AnimCharge on->
+            if on && model.player.anim == Stand then
+                ({model|
+                    player=model.player |> charge }, Cmd.none )
+            else if not on && model.player.anim == Charge then
+                ({model| 
+                    player=model.player |> jump }, Cmd.none)
+            else    
+                (model,Cmd.none)
 
         Tick time ->
             case model.state of
@@ -55,25 +62,50 @@ update msg model =
 
 animate time model =
     let
-        player = model.player
+        player = model.player            
+            |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
             |> touchdown time model.map.bricks 
             |> changePos time
             |> changeFrame time
+        characters = List.map
+            (\character-> character
+            |> changePos time
+            |> changeFrame time) model.map.characters
+
+        map = model.map
+        newMap = {map |characters = characters}
     in
-        { model| player = player}
+        { model| player = player, map = newMap}
+
+
+changeChargeTime time player = 
+    let 
+        newchargetime = player.chargetime + time
+    in
+    if player.anim == Charge then
+        {player|chargetime=newchargetime}
+    else    
+        {player | chargetime=0}    
+
 
 
 
 changeAnim bricks time player=
     let
         posList = List.map .pos bricks
+        newplayer={player | chargetime=0}
     in
-        if (player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos)
-            || (player.anim == Attack && player.frame >= 60) then--||onWall map time player then
+        if player.anim == Charge then
+            player
+        else if player.anim == Jump && player.chargetime > 0 then
+            newplayer |> jump
+        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
+            || (player.anim == Attack && player.frame >= 60) then
             player |> stand
-        else player
+        else newplayer
+
 
 
 changeSpeed time bricks player =
@@ -83,13 +115,13 @@ changeSpeed time bricks player =
                 || List.any (leftImpact player.speed time posList) player.collisionPos then
                 if player.anim == Walk then
                     -player.speed.x
-                else -2 * player.speed.x
+                else -1.8 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
-                    -2* player.speed.y
+                -1.8* player.speed.y
             else 
-                    0.0002 * time
+                    0.01
 
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in

@@ -19,8 +19,9 @@ view model =
                         (gameUIAttribute model.size)
                         ([ renderBackground 
                         , renderPlayer model.player]
+                        ++ renderCharacters model.player model.map.characters
                         ++ debugCollision model.player
-                        ++ (renderbricks (List.map .pos model.map.bricks) model.player)
+                        ++ renderbricks (List.map .pos model.map.bricks) model.player
                         )
                     ]
         renderHtml = []
@@ -73,33 +74,69 @@ renderbrick player pos=
 renderBackground =
     renderImage "img/background.jpg" (Pos 0 1600 0 800) []
 
-renderPlayer player= 
+renderCharacters player characters=
+    List.map (renderCharacter player)characters 
+
+renderCharacter player character =
+    let
+        url = getAnimUrl character.anim character.frame
+        attr = getDirectionAttr character.direction
+        viewpos = character.pos |> offset player |> resizePlayer|> clearOutsideImage
+        --character.pos
+        --getPlayerViewPos character
+
+    in
+        renderImage url viewpos attr
+
+clearOutsideImage viewpos=
+    if viewpos.x2<0 || viewpos.x1>1600 || viewpos.y2<0 || viewpos.y1>800 then
+        Pos 0 0 0 0
+    else
+        viewpos
+getAnimUrl anim frame= 
     let
         prefix = "img/character/"
         surfix = ".png"
-        name = case player.anim of
+        name = case anim of
             Stand -> 
                 "color/walk/walk_0000"
             Run ->
                 "run/run_"
             Walk ->
-                "color/walk/walk_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 65 player.frame)))
-                {-"walk/walk_00" ++ (String.fromInt (
-                    if player.frame <= 33 then 
-                        player.frame
-                    else (modBy 33 player.frame) + 33))-}
+                "color/walk/walk_" ++ String.padLeft 4 '0' (String.fromInt (modBy 65 frame))
+            Charge ->
+                "color/charge/charge_" ++ String.padLeft 4 '0' (String.fromInt
+                    (if frame < 50 then 1 
+                        else if frame < 120 then 0 else 2)) 
+                -- might use chargetime to decide       
             Jump -> 
                 "color/jump/jump_0000"
 
             Attack ->
-                "color/attack/attack_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 60 player.frame)))
-        attr = case player.direction of
+                "color/attack/attack_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 60 frame)))
+    in
+        prefix ++ name ++ surfix
+
+getDirectionAttr direction =
+    case direction of
            Left ->
             [ transform "scale (-1 1)"]
            Right ->
             []
+
+getPlayerViewPos player =
+    player.pos 
+    |> offset player 
+    |> resizePlayer
+
+renderPlayer player= 
+    let
+        url = getAnimUrl player.anim player.frame
+        attr = getDirectionAttr player.direction
+        pos = getPlayerViewPos player
+
     in
-        renderImage (prefix ++ name ++ surfix) (player.pos |> offset player |> resizePlayer) attr
+        renderImage url pos attr
 
 debugCollision player=
     let
