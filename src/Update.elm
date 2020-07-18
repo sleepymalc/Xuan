@@ -75,20 +75,19 @@ stand player =
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
 
 jump player =
-    
     case player.direction of
         Left ->
-            { player| anim = Jump, frame = 0, speed = Vector -0.1 -0.2 }
+            { player| anim = Jump, frame = 0, speed = Vector -0.3 -0.45 }
         Right ->
-            { player| anim = Jump, frame = 0, speed = Vector 0.1 -0.2 }
+            { player| anim = Jump, frame = 0, speed = Vector 0.3 -0.45 }
 
 walk moveDirection player = 
     if player.anim == Stand then
         case moveDirection of
             Left ->
-                { player| anim = Walk,  direction= moveDirection, speed = Vector -0.1 0 }
+                { player| anim = Walk,  direction= moveDirection, speed = Vector -0.2 0 }
             Right ->
-                { player| anim = Walk,  direction= moveDirection, speed = Vector 0.1 0 }
+                { player| anim = Walk,  direction= moveDirection, speed = Vector 0.2 0 }
     else player
 
 animate time model =
@@ -149,8 +148,11 @@ touchBricks player time posList =
 
 changeSpeed time map player =
     let
-        dx = if onWall map time player  then
-                -2 * player.speed.x
+        dx = if  onWall map time player  then
+                if player.anim == Walk then
+                    -1*player.speed.x
+                else 
+                    -2 * player.speed.x
             else
                 0
         dy = if (player |> underFloor map time) && player.speed.y < 0 then
@@ -160,7 +162,7 @@ changeSpeed time map player =
             else if (player |> onFloor map time) && player.speed.y <= 0 then
                     0
             else 
-                    0.0002 * time
+                    0.001 * time
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
         {player | speed = speed}
