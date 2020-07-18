@@ -76,7 +76,9 @@ changeSpeed time bricks player =
         posList = List.map .pos bricks
         dx = if List.any (rightImpact player.speed time posList) player.collisionPos 
                 || List.any (leftImpact player.speed time posList) player.collisionPos then
-                -2 * player.speed.x
+                if player.anim == Walk then
+                    -player.speed.x
+                else -2 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
