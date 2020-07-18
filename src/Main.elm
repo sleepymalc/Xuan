@@ -29,15 +29,15 @@ subscriptions model =
             onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
           --else
             --Sub.none
-        , onKeyUp (Decode.map (key False) keyCode)
-        , onKeyDown (Decode.map (key True) keyCode)
+        , onKeyUp (Decode.map (key model False) keyCode)
+        , onKeyDown (Decode.map (key model True) keyCode)
         , onResize Resize
         ]
 
 
 
 --key : Bool -> Int -> Msg
-key on keycode =
+key model on keycode =
     case keycode of 
         65 ->
             AnimWalk Left on     
@@ -46,7 +46,7 @@ key on keycode =
             AnimWalk Right on
 
         32 ->
-            AnimJump on --
+            AnimCharge  on --
 
         _ ->
             Noop

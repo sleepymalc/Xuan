@@ -88,6 +88,8 @@ renderPlayer player=
                     if player.frame <= 33 then 
                         player.frame
                     else (modBy 33 player.frame) + 33))-}
+            Charge ->
+                "color/jump/walk_0019"            
             Jump -> 
                 "color/jump/jump_0000"
         attr = case player.direction of

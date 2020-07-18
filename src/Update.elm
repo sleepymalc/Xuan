@@ -7,6 +7,7 @@ import Html exposing (time)
 import Svg.Attributes exposing (direction)
 import AnimState exposing(..)
 import Collision exposing (..)
+import Model exposing (AnimState(..))
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -26,19 +27,32 @@ update msg model =
             )
         
         AnimWalk moveDirection on->
-            if on then
+            if on && model.player.anim == Stand then
                 ({model|
                     player=model.player |> walk moveDirection
                 },Cmd.none)
-            else
+            else if not on && model.player.anim /= Jump then
                 ({model|
                     player=model.player |> stand
                 },Cmd.none)
+            else 
+                (model,Cmd.none)
 
 
-        AnimJump on ->
-            ( {model |
-                player=model.player |> jump}, Cmd.none )
+      --  AnimJump on ->
+      --      ( {model |
+      --          player=model.player |> jump model.player.chargetime
+       --         } , Cmd.none )
+
+        AnimCharge on->
+            if on && model.player.anim /= Jump then
+                ({model|
+                    player=model.player |> charge }, Cmd.none )
+            else if not on && model.player.anim /= Jump then
+                ({model| 
+                    player=model.player |> jump }, Cmd.none)
+            else    
+                (model,Cmd.none)
 
         Tick time ->
             case model.state of
@@ -49,38 +63,11 @@ update msg model =
             ( model, Cmd.none )
 
 
-<<<<<<< HEAD
-run moveDirection player = 
-    case moveDirection of
-        Left ->
-            { player| anim = Run, frame = 0, direction= moveDirection, speed = Vector -1 0 }
-        Right ->
-            { player| anim = Run, frame = 0, direction= moveDirection, speed = Vector 1 0 }
-
-stand player = 
-    { player| anim = Stand, frame = 0, speed = Vector 0 0 }
-
-jump player =
-    case player.direction of
-        Left ->
-            { player| anim = Jump, frame = 0, speed = Vector -0.3 -0.45 }
-        Right ->
-            { player| anim = Jump, frame = 0, speed = Vector 0.3 -0.45 }
-
-walk moveDirection player = 
-    if player.anim == Stand then
-        case moveDirection of
-            Left ->
-                { player| anim = Walk,  direction= moveDirection, speed = Vector -0.2 0 }
-            Right ->
-                { player| anim = Walk,  direction= moveDirection, speed = Vector 0.2 0 }
-    else player
-
-=======
->>>>>>> 12f0e28d59c38bafec1b3fdb9350ed0302d40ffb
 animate time model =
     let
-        player = model.player
+        
+        player = model.player            
+            |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
             |> touchdown time model.map.bricks 
@@ -90,56 +77,46 @@ animate time model =
         { model| player = player}
 
 
+changeChargeTime time player = 
+    let 
+        newchargetime = player.chargetime + time
+    in
+    if player.anim == Charge then
+        {player|chargetime=newchargetime}
+    else    
+        {player | chargetime=0}    
+
+
+
 
 changeAnim bricks time player=
     let
         posList = List.map .pos bricks
+        newplayer={player | chargetime=0}
     in
-        if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos then--||onWall map time player then
+        if player.anim == Charge then
+            player
+        else if player.anim == Jump && player.chargetime > 0 then
+            newplayer |> jump
+        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos then--||onWall map time player then
             player |> stand
-        else player
+        else newplayer
+
 
 
 changeSpeed time bricks player =
     let
         posList = List.map .pos bricks
-<<<<<<< HEAD
-    in
-        ((player.speed.x * time + player.pos.x1) < minX 
-                || (player.speed.x * time + player.pos.x2-100) > maxX)
-        ||(touchBricks player time posList)
-
-touchBricks player time posList =
-    (posList|> List.filter (\pos -> (pos.y1<=player.pos.y1+100) && (player.pos.y2-100<=pos.y2))
-            |> List.filter (\pos -> ((player.pos.x1+40>pos.x2) 
-                                    && (player.speed.x * time + player.pos.x1+40<pos.x2))
-                                    ||((player.pos.x2-120<pos.x1) 
-                                    && (player.speed.x * time + player.pos.x2-120>pos.x1)))
-            |> List.isEmpty) == False
-
-changeSpeed time map player =
-    let
-        dx = if  onWall map time player  then
-                if player.anim == Walk then
-                    -1*player.speed.x
-                else 
-                    -2 * player.speed.x
-=======
         dx = if List.any (rightImpact player.speed time posList) player.collisionPos 
                 || List.any (leftImpact player.speed time posList) player.collisionPos then
                 -2 * player.speed.x
->>>>>>> 12f0e28d59c38bafec1b3fdb9350ed0302d40ffb
             else
                 0
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
-                    -2* player.speed.y
+                -2* player.speed.y
             else 
-<<<<<<< HEAD
-                    0.001 * time
-=======
-                    0.0002 * time
+                0.0002 * time
 
->>>>>>> 12f0e28d59c38bafec1b3fdb9350ed0302d40ffb
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
         {player | speed = speed}

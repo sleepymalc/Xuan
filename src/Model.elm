@@ -19,6 +19,7 @@ type AnimState =
     Stand 
     | Run 
     | Walk 
+    | Charge
     | Jump 
 
 
@@ -58,8 +59,8 @@ type alias Player =
     , direction: MoveDirection
     , speed: Speed
     , hp: Int
+    , chargetime: Float
     }
-
 
 type alias Model =
     { player: Player
@@ -79,7 +80,7 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
-      ,map = initMap1
+      ,map = initMap
       ,state = Playing
       ,size = Vector 0 0
       ,audioList = []
@@ -94,28 +95,15 @@ initPlayer =
     , direction = Left
     , speed = Vector 0 0
     , hp = 1
+    , chargetime = 0
     }
-<<<<<<< HEAD
-initCharacter =
-    [
-    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
-    , anim = Run
-    , frame = 0
-    , hp = 1
-    , speed = Vector 0 0
-    , xleft = 0
-    , xright = 0 
-    }
-    ]
-
-initMap1 =
-=======
 
 standcollisionPos =    
     [ Pos (710+1600) (810+1600) (4000-140) 4000
     , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
+
+
 initMap =
->>>>>>> 12f0e28d59c38bafec1b3fdb9350ed0302d40ffb
     let
         bricks =
             [ Pos 3135 3200 800 4000
@@ -153,6 +141,7 @@ initMap =
             , direction = Left
             , speed = Vector 0 0
             , hp = 1
+            , chargetime=0
             })
         exit = Pos 0 0 0 0
     in
