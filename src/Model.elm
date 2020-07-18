@@ -1,5 +1,4 @@
 module Model exposing(..)
-import Message exposing (..)
 import Browser.Dom exposing (getViewport)
 import Task
 import Svg.Attributes exposing (speed)
@@ -11,6 +10,16 @@ import Html.Attributes exposing (value)
 import Dict exposing (values)
 import Json.Decode exposing (Value)
 import Svg.Attributes exposing (direction)
+import Message exposing (..)
+
+
+
+
+type AnimState =
+    Stand 
+    | Run 
+    | Walk 
+    | Jump 
 
 type alias Vector a=
     { x:a
@@ -49,12 +58,6 @@ type alias Player =
     , hp: Int
     }
 
-type AnimState =
-    Stand 
-    | Run 
-    | Walk 
-    | Jump 
-
 
 type alias Model =
     { player: Player
@@ -82,7 +85,7 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos (700+1600) (900+1600) (4000-200) 4000
+    { pos = Pos (700+1600) (830+1600) (4000-200) 4000 -- 455 -> 130; 700 ->200
     , anim =Stand
     , frame = 0
     , direction = Left
@@ -125,6 +128,7 @@ initMap =
             , Pos 2500 2900 1300 1365
             , Pos 1900 2300 800 1000
             , Pos 2500 2900 800 1000  --[1600,3200]*[800,1600]
+            , Pos 0 4000 4001 4020 
             ] |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
         characters =
             [ Pos 2900 3000 3205 3305

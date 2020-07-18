@@ -11,6 +11,7 @@ import Model exposing (..)
 import View exposing (..)
 import Message exposing (..)
 import Update exposing (..)
+import AnimState exposing(..)
 
 main =
     Browser.element
@@ -25,7 +26,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ --if model.state == Playing then
-            onAnimationFrameDelta Tick
+            onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
           --else
             --Sub.none
         , onKeyUp (Decode.map (key False) keyCode)
@@ -45,7 +46,7 @@ key on keycode =
             AnimWalk Right on
 
         32 ->
-            AnimJump on
+            AnimJump on --
 
         _ ->
             Noop
