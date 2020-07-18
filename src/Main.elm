@@ -46,7 +46,7 @@ key model on keycode =
             AnimWalk Right on
 
         32 ->
-            AnimCharge  on --
+            AnimCharge on
 
         _ ->
             Noop

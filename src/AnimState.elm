@@ -10,9 +10,9 @@ stand player =
 jump player=
     case player.direction of
         Left ->
-            { player| anim = Jump, frame = 0, speed = Vector (-0.001*player.chargetime) (-0.0005*player.chargetime) }
+            { player| anim = Jump, frame = 0, speed = Vector (-0.001*player.chargetime) (-0.001*player.chargetime) }
         Right ->
-            { player| anim = Jump, frame = 0, speed = Vector (0.001*player.chargetime) (-0.0005*player.chargetime) }
+            { player| anim = Jump, frame = 0, speed = Vector (0.001*player.chargetime) (-0.001*player.chargetime) }
 
 walk moveDirection player = 
     if player.anim == Stand then

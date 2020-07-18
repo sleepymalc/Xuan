@@ -80,7 +80,7 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
-      ,map = initMap
+      ,map = initMap1
       ,state = Playing
       ,size = Vector 0 0
       ,audioList = []
@@ -101,13 +101,7 @@ initPlayer =
 standcollisionPos =    
     [ Pos (710+1600) (810+1600) (4000-140) 4000
     , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
-<<<<<<< HEAD
-
-
-initMap =
-=======
 initMap1 =
->>>>>>> 5b85995f9f5370b7a6c4f0edbbd8cbce14ecb88b
     let
         bricks =
             [ Pos 3135 3200 800 4000

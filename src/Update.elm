@@ -38,17 +38,11 @@ update msg model =
             else 
                 (model,Cmd.none)
 
-
-      --  AnimJump on ->
-      --      ( {model |
-      --          player=model.player |> jump model.player.chargetime
-       --         } , Cmd.none )
-
         AnimCharge on->
-            if on && model.player.anim /= Jump then
+            if on && model.player.anim == Stand then
                 ({model|
                     player=model.player |> charge }, Cmd.none )
-            else if not on && model.player.anim /= Jump then
+            else if not on && model.player.anim == Charge then
                 ({model| 
                     player=model.player |> jump }, Cmd.none)
             else    
@@ -65,7 +59,6 @@ update msg model =
 
 animate time model =
     let
-        
         player = model.player            
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
@@ -111,13 +104,13 @@ changeSpeed time bricks player =
                 || List.any (leftImpact player.speed time posList) player.collisionPos then
                 if player.anim == Walk then
                     -player.speed.x
-                else -2 * player.speed.x
+                else -1.8 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
-                -2* player.speed.y
+                -1.8* player.speed.y
             else 
-                    0.0002 * time
+                    0.01
 
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
