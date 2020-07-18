@@ -18,7 +18,8 @@ view model =
         renderSvg =[ svg
                         (gameUIAttribute model.size)
                         ([ renderBackground 
-                        , renderPlayer model.player]
+                        , renderPlayer model.player
+                        , debugCollision model.player]
                         ++ (renderbricks (List.map .pos model.map.bricks) model.player)
                         )
                     ]
@@ -78,23 +79,52 @@ renderPlayer player=
         surfix = ".png"
         name = case player.anim of
             Stand -> 
-                "stand/stand_0000"
+                "color/walk/walk_0000"
             Run ->
                 "run/run_"
             Walk ->
-                "walk/walk_00" ++ (String.fromInt (
+                "color/walk/walk_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 65 player.frame)))
+                {-"walk/walk_00" ++ (String.fromInt (
                     if player.frame <= 33 then 
                         player.frame
-                    else (modBy 33 player.frame) + 33))
+                    else (modBy 33 player.frame) + 33))-}
             Jump -> 
-                "jump/jump_000"
+                "color/jump/jump_0000"
         attr = case player.direction of
            Left ->
-            []
-           Right ->
             [ transform "scale (-1 1)"]
+           Right ->
+            []
     in
-        renderImage (prefix ++ name ++ surfix) (player.pos |> offset player) attr
+        renderImage (prefix ++ name ++ surfix) (player.pos |> offset player |> resizePlayer) attr
+
+debugCollision player=
+    let
+        pos = player.pos |> offset player
+    in
+      rect
+        [ x (String.fromFloat pos.x1)
+        , y (String.fromFloat pos.y1)
+        , width (String.fromFloat (pos.x2-pos.x1))
+        , height (String.fromFloat (pos.y2-pos.y1))
+        , opacity "0.2"
+        , fill "#000000"
+        ]
+        []  
+
+resizePlayer pos =
+    let
+        y= 768 / 700 * (pos.y2-pos.y1)
+        y2 = pos.y2
+        y1 = y2 - y
+        x = 1366 / 455 * (pos.x2-pos.x1)
+        dx = (x - (pos.x2-pos.x1))/2
+        x1 = pos.x1 - dx
+        x2 = pos.x2 + dx
+    in
+-- 455 -> 130; 700 ->200
+-- 1366 768
+    Pos x1 x2 y1 y2
 
 
 
@@ -145,7 +175,7 @@ renderImage url pos attr=
         , width (String.fromFloat (pos.x2-pos.x1))
         , height (String.fromFloat (pos.y2-pos.y1))
         , if List.member (transform "scale (-1 1)") attr then
-             x (String.fromFloat (-pos.x2+100))
+             x (String.fromFloat (-pos.x2))
             else
             x (String.fromFloat pos.x1)
         , y (String.fromFloat pos.y1)
