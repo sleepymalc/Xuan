@@ -5173,7 +5173,7 @@ var $author$project$Model$Pos = F4(
 		return {x1: x1, x2: x2, y1: y1, y2: y2};
 	});
 var $author$project$Model$Stand = {$: 'Stand'};
-var $author$project$Model$initMap = function () {
+var $author$project$Model$initMap1 = function () {
 	var exit = A4($author$project$Model$Pos, 0, 0, 0, 0);
 	var characters = A2(
 		$elm$core$List$map,
@@ -5241,7 +5241,7 @@ var $author$project$Model$init = function (_v0) {
 		{
 			attrs: {},
 			audioList: _List_Nil,
-			map: $author$project$Model$initMap,
+			map: $author$project$Model$initMap1,
 			player: $author$project$Model$initPlayer,
 			size: A2($author$project$Model$Vector, 0, 0),
 			state: $author$project$Model$Playing
@@ -5873,12 +5873,12 @@ var $author$project$Update$onBricks = F3(
 			A2(
 				$elm$core$List$filter,
 				function (pos) {
-					return (_Utils_cmp(player.pos.y2 - 25, pos.y1) < 0) && (_Utils_cmp((player.pos.y2 - 25) + 2, pos.y1) > 0);
+					return (_Utils_cmp(player.pos.y2 - 45, pos.y1) < 0) && (_Utils_cmp((player.pos.y2 - 45) + 10, pos.y1) > 0);
 				},
 				A2(
 					$elm$core$List$filter,
 					function (pos) {
-						return (_Utils_cmp(pos.x1, player.pos.x1) < 0) && (_Utils_cmp(player.pos.x2 - 100, pos.x2) < 0);
+						return (_Utils_cmp(pos.x1, player.pos.x1 + 80) < 1) && (_Utils_cmp(player.pos.x2 - 100, pos.x2) < 1);
 					},
 					posList)));
 	});
@@ -5903,7 +5903,7 @@ var $author$project$Update$stand = function (player) {
 };
 var $author$project$Update$changeAnim = F3(
 	function (map, time, player) {
-		return (_Utils_eq(player.anim, $author$project$Model$Jump) && A3($author$project$Update$onFloor, map, time, player)) ? $author$project$Update$stand(player) : player;
+		return (_Utils_eq(player.anim, $author$project$Model$Jump) && (A3($author$project$Update$onFloor, map, time, player) && (player.speed.y > 0))) ? $author$project$Update$stand(player) : player;
 	});
 var $author$project$Update$changeFrame = F2(
 	function (time, player) {
@@ -5920,16 +5920,65 @@ var $author$project$Update$changePos = F2(
 			player,
 			{pos: pos});
 	});
-var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
-var $author$project$Update$changeSpeed = F3(
-	function (time, map, player) {
+var $author$project$Update$touchBricks = F3(
+	function (player, time, posList) {
+		return !$elm$core$List$isEmpty(
+			A2(
+				$elm$core$List$filter,
+				function (pos) {
+					return ((_Utils_cmp(player.pos.x1 + 40, pos.x2) > 0) && (_Utils_cmp(((player.speed.x * time) + player.pos.x1) + 40, pos.x2) < 0)) || ((_Utils_cmp(player.pos.x2 - 120, pos.x1) < 0) && (_Utils_cmp(((player.speed.x * time) + player.pos.x2) - 120, pos.x1) > 0));
+				},
+				A2(
+					$elm$core$List$filter,
+					function (pos) {
+						return (_Utils_cmp(pos.y1, player.pos.y1 + 100) < 1) && (_Utils_cmp(player.pos.y2 - 100, pos.y2) < 1);
+					},
+					posList)));
+	});
+var $author$project$Update$onWall = F3(
+	function (bricks, time, player) {
+		var posList = A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.pos;
+			},
+			bricks);
 		var minX = $elm$core$Basics$floor(player.pos.x1 / 1600) * 1600;
 		var maxX = minX + 1600;
-		var dy = A3($author$project$Update$onFloor, map, time, player) ? ((player.speed.y > 0) ? (-player.speed.y) : 0) : (0.0002 * time);
-		var dx = ((_Utils_cmp((player.speed.x * time) + player.pos.x1, minX) > -1) && (_Utils_cmp(((player.speed.x * time) + player.pos.x2) - 100, maxX) < 1)) ? 0 : ((-2) * player.speed.x);
+		return ((_Utils_cmp((player.speed.x * time) + player.pos.x1, minX) < 0) || (_Utils_cmp(((player.speed.x * time) + player.pos.x2) - 100, maxX) > 0)) || A3($author$project$Update$touchBricks, player, time, posList);
+	});
+var $author$project$Update$underBricks = F3(
+	function (player, time, posList) {
+		return !$elm$core$List$isEmpty(
+			A2(
+				$elm$core$List$filter,
+				function (pos) {
+					return (_Utils_cmp(player.pos.y1 + 40, pos.y2) < 0) && (_Utils_cmp(player.pos.y1 + 50, pos.y2) > 0);
+				},
+				A2(
+					$elm$core$List$filter,
+					function (pos) {
+						return (_Utils_cmp(pos.x1, player.pos.x1 + 80) < 1) && (_Utils_cmp(player.pos.x2 - 100, pos.x2) < 1);
+					},
+					posList)));
+	});
+var $author$project$Update$underFloor = F3(
+	function (bricks, time, player) {
+		var posList = A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.pos;
+			},
+			bricks);
+		return A3($author$project$Update$underBricks, player, time, posList);
+	});
+var $author$project$Update$changeSpeed = F3(
+	function (time, map, player) {
+		var dy = (A3($author$project$Update$underFloor, map, time, player) && (player.speed.y < 0)) ? ((-2) * player.speed.y) : ((A3($author$project$Update$onFloor, map, time, player) && (player.speed.y > 0)) ? (-player.speed.y) : ((A3($author$project$Update$onFloor, map, time, player) && (player.speed.y <= 0)) ? 0 : (0.0002 * time)));
+		var dx = A3($author$project$Update$onWall, map, time, player) ? ((-2) * player.speed.x) : 0;
 		var speed = A2($author$project$Model$Vector, player.speed.x + dx, player.speed.y + dy);
 		return _Utils_update(
 			player,
@@ -5977,22 +6026,26 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Model$Walk = {$: 'Walk'};
 var $author$project$Update$walk = F2(
 	function (moveDirection, player) {
-		if (moveDirection.$ === 'Left') {
-			return _Utils_update(
-				player,
-				{
-					anim: $author$project$Model$Walk,
-					direction: moveDirection,
-					speed: A2($author$project$Model$Vector, -0.1, 0)
-				});
+		if (_Utils_eq(player.anim, $author$project$Model$Stand)) {
+			if (moveDirection.$ === 'Left') {
+				return _Utils_update(
+					player,
+					{
+						anim: $author$project$Model$Walk,
+						direction: moveDirection,
+						speed: A2($author$project$Model$Vector, -0.1, 0)
+					});
+			} else {
+				return _Utils_update(
+					player,
+					{
+						anim: $author$project$Model$Walk,
+						direction: moveDirection,
+						speed: A2($author$project$Model$Vector, 0.1, 0)
+					});
+			}
 		} else {
-			return _Utils_update(
-				player,
-				{
-					anim: $author$project$Model$Walk,
-					direction: moveDirection,
-					speed: A2($author$project$Model$Vector, 0.1, 0)
-				});
+			return player;
 		}
 	});
 var $author$project$Update$update = F2(
