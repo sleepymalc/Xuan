@@ -1,7 +1,6 @@
 module Collision exposing (..)
 
 
-
 rightImpact speed time posList playerPos =
     (posList|> List.filter (projectionOverlap .y1 .y2 playerPos)
             |> List.filter (\pos -> (playerPos.x2 < pos.x1) && (playerPos.x2 + speed.x * time > pos.x1))

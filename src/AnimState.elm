@@ -53,5 +53,6 @@ attack player =
     if player.anim == Stand || player.anim == Walk then
         { player| anim = Attack, frame = 0, speed = Vector 0 0 }
     else player
+    
 charge player =
     {player | anim = Charge}
