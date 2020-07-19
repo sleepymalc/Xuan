@@ -13,6 +13,10 @@ changeText state player =
             else
                 { player | text = player.text }
 
+        _ ->
+            { player | text = player.text }
+
+
 cleartext player =
     if player.textframe >= 100 then
         { player | text = "", textframe = 0}
