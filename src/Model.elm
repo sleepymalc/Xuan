@@ -18,10 +18,12 @@ import Message exposing (..)
 type AnimState =
     Stand 
     | Run 
-    | Walk 
+    | Walk
+    | Crouch
     | Charge
     | Jump 
     | Attack
+    | Attacked
 
 
 type alias Vector a=
@@ -58,6 +60,7 @@ type alias Player =
     , anim: AnimState -- 
     , frame: Int
     , direction: MoveDirection
+    , jumpdir: Jump
     , speed: Speed
     , hp: Int
     , chargetime: Float
@@ -103,9 +106,10 @@ init _=
 initPlayer =
     { pos = Pos (700+1600) (830+1600) (4000-200) (4000-1)  -- 455 -> 130; 700 ->200
     , collisionPos = standcollisionPos
-    , anim =Stand -- test Crouch
+    , anim = Stand
     , frame = 0
     , direction = Left
+    , jumpdir = Up
     , speed = Vector 0 0
     , hp = 1
     , chargetime = 0
@@ -152,6 +156,7 @@ initMap1 =
             , range = Vector (pos.x1-100) (pos.x2+100)
             , frame = 0
             , direction = Left
+            , jumpdir = Up
             , speed = Vector -0.1 0
             , hp = 1
             , chargetime=0
@@ -221,6 +226,7 @@ initMap2 =
             , frame = 0
             , collisionPos = [pos]
             , direction = Left
+            , jumpdir = Up
             , speed = Vector -0.1 0
             , hp = 1
             })

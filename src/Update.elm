@@ -37,6 +37,14 @@ update msg model =
             else 
                 (model,Cmd.none)
 
+        AnimJump jump on ->
+            if on then
+                ({model|
+                    player=model.player |> jumpup jump
+                },Cmd.none)
+            else
+                (model,Cmd.none)
+
         AnimCharge on->
             if on && model.player.anim == Stand then
                 ({model|
@@ -158,8 +166,10 @@ changeAnim bricks time player=
             player
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
-        else if (player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos) 
-            || (player.anim == Attack && player.frame >= 30) then
+        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
+            || (player.anim == Attack && player.frame >= 30)
+            || (player.anim == Crouch && player.frame >= 60)
+            || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
         else newplayer
 
