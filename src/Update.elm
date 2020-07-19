@@ -127,47 +127,8 @@ turn character =
             else 
                 (Left, Vector -0.05 0)
     in
-        {character| anim = Walk, speed = speed, direction = direction}
+        { model| player = player}
 
-attackPlayer player character = 
-    let
-        attackPos = attackRange character
-    in 
-        if character.anim == Attack && character.frame >=30 then
-            character |> stand
-        else if List.any 
-                    (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
-                    player.collisionPos then
-            if character.anim == Stand && character.frame <200 then
-                character 
-            else
-                character |> attack
-        else
-            character
-
-attackedByCharacters characters player=
-    List.foldl attackedByCharacter player characters
-
-attackedByCharacter character player =
-    let
-        attackPos = attackRange character
-    in 
-        if character.anim == Attack then
-           if character.direction == Left then
-                player |> attacked (Vector -0.2 0)
-            else
-                player |> attacked (Vector 0.2 0)
-        else
-            player
-
-
-attackRange character =
-    let
-        pos = character.pos
-        dx = character.speed.x * 2000
-    in
-        --if character.speed 
-        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 changeChargeTime time player = 
     let 
