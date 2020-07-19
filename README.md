@@ -1,4 +1,4 @@
-# Project 2
+# README-Xuan
 
 ## Created by Pgroup 13(Contributors)
 
@@ -13,8 +13,16 @@
 
 
 
-## **Xuan**: the world of martial arts
+## Game introduction
 
->  This time, Xuan (our group name, means the one of mystery, black, subtle in Chinese) enters the world of martial arts, a world about combat, spirits, accomplishment...
->
->  Move up the ladder, enjoy the world.
+### 	Please first refer to instructional booklet :
+
+### 	http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet
+
+## 
+
+## 
+
+### 	
+
+## 
