@@ -118,7 +118,7 @@ initPlayer =
     }
 
 
-standcollisionPos pos=   
+standcollisionPos pos=
     [ Pos (pos.x1+35) (pos.x2-35) (pos.y1+4) (pos.y1+35)
     , Pos (pos.x1+15) (pos.x2-15) (pos.y1+35) (pos.y2) ]
 
