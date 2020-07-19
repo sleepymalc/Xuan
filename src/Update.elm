@@ -30,19 +30,15 @@ update msg model =
                 ({model|
                     player=model.player |> walk moveDirection
                 },Cmd.none)
+            else if on && model.player.anim ==Charge then
+                ({model|
+                    player=model.player |> jumpdirection moveDirection
+                },Cmd.none)
             else if not on && model.player.anim /= Jump then
                 ({model|
                     player=model.player |> stand
                 },Cmd.none)
             else 
-                (model,Cmd.none)
-
-        AnimJump jump on ->
-            if on then
-                ({model|
-                    player=model.player |> jumpup jump
-                },Cmd.none)
-            else
                 (model,Cmd.none)
 
         AnimCharge on->

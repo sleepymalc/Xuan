@@ -45,8 +45,8 @@ key model on keycode =
         68 ->
             AnimWalk Right on
 
-        87 ->
-            AnimJump Up on
+        --87 ->
+            --AnimJump Up on
 
         32 ->
             AnimCharge on
