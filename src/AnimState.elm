@@ -12,11 +12,15 @@ fall player =
 attacked player =
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
 
-jumpup jumping player =
-    { player| jumpdir = jumping}
+jumpdirection moveDirection player =
+    case moveDirection of
+        Left ->
+            { player| jumpdir = L}
+        Right ->
+            { player| jumpdir = R}
 
 stand player = 
-    { player| anim = Stand, frame = 0, speed = Vector 0 0 }
+    { player| anim = Stand, frame = 0, speed = Vector 0 0, jumpdir = Up }
 
 jump player =
     case player.jumpdir of

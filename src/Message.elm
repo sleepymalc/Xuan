@@ -8,7 +8,7 @@ type Jump = L | Up | R
 
 type Msg
     = AnimWalk MoveDirection Bool
-    | AnimJump Jump Bool
+    --| AnimJump Jump Bool
     | AnimAttack Bool
     | AnimCharge Bool
     | Resize Int Int
