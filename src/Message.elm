@@ -3,6 +3,7 @@ import Browser.Dom exposing (Viewport)
 
 
 type MoveDirection = Left | Right
+type JumpDirection = L | Upright | R
 
 
 type Msg

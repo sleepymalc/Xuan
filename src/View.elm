@@ -114,6 +114,12 @@ getAnimUrl anim frame=
 
             Attack ->
                 "color/attack/attack_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 60 frame)))
+
+            Crouch ->
+                "color/charge/charge_0002"
+
+            Attacked ->
+                "color/attacked/attacked_0000"
     in
         prefix ++ name ++ surfix
 

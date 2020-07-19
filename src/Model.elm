@@ -18,10 +18,12 @@ import Message exposing (..)
 type AnimState =
     Stand 
     | Run 
-    | Walk 
+    | Walk
+    | Crouch
     | Charge
     | Jump 
     | Attack
+    | Attacked
 
 
 type alias Vector a=
@@ -91,7 +93,7 @@ init _=
 initPlayer =
     { pos = Pos (700+1600) (830+1600) (4000-200) (4000-1)  -- 455 -> 130; 700 ->200
     , collisionPos = standcollisionPos
-    , anim =Stand
+    , anim = Stand
     , frame = 0
     , direction = Left
     , speed = Vector 0 0

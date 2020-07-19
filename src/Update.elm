@@ -102,7 +102,9 @@ changeAnim bricks time player=
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
         else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
-            || (player.anim == Attack && player.frame >= 60) then
+            || (player.anim == Attack && player.frame >= 50)
+            || (player.anim == Crouch && player.frame >= 60)
+            || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
         else newplayer
 

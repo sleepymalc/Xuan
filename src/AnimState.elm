@@ -2,6 +2,14 @@ module AnimState exposing(..)
 import Model exposing (..)
 import Message exposing (..)
 
+crouch player =
+    { player| anim = Crouch, frame = 0  }
+
+fall player =
+    { player| anim = Stand, frame = 0, speed = Vector 0 0 }
+
+attacked player =
+    { player| anim = Stand, frame = 0, speed = Vector 0 0 }
 
 stand player = 
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
