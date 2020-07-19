@@ -6,6 +6,7 @@ import AnimState exposing(..)
 import Collision exposing (..)
 import Text exposing (..)
 import Animate exposing (..)
+import MapSetting exposing (..)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)

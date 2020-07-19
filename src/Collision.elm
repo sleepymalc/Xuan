@@ -1,4 +1,5 @@
 module Collision exposing (..)
+import MapSetting exposing (..)
 
 
 rightImpact speed time posList playerPos =
