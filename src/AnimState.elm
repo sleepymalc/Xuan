@@ -25,9 +25,9 @@ stand player =
 jump player =
     case player.jumpdir of
         L ->
-            { player| anim = Jump, frame = 0, speed = Vector (-0.001*player.chargetime) (-0.001*player.chargetime) }
+            { player| anim = Jump, frame = 0, speed = Vector (-0.0005*player.chargetime) (-0.00075*player.chargetime) }
         R ->
-            { player| anim = Jump, frame = 0, speed = Vector (0.001*player.chargetime) (-0.001*player.chargetime) }
+            { player| anim = Jump, frame = 0, speed = Vector (0.0005*player.chargetime) (-0.00075*player.chargetime) }
         Up ->
             { player| anim = Jump, frame = 0, speed = Vector 0 (-0.001*player.chargetime) }
 

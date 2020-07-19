@@ -55,7 +55,8 @@ type alias Map =
     }
 
 type alias Player =
-    { pos: Pos --
+    { text: String
+    , pos: Pos --
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
     , frame: Int
@@ -105,7 +106,8 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos 2300 2400 3834 3934
+    { text = "The story begins."
+    , pos = Pos 2300 2400 3834 3934
     , collisionPos = standcollisionPos
     , anim = Stand
     , frame = 0

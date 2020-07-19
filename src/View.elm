@@ -25,7 +25,7 @@ view model =
                         ++ debugCollision model.map.characters model.player
                         ++ debugAttack model.map.characters model.player
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
-                        ++ [renderText 55 100 100]
+                        ++ [renderPlayerText model.player]
                         )
                     ]
         renderHtml = []
@@ -258,11 +258,18 @@ renderImage url pos attr=
         ++ attr)
     []
 
-renderText size posX posY =
+renderText size pos text=
     Svg.text_ 
         [ fontSize (String.fromFloat size)
         ]
-        [  tspan [x (String.fromFloat posX),
-            y (String.fromFloat posY)]
-            [Svg.text "A"]
+        [  tspan [x (String.fromFloat (pos.x1+70)),
+            y (String.fromFloat (pos.y1-10))]
+            [Svg.text text]
         ]
+renderPlayerText player=
+    let
+        size = 20
+        pos = getPlayerViewPos player
+        text = player.text
+    in
+        renderText size pos text
