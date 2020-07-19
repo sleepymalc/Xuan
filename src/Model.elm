@@ -40,8 +40,8 @@ type alias Pos =
 type alias Speed = 
     Vector Float
 
-type State
-    = Playing
+type Stage
+    = One
 
 type alias Brick =
     { pos: Pos,
@@ -60,6 +60,7 @@ type alias Player =
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
     , frame: Int
+    , textframe: Int
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
@@ -83,7 +84,7 @@ type alias Character =
 type alias Model =
     { player: Player
     , map: Map
-    , state: State
+    , state: Stage
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
@@ -99,18 +100,19 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
       ,map = initMap1
-      ,state = Playing
+      ,state = One
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { text = "To test if we can present stories here, let's try a long long sentence."
+    { text = "I need to get outta here."
     , pos = Pos 2300 2400 3830 3930
     , collisionPos = standcollisionPos
     , anim = Stand
     , frame = 0
+    , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
@@ -122,15 +124,19 @@ initPlayer =
 standcollisionPos =   
     [ Pos 2335 2365 3834 3865
     , Pos 2315 2385 3865 3934 ]
+
+
 initMap1 =
     let
         bricks =
             [ Pos 0 100 3200 3935
+            , Pos 0 1500 3100 3200
+            , Pos 1700 3200 0 100
             , Pos 0 3135 3935 4000
             , Pos 3135 3200 775 4000
             , Pos 3200 3600 775 875
             , Pos 1600 1700 0 3200
-            , Pos 4000 4400 3900 4000
+            , Pos 3200 10000 3900 4000
             , Pos 2800 3100 3800 3935 --[1600,3200]*[3200,4000]
             , Pos 2350 2650 3635 3700
             , Pos 1800 2100 3470 3535
@@ -291,8 +297,6 @@ initMap3 =
         ,characters = characters
         ,exit = exit
         }
-<<<<<<< HEAD
-=======
 initMap4 =
     let
         bricks =
@@ -360,7 +364,6 @@ initMap5 =
         { bricks = bricks
         ,exit = exit
         }
->>>>>>> 53e091a14c3e3084427f98ee6df313529964e9a3
     
 
 
