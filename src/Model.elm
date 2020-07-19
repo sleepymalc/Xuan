@@ -106,8 +106,8 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { text = "The story begins."
-    , pos = Pos 2300 2400 3834 3934
+    { text = "To test if we can present stories here, let's try a long long sentence."
+    , pos = Pos 2300 2400 3830 3930
     , collisionPos = standcollisionPos
     , anim = Stand
     , frame = 0

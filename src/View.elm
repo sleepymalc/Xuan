@@ -189,7 +189,7 @@ debugAttack characters player=
 
 resizePlayer pos =
     let
-        y= 768 / 700 * (pos.y2-pos.y1)
+        y = 768 / 700 * (pos.y2-pos.y1)
         y2 = pos.y2
         y1 = y2 - y
         x = 1366 / 455 * (pos.x2-pos.x1)
@@ -258,18 +258,32 @@ renderImage url pos attr=
         ++ attr)
     []
 
-renderText size pos text=
-    Svg.text_ 
-        [ fontSize (String.fromFloat size)
-        ]
-        [  tspan [x (String.fromFloat (pos.x1+70)),
-            y (String.fromFloat (pos.y1-10))]
-            [Svg.text text]
-        ]
+--renderText size pos text lines=
+--    Svg.text_
+--        [ fontSize (String.fromFloat size)
+--        ]
+--        [ tspan [x (String.fromFloat (pos.x1+70)),
+--            y (String.fromFloat (pos.y1-(toFloat(lines)*20)))]
+--            [Svg.text text]
+--        ]
+
+renderT size pos w lines text =
+    foreignObject [ x (String.fromFloat (pos.x1+70))
+                  , y (String.fromFloat (pos.y1-(toFloat(lines)*20)))
+                  , width (String.fromFloat w)
+                  , height (String.fromFloat (toFloat(lines)*20))
+                  ]
+                  [ p [ fontSize (String.fromFloat size) ]
+                      [ Svg.text text ]
+                  ]
+
+
 renderPlayerText player=
     let
         size = 20
         pos = getPlayerViewPos player
+        w = 180
+        lines = (floor(toFloat(String.length(player.text))/20)+2)
         text = player.text
     in
-        renderText size pos text
+        renderT size pos w lines text
