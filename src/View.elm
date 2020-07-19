@@ -10,6 +10,7 @@ import Model exposing (..)
 import Message exposing (..)
 import Update exposing (..)
 import Animate exposing (..)
+import MapSetting exposing (..)
 
 
 viewAttrs =

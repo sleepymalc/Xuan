@@ -5,6 +5,7 @@ import AnimState exposing(..)
 import Collision exposing (..)
 import Text exposing (..)
 import Message exposing (..)
+import MapSetting exposing (..)
 
 
 animate time model =
