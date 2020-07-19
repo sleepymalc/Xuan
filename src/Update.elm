@@ -31,6 +31,10 @@ update msg model =
                 ({model|
                     player=model.player |> walk moveDirection
                 },Cmd.none)
+            else if on && model.player.anim ==Charge then
+                ({model|
+                    player=model.player |> jumpdirection moveDirection
+                },Cmd.none)
             else if not on && model.player.anim /= Jump then
                 ({model|
                     player=model.player |> stand
@@ -51,13 +55,18 @@ update msg model =
         Tick time -> 
             ( model |> animate time, Cmd.none )
 
+        AnimAttack on->
+            ( {model |
+                player=model.player |> AnimState.attack}, Cmd.none )
+
         _ ->
             ( model, Cmd.none )
 
 
 animate time model =
     let
-        player = model.player            
+        player = model.player
+            |> attackedByCharacters model.map.characters            
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
@@ -127,8 +136,47 @@ turn character =
             else 
                 (Left, Vector -0.05 0)
     in
-        { model| player = player}
+        {character| anim = Walk, speed = speed, direction = direction}
 
+attackPlayer player character = 
+    let
+        attackPos = attackRange character
+    in 
+        if character.anim == Attack && character.frame >=30 then
+            character |> stand
+        else if List.any 
+                    (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
+                    player.collisionPos then
+            if character.anim == Stand && character.frame <200 then
+                character 
+            else
+                character |> attack
+        else
+            character
+
+attackedByCharacters characters player=
+    List.foldl attackedByCharacter player characters
+
+attackedByCharacter character player =
+    let
+        attackPos = attackRange character
+    in 
+        if character.anim == Attack then
+           if character.direction == Left then
+                player |> attacked (Vector -0.2 0)
+            else
+                player |> attacked (Vector 0.2 0)
+        else
+            player
+
+
+attackRange character =
+    let
+        pos = character.pos
+        dx = character.speed.x * 2000
+    in
+        --if character.speed 
+        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 changeChargeTime time player = 
     let 
@@ -151,7 +199,10 @@ changeAnim bricks time player=
             player
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
-        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos then--||onWall map time player then
+        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
+            || (player.anim == Attack && player.frame >= 30)
+            || (player.anim == Crouch && player.frame >= 60)
+            || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
         else newplayer
 
@@ -164,14 +215,13 @@ changeSpeed time bricks player =
                 || List.any (leftImpact player.speed time posList) player.collisionPos then
                 if player.anim == Walk then
                     -player.speed.x
-                else 
-                    -1.8 * player.speed.x
+                else -1.8 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
                 -1.8* player.speed.y
             else 
-                0.01
+                    0.01
 
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
