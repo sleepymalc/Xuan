@@ -35,6 +35,10 @@ type alias Speed =
 
 type Stage
     = One
+    | Two
+    | Three
+    | Discover
+    | Discovery
 
 type alias Brick =
     { pos: Pos,

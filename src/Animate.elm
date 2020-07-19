@@ -36,6 +36,44 @@ animate time model =
     in
         { model| player = player, map = newMap}
 
+changeMap model =
+    case model.state of
+        One ->
+            if model.player.pos.x1 >= model.map.exit.x1
+            && model.player.pos.y2 >= (model.map.exit.y1+50) then
+                { model | map = initMap4, state = Discover }
+            else
+                model
+
+        Two ->
+            if model.player.pos.x1 >= model.map.exit.x1
+            && model.player.pos.y2 >= (model.map.exit.y1+50) then
+                 { model | map = initMap5, state = Discovery }
+            else
+                 model
+
+        Three ->
+            if model.player.pos.x1 >= model.map.exit.x1
+            && model.player.pos.y2 >= (model.map.exit.y1+50) then
+                 { model | map = initMap5, state = Discovery }
+            else
+                 model
+
+        Discover ->
+            if model.player.pos.x1 >= model.map.exit.x1
+            && model.player.pos.y2 >= (model.map.exit.y1+50) then
+                 --{ model | map = initMap2, state = Two } 有报错
+                 { model | state = Two }
+            else
+                 model
+
+        Discovery ->
+            if model.player.pos.x1 >= model.map.exit.x1
+            && model.player.pos.y2 >= (model.map.exit.y1+50) then
+                 --{ model | map = initMap3, state = Three } 有报错
+                 { model | state = Three }
+            else
+                 model
 
 attackedByPlayer player character =
     let
