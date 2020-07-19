@@ -7,7 +7,7 @@ import Html exposing (time)
 import Svg.Attributes exposing (direction)
 import AnimState exposing(..)
 import Collision exposing (..)
-import Model exposing (AnimState(..))
+import Text exposing (..)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -48,10 +48,8 @@ update msg model =
             else    
                 (model,Cmd.none)
 
-        Tick time ->
-            case model.state of
-                Playing ->
-                    ( model |> animate time, Cmd.none )
+        Tick time -> 
+            ( model |> animate time, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
@@ -63,9 +61,71 @@ animate time model =
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
-            |> touchdown time model.map.bricks 
+            |> touchdown time model.map.bricks
+            |> changeTextframe time
+            |> changeText model.state
+            |> cleartext
             |> changePos time
             |> changeFrame time
+            
+
+        characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
+            |>List.map (\character-> character
+            |> attackPlayer model.player
+            |> attackedByCharacters model.map.characters
+            |> changeAnim model.map.bricks time
+            |> tour time
+            |> changePos time
+            |> changeFrame time)
+            
+        
+
+        map = model.map
+        newMap = {map |characters = characters}
+    in
+        { model| player = player, map = newMap}
+
+
+attackedByPlayer player character =
+    let
+        attackPos = playerAttackRange player
+    in
+        player.anim == Attack 
+        && List.any 
+                (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
+                character.collisionPos
+playerAttackRange player=
+    let
+        pos = player.pos
+        dx = if player.direction == Left then
+                -80
+            else
+                80
+    in
+        --if character.speed 
+        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
+
+
+
+tour time character = 
+    let
+        pos = nextPos character.speed time character.pos
+    in
+        if  character.range.x < pos.x1 
+            && pos.x2 < character.range.y
+        then
+            if character.anim == Stand && character.frame >=200 then
+                character|> turn
+            else
+                character
+        else character|> stand
+
+turn character =
+    let
+        (direction, speed) = if character.direction ==Left then
+                (Right, Vector 0.05 0)
+            else 
+                (Left, Vector -0.05 0)
     in
         { model| player = player}
 
@@ -146,6 +206,9 @@ nextPos speed time pos=
 
 changeFrame time player =
     {player | frame = player.frame + 1}
+
+changeTextframe time player =
+    { player | textframe = player.textframe +1 }
 
 
 -- Todo: 
