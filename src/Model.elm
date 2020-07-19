@@ -144,7 +144,7 @@ initMap1 =
     let
         bricks = initBricks brickPosList1 
         characters = initCharacters characterPosList1 
-        exit = Pos 0 0 0 0
+        exit = exitPos1
     in
         { bricks = bricks
         , characters = characters

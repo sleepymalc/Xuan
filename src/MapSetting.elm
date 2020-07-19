@@ -42,6 +42,8 @@ characterPosList1 =
     , Pos 2900 3000 3700 3800  --debug
     ]
 
+exitPos1 = Pos 3200 10000 3800 3900
+
 brickPosList2 =
     [ Pos 0 100 0 2000
     , Pos 0 100 2200 4800
