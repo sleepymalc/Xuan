@@ -10,3 +10,17 @@ adding basic images
 
 adding characters' animation
 
+2020.7.19
+
+complete the alpha version [0.2.0]
+
+feature 
+
+complete map
+
+complete genernal npc behavior
+
+complete player animations operation
+
+basic level story narrative
+

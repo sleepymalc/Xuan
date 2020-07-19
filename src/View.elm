@@ -25,8 +25,8 @@ view model =
                         ([ renderBackground 
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
-                        ++ debugCollision model.map.characters model.player
-                        ++ debugAttack model.map.characters model.player
+                        --++ debugCollision model.map.characters model.player
+                        --++ debugAttack model.map.characters model.player
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
                         )
