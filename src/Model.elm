@@ -105,7 +105,7 @@ init _=
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { pos = Pos (700+1600) (830+1600) (4000-200) (4000-1)  -- 455 -> 130; 700 ->200
+    { pos = Pos 2300 2400 3834 3934
     , collisionPos = standcollisionPos
     , anim = Stand
     , frame = 0
@@ -118,12 +118,13 @@ initPlayer =
 
 
 standcollisionPos =   
-    [ Pos (710+1600) (810+1600) (4000-140) 4000 
-    , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
+    [ Pos 2335 2365 3834 3865
+    , Pos 2315 2385 3865 3934 ]
 initMap1 =
     let
         bricks =
-            [ Pos 0 3135 3935 4000
+            [ Pos 0 100 3200 3935
+            , Pos 0 3135 3935 4000
             , Pos 3135 3200 775 4000
             , Pos 3200 3600 775 875
             , Pos 1600 1700 0 3200
@@ -224,6 +225,7 @@ initMap2 =
             , Pos 750 850 100 300
             ] |> List.map (\pos-> { pos = pos
             , anim =Walk
+            , range = Vector (pos.x1-100) (pos.x2+100)
             , frame = 0
             , collisionPos = [pos]
             , direction = Left
@@ -274,6 +276,7 @@ initMap3 =
             [ Pos 750 850 250 350
             ] |> List.map (\pos-> { pos = pos
             , anim =Walk
+            , range = Vector (pos.x1-100) (pos.x2+100)
             , frame = 0
             , direction = Left
             , speed = Vector -0.1 0
