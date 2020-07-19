@@ -12,6 +12,8 @@ import View exposing (..)
 import Message exposing (..)
 import Update exposing (..)
 import AnimState exposing(..)
+import MapSetting exposing (..)
+
 
 main =
     Browser.element
