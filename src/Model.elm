@@ -124,6 +124,8 @@ initPlayer =
 standcollisionPos =   
     [ Pos 2335 2365 3834 3865
     , Pos 2315 2385 3865 3934 ]
+
+
 initMap1 =
     let
         bricks =
