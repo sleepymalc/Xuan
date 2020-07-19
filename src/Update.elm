@@ -71,6 +71,7 @@ animate time model =
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
             |> touchdown time model.map.bricks
+            |> changeTextframe time
             |> changeText model.state
             |> cleartext
             |> changePos time
@@ -80,7 +81,6 @@ animate time model =
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |>List.map (\character-> character
             |> attackPlayer model.player
-            |> changeTextframe time
             |> attackedByCharacters model.map.characters
             |> changeAnim model.map.bricks time
             |> tour time
