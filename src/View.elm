@@ -3,16 +3,18 @@ module View exposing (..)
 import Html exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (style,src,controls,autoplay,loop,attribute)
 import Html.Events exposing (on, onClick, onMouseDown, onMouseUp)
-
 import Model exposing (..)
 import Message exposing (..)
 import Update exposing (..)
 
 
+
+viewAttrs =
+    { size = Vector 1600 800
+    }
 
 view : Model -> Html Msg
 view model =
@@ -38,8 +40,8 @@ view model =
 
 offset player pos =
     let
-        dx = toFloat(floor (player.pos.x1/1600) * 1600)
-        dy = toFloat(floor (player.pos.y1/800)* 800)
+        dx = toFloat(floor (player.pos.x1/viewAttrs.size.x) * viewAttrs.size.x)
+        dy = toFloat(floor (player.pos.y1/viewAttrs.size.y)* viewAttrs.size.y)
     in
         Pos (pos.x1-dx) (pos.x2-dx) (pos.y1-dy) (pos.y2-dy)
 
@@ -53,16 +55,16 @@ renderbrick player pos=
                     0
                 else
                     viewpos.x1
-        x2 = if viewpos.x2>1600 then
-                    1600
+        x2 = if viewpos.x2>viewAttrs.size.x then
+                    viewAttrs.size.x
                 else
                     viewpos.x2
         y1 = if viewpos.y1<0 then
                     0
                 else
                     viewpos.y1
-        y2 = if viewpos.y2>800 then
-                    800
+        y2 = if viewpos.y2>viewAttrs.size.y then
+                    viewAttrs.size.y
                 else
                     viewpos.y2
     in
@@ -76,7 +78,7 @@ renderbrick player pos=
         []
 
 renderBackground =
-    renderImage "img/background.jpg" (Pos 0 1600 0 800) []
+    renderImage "img/background.jpg" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
@@ -93,7 +95,7 @@ renderCharacter player character =
         renderImage url viewpos attr
 
 clearOutsideImage viewpos=
-    if viewpos.x2<0 || viewpos.x1>1600 || viewpos.y2<0 || viewpos.y1>800 then
+    if viewpos.x2<0 || viewpos.x1>viewAttrs.size.x || viewpos.y2<0 || viewpos.y1>viewAttrs.size.y then
         Pos 0 0 0 0
     else
         viewpos
@@ -211,7 +213,7 @@ resizePlayer pos =
 gameUIAttribute size= 
     [ width (String.fromFloat size.x)
     , height (String.fromFloat size.y)
-    , viewBox "0 0 1600 800"
+    , viewBox ("0 0 "++(String.fromFloat viewAttrs.size.x) ++ " " ++ (String.fromFloat viewAttrs.size.y)) 
     ]
 
 

@@ -1,65 +1,10 @@
-module Update exposing (..)
+module Animate exposing (..)
 
-import Message exposing (..)
 import Model exposing (..)
 import AnimState exposing(..)
 import Collision exposing (..)
 import Text exposing (..)
-import Animate exposing (..)
-
-
-update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
-    case msg of
-        GetViewport { viewport } ->
-            ( { model
-                | size = Vector viewport.width viewport.height
-              }
-            , Cmd.none
-            )
-            
-        Resize width height -> 
-            ( { model 
-                | size = Vector (toFloat width) (toFloat height )
-                }
-            , Cmd.none
-            )
-        
-        AnimWalk moveDirection on->
-            if on && model.player.anim == Stand then
-                ({model|
-                    player=model.player |> walk moveDirection
-                },Cmd.none)
-            else if on && model.player.anim ==Charge then
-                ({model|
-                    player=model.player |> jumpdirection moveDirection
-                },Cmd.none)
-            else if not on && model.player.anim /= Jump then
-                ({model|
-                    player=model.player |> stand
-                },Cmd.none)
-            else 
-                (model,Cmd.none)
-
-        AnimCharge on->
-            if on && model.player.anim == Stand then
-                ({model|
-                    player=model.player |> charge }, Cmd.none )
-            else if not on && model.player.anim == Charge then
-                ({model| 
-                    player=model.player |> jump }, Cmd.none)
-            else    
-                (model,Cmd.none)
-
-        Tick time -> 
-            ( model |> animate time, Cmd.none )
-
-        AnimAttack on->
-            ( {model |
-                player=model.player |> AnimState.attack}, Cmd.none )
-
-        _ ->
-            ( model, Cmd.none )
+import Message exposing (..)
 
 
 animate time model =
@@ -75,7 +20,6 @@ animate time model =
             |> cleartext
             |> changePos time
             |> changeFrame time
-            
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |>List.map (\character-> character
@@ -85,8 +29,6 @@ animate time model =
             |> tour time
             |> changePos time
             |> changeFrame time)
-            
-        
 
         map = model.map
         newMap = {map |characters = characters}
@@ -102,6 +44,7 @@ attackedByPlayer player character =
         && List.any 
                 (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
                 character.collisionPos
+
 playerAttackRange player=
     let
         pos = player.pos
@@ -112,8 +55,6 @@ playerAttackRange player=
     in
         --if character.speed 
         {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
-
-
 
 tour time character = 
     let
@@ -186,9 +127,6 @@ changeChargeTime time player =
     else    
         {player | chargetime=0}    
 
-
-
-
 changeAnim bricks time player=
     let
         posList = List.map .pos bricks
@@ -204,8 +142,6 @@ changeAnim bricks time player=
             || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
         else newplayer
-
-
 
 changeSpeed time bricks player =
     let
@@ -258,9 +194,3 @@ changeFrame time player =
 
 changeTextframe time player =
     { player | textframe = player.textframe +1 }
-
-
--- Todo: 
-
--- hitted hit()
--- jump speed && xuli contorl 
