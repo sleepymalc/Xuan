@@ -14,8 +14,6 @@ import Message exposing (..)
 import MapSetting exposing (..)
 
 
-
-
 type AnimState =
     Stand 
     | Run 
@@ -104,7 +102,7 @@ init _=
 initPlayer =
     { text = "I need to get outta here."
     , pos = Pos 2300 2400 3830 3930
-    , collisionPos = standcollisionPos
+    , collisionPos = standcollisionPos (Pos 2300 2400 3830 3930)
     , anim = Stand
     , frame = 0
     , textframe = 0
@@ -116,9 +114,9 @@ initPlayer =
     }
 
 
-standcollisionPos =   
-    [ Pos 2335 2365 3834 3865
-    , Pos 2315 2385 3865 3934 ]
+standcollisionPos pos=   
+    [ Pos (pos.x1+35) (pos.x2-35) (pos.y1+4) (pos.y1+35)
+    , Pos (pos.x1+15) (pos.x2-15) (pos.y1+35) (pos.y2+4) ]
 
 
 initCharacters posList= 
