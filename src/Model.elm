@@ -40,8 +40,8 @@ type alias Pos =
 type alias Speed = 
     Vector Float
 
-type Stage
-    = One
+type State
+    = Playing
 
 type alias Brick =
     { pos: Pos,
@@ -60,7 +60,6 @@ type alias Player =
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
     , frame: Int
-    , textframe: Int
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
@@ -84,7 +83,7 @@ type alias Character =
 type alias Model =
     { player: Player
     , map: Map
-    , state: Stage
+    , state: State
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
@@ -100,19 +99,18 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
       ,map = initMap1
-      ,state = One
+      ,state = Playing
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { text = "I need to get outta here."
+    { text = "To test if we can present stories here, let's try a long long sentence."
     , pos = Pos 2300 2400 3830 3930
     , collisionPos = standcollisionPos
     , anim = Stand
     , frame = 0
-    , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
@@ -124,19 +122,15 @@ initPlayer =
 standcollisionPos =   
     [ Pos 2335 2365 3834 3865
     , Pos 2315 2385 3865 3934 ]
-
-
 initMap1 =
     let
         bricks =
             [ Pos 0 100 3200 3935
-            , Pos 0 1500 3100 3200
-            , Pos 1700 3200 0 100
             , Pos 0 3135 3935 4000
             , Pos 3135 3200 775 4000
             , Pos 3200 3600 775 875
             , Pos 1600 1700 0 3200
-            , Pos 3200 10000 3900 4000
+            , Pos 4000 4400 3900 4000
             , Pos 2800 3100 3800 3935 --[1600,3200]*[3200,4000]
             , Pos 2350 2650 3635 3700
             , Pos 1800 2100 3470 3535
@@ -295,39 +289,6 @@ initMap3 =
     in
         { bricks = bricks
         ,characters = characters
-        ,exit = exit
-        }
-initMap4 =
-    let
-        bricks =
-            [ Pos 0 100 0 4000
-            , Pos 1500 1600 0 4000
-            , Pos 100 1500 0 100
-            , Pos 100 1500 3935 4000
-            , Pos 400 600 3700 3765   --[0,1600]*[3200,4000]
-            , Pos 800 1000 3475 3540
-            , Pos 1200 1500 3175 3275
-            , Pos 100 200 3125 3325   --[0,1600]*[3200,4000]
-            , Pos 1325 1375 2925 3125 --[0,1600]*[2400,3200]
-            , Pos 650 950 2900 3000
-            , Pos 775 825 2700 2900
-            , Pos 100 400 2675 2775
-            , Pos 225 275 2475 2675   --[0,1600]*[2400,3200]
-            , Pos 350 650 2200 2265   --[0,1600]*[1600,2400]
-            , Pos 850 1150 2000 2065
-            , Pos 1300 1500 1800 1865
-            , Pos 300 1100 1550 1650
-            , Pos 100 250 1800 2200   --[0,1600]*[1600,2400]
-            , Pos 500 750 1250 1400   --[0,1600]*[800,1600]
-            , Pos 1000 1250 950 1100
-            , Pos 1400 1500 750 900   --[0,1600]*[800,1600]
-            , Pos 1150 1300 600 700   --[0,1600]*[0,800]
-            , Pos 500 550 300 850
-            , Pos 150 450 400 750     --[0,1600]*[0,800]
-            ] |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
-        exit = Pos 0 0 0 0
-    in
-        { bricks = bricks
         ,exit = exit
         }
     

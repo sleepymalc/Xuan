@@ -26,17 +26,15 @@ stand player =
 jump player =
     let
         time = if player.chargetime > 3000 then
-                3
+                3000
             else
-                player.chargetime/1000
+                player.chargetime
     in
         case player.jumpdir of
             L ->
                 { player| anim = Jump, frame = 0, speed = Vector (-0.0005*time) (-0.00075*time) }
-                --{ player| anim = Jump, frame = 0, speed = Vector (-0.5) (0.25*time^3-0.75*time^2) } 
             R ->
                 { player| anim = Jump, frame = 0, speed = Vector (0.0005*time) (-0.00075*time) }
-                --{ player| anim = Jump, frame = 0, speed = Vector (-0.5) (0.25*time^3-0.75*time^2) } 
             Up ->
                 { player| anim = Jump, frame = 0, speed = Vector 0 (-0.001*time) }
 
@@ -54,6 +52,5 @@ attack player =
     if player.anim == Stand || player.anim == Walk then
         { player| anim = Attack, frame = 0, speed = Vector 0 0 }
     else player
-    
 charge player =
     {player | anim = Charge}

@@ -21,28 +21,36 @@ main =
         , subscriptions = subscriptions
         }
 
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
-        , onKeyUp (Decode.map (key False) keyCode)
-        , onKeyDown (Decode.map (key True) keyCode)
+        [ --if model.state == Playing then
+            onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
+          --else
+            --Sub.none
+        , onKeyUp (Decode.map (key model False) keyCode)
+        , onKeyDown (Decode.map (key model True) keyCode)
         , onResize Resize
         ]
 
-key : Bool -> Int -> Msg
-key on keycode =
+
+
+--key : Bool -> Int -> Msg
+key model on keycode =
     case keycode of 
-        --A
         65 ->
             AnimWalk Left on
-        --D
+
         68 ->
             AnimWalk Right on
-        --Space
+
+        --87 ->
+            --AnimJump Up on
+
         32 ->
             AnimCharge on
-        --J
+
         74 ->
             AnimAttack on
         _ ->
