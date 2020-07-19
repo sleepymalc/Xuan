@@ -10,6 +10,8 @@ import Html.Events exposing (on, onClick, onMouseDown, onMouseUp)
 
 import Model exposing (..)
 import Message exposing (..)
+import Update exposing (..)
+
 
 
 view : Model -> Html Msg
@@ -20,7 +22,8 @@ view model =
                         ([ renderBackground 
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
-                        ++ debugCollision model.player
+                        ++ debugCollision model.map.characters model.player
+                        ++ debugAttack model.map.characters model.player
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         )
                     ]
@@ -138,9 +141,16 @@ renderPlayer player=
     in
         renderImage url pos attr
 
-debugCollision player=
+
+debugCollision characters player=
     let
-        collisionPos = List.map (offset player) player.collisionPos
+        charactersCollisionPos = characters
+            |> List.map .collisionPos
+            |> List.concat
+        collisionPos = player.collisionPos ++ charactersCollisionPos  
+            |> List.map (offset player) 
+            |> List.map clearOutsideImage
+
     in
         List.map (\pos ->
                     rect
@@ -151,7 +161,25 @@ debugCollision player=
                         , opacity "0.2"
                         , fill "#000000"
                         ]
-                        []) collisionPos  
+                        []) collisionPos 
+
+debugAttack characters player=
+    let
+        attackPos = characters
+            |> List.map attackRange
+            |> List.map (offset player) 
+            |> List.map clearOutsideImage
+    in
+        List.map (\pos ->
+                    rect
+                        [ x (String.fromFloat pos.x1)
+                        , y (String.fromFloat pos.y1)
+                        , width (String.fromFloat (pos.x2-pos.x1))
+                        , height (String.fromFloat (pos.y2-pos.y1))
+                        , opacity "0.2"
+                        , fill "#ff0000"
+                        ]
+                        []) attackPos 
 
 resizePlayer pos =
     let

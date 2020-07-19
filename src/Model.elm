@@ -48,17 +48,29 @@ type alias Brick =
 
 type alias Map = 
     { bricks: List Brick
-     ,characters: List Player
+     ,characters: List Character
      ,exit: Pos
     }
 
 type alias Player =
-    { pos: Pos
-    , collisionPos: List Pos
-    , anim: AnimState
+    { pos: Pos --
+    , collisionPos: List Pos -- 
+    , anim: AnimState -- 
     , frame: Int
     , direction: MoveDirection
     , speed: Speed
+    , hp: Int
+    , chargetime: Float
+    }
+
+type alias Character =
+    { pos: Pos --
+    , collisionPos: List Pos -- 
+    , anim: AnimState -- 
+    , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
+    , range: Vector Float
     , hp: Int
     , chargetime: Float
     }
@@ -91,7 +103,7 @@ init _=
 initPlayer =
     { pos = Pos (700+1600) (830+1600) (4000-200) (4000-1)  -- 455 -> 130; 700 ->200
     , collisionPos = standcollisionPos
-    , anim =Stand
+    , anim =Stand -- test Crouch
     , frame = 0
     , direction = Left
     , speed = Vector 0 0
@@ -99,8 +111,9 @@ initPlayer =
     , chargetime = 0
     }
 
-standcollisionPos =    
-    [ Pos (710+1600) (810+1600) (4000-140) 4000
+
+standcollisionPos =   
+    [ Pos (710+1600) (810+1600) (4000-140) 4000 
     , Pos (730+1600) (790+1600) (4000-200) (4000-140) ]
 initMap1 =
     let
@@ -134,8 +147,9 @@ initMap1 =
             , Pos 2000 2100 1200 1300
             , Pos 2700 2800 1200 1300
             ] |> List.map (\pos-> { pos = pos
-            , collisionPos = [Pos 1200 1400 800 1000]
+            , collisionPos = [pos]
             , anim =Walk
+            , range = Vector (pos.x1-100) (pos.x2+100)
             , frame = 0
             , direction = Left
             , speed = Vector -0.1 0
@@ -205,6 +219,7 @@ initMap2 =
             ] |> List.map (\pos-> { pos = pos
             , anim =Walk
             , frame = 0
+            , collisionPos = [pos]
             , direction = Left
             , speed = Vector -0.1 0
             , hp = 1

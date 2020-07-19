@@ -2,6 +2,12 @@ module AnimState exposing(..)
 import Model exposing (..)
 import Message exposing (..)
 
+-- change anim state 
+
+-- Crouch -- 
+-- frame crouch time
+-- Add fall
+-- 
 
 stand player = 
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
@@ -26,5 +32,8 @@ attack player =
     if player.anim == Stand then
         { player| anim = Attack, frame = 0, speed = Vector 0 0 }
     else player
+
 charge player =
     {player | anim = Charge}
+
+attacked player = player

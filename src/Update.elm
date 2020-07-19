@@ -47,7 +47,7 @@ update msg model =
             else    
                 (model,Cmd.none)
 
-        Tick time ->
+        Tick time -> 
             case model.state of
                 Playing ->
                     ( model |> animate time, Cmd.none )
@@ -69,16 +69,73 @@ animate time model =
             |> touchdown time model.map.bricks 
             |> changePos time
             |> changeFrame time
+            |> attackedByCharacters model.map.characters
         characters = List.map
             (\character-> character
+            |> changeAnim model.map.bricks time
+            |> tour time
+            |> attackPlayer player
             |> changePos time
             |> changeFrame time) model.map.characters
+            
+        
 
         map = model.map
         newMap = {map |characters = characters}
     in
         { model| player = player, map = newMap}
 
+
+tour time character = 
+    let
+        pos = nextPos character.speed time character.pos
+    in
+        if  character.range.x < pos.x1 
+            && pos.x2 < character.range.y
+        then
+            character 
+        else character|> turn
+
+turn character =
+    let
+        speed = Vector -character.speed.x character.speed.y
+        direction = if character.direction ==Left then
+                Right
+            else 
+                Left
+    in
+        {character| speed = speed, direction = direction}
+
+attackPlayer player character = 
+    let
+        attackPos = attackRange character
+    in 
+        if character.pos.y2 - 5 < player.pos.y2 && player.pos.y2 < character.pos.y2 + 5 
+           && projectionOverlap .x1 .x2 attackPos player.pos then
+            character |> attack
+        else
+            character
+
+attackedByCharacters characters player=
+    List.foldl attackedByCharacter player characters
+
+attackedByCharacter character player =
+    let
+        attackPos = attackRange character
+    in 
+        if character.pos.y2 - 5 < player.pos.y2 && player.pos.y2 < character.pos.y2 + 5 
+           && projectionOverlap .x1 .x2 attackPos player.pos then
+            player |> attacked
+        else
+            player
+
+
+attackRange character =
+    let
+        pos = character.pos
+        dx = character.speed.x * 1000
+    in
+        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 changeChargeTime time player = 
     let 
@@ -101,8 +158,8 @@ changeAnim bricks time player=
             player
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
-        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
-            || (player.anim == Attack && player.frame >= 60) then
+        else if (player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos) 
+            || (player.anim == Attack && player.frame >= 30) then
             player |> stand
         else newplayer
 
