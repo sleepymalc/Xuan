@@ -152,6 +152,7 @@ initMap1 =
             , Pos 1750 1850 2250 2350
             , Pos 2000 2100 1200 1300
             , Pos 2700 2800 1200 1300
+            , Pos 2900 3000 3700 3800  --debug
             ] |> List.map (\pos-> { pos = pos
             , collisionPos = [pos]
             , anim =Walk
@@ -159,7 +160,7 @@ initMap1 =
             , frame = 0
             , direction = Left
             , jumpdir = Up
-            , speed = Vector -0.1 0
+            , speed = Vector -0.05 0
             , hp = 1
             , chargetime=0
             })

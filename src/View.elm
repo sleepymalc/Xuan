@@ -83,7 +83,7 @@ renderCharacters player characters=
 
 renderCharacter player character =
     let
-        url = getAnimUrl character.anim character.frame
+        url = getAnimUrl character.anim character.frame character
         attr = getDirectionAttr character.direction
         viewpos = character.pos |> offset player |> resizePlayer|> clearOutsideImage
         --character.pos
@@ -97,7 +97,7 @@ clearOutsideImage viewpos=
         Pos 0 0 0 0
     else
         viewpos
-getAnimUrl anim frame= 
+getAnimUrl anim frame player= 
     let
         prefix = "img/character/"
         surfix = ".png"
@@ -123,7 +123,11 @@ getAnimUrl anim frame=
                 "color/charge/charge_0002"
 
             Attacked ->
-                "color/attacked/attacked_0000"
+                if ( player.speed.x < 0 && player.direction == Left)
+                || ( player.speed.x > 0 && player.direction == Right) then
+                    "color/attacked/attackedBack_0000"
+                else
+                    "color/attacked/attackedFront_0000"
     in
         prefix ++ name ++ surfix
 
@@ -141,7 +145,7 @@ getPlayerViewPos player =
 
 renderPlayer player= 
     let
-        url = getAnimUrl player.anim player.frame
+        url = getAnimUrl player.anim player.frame player
         attr = getDirectionAttr player.direction
         pos = getPlayerViewPos player
     in
@@ -171,8 +175,9 @@ debugCollision characters player=
 
 debugAttack characters player=
     let
-        attackPos = characters
-            |> List.map attackRange
+        attackPos = ((playerAttackRange player)
+            :: (characters 
+            |> List.map attackRange))
             |> List.map (offset player) 
             |> List.map clearOutsideImage
     in

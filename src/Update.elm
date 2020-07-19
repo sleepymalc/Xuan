@@ -66,21 +66,23 @@ update msg model =
 
 animate time model =
     let
-        player = model.player            
+        player = model.player
+            |> attackedByCharacters model.map.characters            
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
             |> touchdown time model.map.bricks 
             |> changePos time
             |> changeFrame time
-            |> attackedByCharacters model.map.characters
-        characters = List.map
-            (\character-> character
+            
+
+        characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
+            |>List.map (\character-> character
+            |> attackPlayer model.player
             |> changeAnim model.map.bricks time
             |> tour time
-            |> attackPlayer player
             |> changePos time
-            |> changeFrame time) model.map.characters
+            |> changeFrame time)
             
         
 
@@ -90,6 +92,27 @@ animate time model =
         { model| player = player, map = newMap}
 
 
+attackedByPlayer player character =
+    let
+        attackPos = playerAttackRange player
+    in
+        player.anim == Attack 
+        && List.any 
+                (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
+                character.collisionPos
+playerAttackRange player=
+    let
+        pos = player.pos
+        dx = if player.direction == Left then
+                -80
+            else
+                80
+    in
+        --if character.speed 
+        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
+
+
+
 tour time character = 
     let
         pos = nextPos character.speed time character.pos
@@ -97,26 +120,34 @@ tour time character =
         if  character.range.x < pos.x1 
             && pos.x2 < character.range.y
         then
-            character 
-        else character|> turn
+            if character.anim == Stand && character.frame >=200 then
+                character|> turn
+            else
+                character
+        else character|> stand
 
 turn character =
     let
-        speed = Vector -character.speed.x character.speed.y
-        direction = if character.direction ==Left then
-                Right
+        (direction, speed) = if character.direction ==Left then
+                (Right, Vector 0.05 0)
             else 
-                Left
+                (Left, Vector -0.05 0)
     in
-        {character| speed = speed, direction = direction}
+        {character| anim = Walk, speed = speed, direction = direction}
 
 attackPlayer player character = 
     let
         attackPos = attackRange character
     in 
-        if character.pos.y2 - 5 < player.pos.y2 && player.pos.y2 < character.pos.y2 + 5 
-           && projectionOverlap .x1 .x2 attackPos player.pos then
-            character |> attack
+        if character.anim == Attack && character.frame >=30 then
+            character |> stand
+        else if List.any 
+                    (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
+                    player.collisionPos then
+            if character.anim == Stand && character.frame <200 then
+                character 
+            else
+                character |> attack
         else
             character
 
@@ -127,9 +158,11 @@ attackedByCharacter character player =
     let
         attackPos = attackRange character
     in 
-        if character.pos.y2 - 5 < player.pos.y2 && player.pos.y2 < character.pos.y2 + 5 
-           && projectionOverlap .x1 .x2 attackPos player.pos then
-            player |> attacked
+        if character.anim == Attack then
+           if character.direction == Left then
+                player |> attacked (Vector -0.2 0)
+            else
+                player |> attacked (Vector 0.2 0)
         else
             player
 
@@ -137,8 +170,9 @@ attackedByCharacter character player =
 attackRange character =
     let
         pos = character.pos
-        dx = character.speed.x * 1000
+        dx = character.speed.x * 2000
     in
+        --if character.speed 
         {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 changeChargeTime time player = 

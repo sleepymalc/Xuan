@@ -1,6 +1,7 @@
 module AnimState exposing(..)
 import Model exposing (..)
 import Message exposing (..)
+import Model exposing (AnimState(..))
 
 
 crouch player =
@@ -9,8 +10,8 @@ crouch player =
 fall player =
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
 
-attacked player =
-    { player| anim = Stand, frame = 0, speed = Vector 0 0 }
+attacked speed player =
+    { player| anim = Attacked, frame = 0, speed = speed}
 
 jumpdirection moveDirection player =
     case moveDirection of
@@ -42,7 +43,7 @@ walk moveDirection player =
     else player
 
 attack player =
-    if player.anim == Stand then
+    if player.anim == Stand || player.anim == Walk then
         { player| anim = Attack, frame = 0, speed = Vector 0 0 }
     else player
 charge player =
