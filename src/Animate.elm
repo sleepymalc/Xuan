@@ -156,7 +156,7 @@ changeSpeed time bricks player =
         dy = if List.any (upImpact player.speed time posList) player.collisionPos then
                 -1.8* player.speed.y
             else 
-                    0.01
+                0.03
 
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in

@@ -25,19 +25,18 @@ stand player =
 
 jump player =
     let
-        time = if player.chargetime > 2500 then
-                2500
+        time = if player.chargetime > 2000 then
+                2
             else
-                player.chargetime
+                player.chargetime/1000
     in
         case player.jumpdir of
             L ->
-               { player| anim = Jump, frame = 0, speed = Vector (-0.0005*time) (-0.00075*time) }
-               --{ player| anim = Jump, frame = 0, speed = Vector (-0.75) (-(time*time-2500*time+0.49999999)) }
+               { player| anim = Jump, frame = 0, speed = Vector (-0.5) (0.25*time^3-0.75*time^2-0.25) }
             R ->
-                { player| anim = Jump, frame = 0, speed = Vector (0.0005*time) (-0.00075*time) }
+               { player| anim = Jump, frame = 0, speed = Vector 0.5 (0.25*time^3-0.75*time^2-0.25) }
             Up ->
-                { player| anim = Jump, frame = 0, speed = Vector 0 (-0.001*time) }
+                { player| anim = Jump, frame = 0, speed = Vector 0 (0.25*time^3-0.75*time^2-0.25) }
 
 walk moveDirection player = 
     if player.anim == Stand then
