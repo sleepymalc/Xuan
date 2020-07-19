@@ -1,14 +1,14 @@
-module Message exposing (Msg(..),MoveDirection(..))
+module Message exposing (..)
 import Browser.Dom exposing (Viewport)
 
 
 type MoveDirection = Left | Right
-type JumpDirection = L | Upright | R
 
+type Jump = L | Up | R
 
 type Msg
     = AnimWalk MoveDirection Bool
-    | AnimJump Bool
+    | AnimJump Jump Bool
     | AnimAttack Bool
     | AnimCharge Bool
     | Resize Int Int

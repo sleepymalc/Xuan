@@ -11,23 +11,29 @@ fall player =
 attacked player =
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
 
+jumpup jumping player =
+    { player| jumpdir = jumping}
+
 stand player = 
     { player| anim = Stand, frame = 0, speed = Vector 0 0 }
 
 jump player =
-    case player.direction of
-        Left ->
+    case player.jumpdir of
+        L ->
             { player| anim = Jump, frame = 0, speed = Vector (-0.001*player.chargetime) (-0.001*player.chargetime) }
-        Right ->
+        R ->
             { player| anim = Jump, frame = 0, speed = Vector (0.001*player.chargetime) (-0.001*player.chargetime) }
+        Up ->
+            { player| anim = Jump, frame = 0, speed = Vector 0 (-0.001*player.chargetime) }
 
 walk moveDirection player = 
     if player.anim == Stand then
         case moveDirection of
             Left ->
-                { player| anim = Walk,  direction= moveDirection, speed = Vector -0.2 0 }
+                { player| anim = Walk,  direction= moveDirection, speed = Vector -0.2 0, jumpdir = L }
             Right ->
-                { player| anim = Walk,  direction= moveDirection, speed = Vector 0.2 0 }
+                { player| anim = Walk,  direction= moveDirection, speed = Vector 0.2 0, jumpdir = R }
+
     else player
 
 attack player =

@@ -60,6 +60,7 @@ type alias Player =
     , anim: AnimState
     , frame: Int
     , direction: MoveDirection
+    , jumpdir: Jump
     , speed: Speed
     , hp: Int
     , chargetime: Float
@@ -96,6 +97,7 @@ initPlayer =
     , anim = Stand
     , frame = 0
     , direction = Left
+    , jumpdir = Up
     , speed = Vector 0 0
     , hp = 1
     , chargetime = 0
@@ -140,6 +142,7 @@ initMap1 =
             , anim =Walk
             , frame = 0
             , direction = Left
+            , jumpdir = Up
             , speed = Vector -0.1 0
             , hp = 1
             , chargetime=0
@@ -208,6 +211,7 @@ initMap2 =
             , anim =Walk
             , frame = 0
             , direction = Left
+            , jumpdir = Up
             , speed = Vector -0.1 0
             , hp = 1
             })

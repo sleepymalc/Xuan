@@ -37,6 +37,14 @@ update msg model =
             else 
                 (model,Cmd.none)
 
+        AnimJump jump on ->
+            if on then
+                ({model|
+                    player=model.player |> jumpup jump
+                },Cmd.none)
+            else
+                (model,Cmd.none)
+
         AnimCharge on->
             if on && model.player.anim == Stand then
                 ({model|

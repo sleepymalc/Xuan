@@ -40,10 +40,13 @@ subscriptions model =
 key model on keycode =
     case keycode of 
         65 ->
-            AnimWalk Left on     
+            AnimWalk Left on
 
         68 ->
             AnimWalk Right on
+
+        87 ->
+            AnimJump Up on
 
         32 ->
             AnimCharge on
