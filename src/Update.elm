@@ -7,6 +7,7 @@ import Html exposing (time)
 import Svg.Attributes exposing (direction)
 import AnimState exposing(..)
 import Collision exposing (..)
+import Text exposing (..)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -52,9 +53,7 @@ update msg model =
                 (model,Cmd.none)
 
         Tick time -> 
-            case model.state of
-                Playing ->
-                    ( model |> animate time, Cmd.none )
+            ( model |> animate time, Cmd.none )
 
         AnimAttack on->
             ( {model |
@@ -70,9 +69,12 @@ animate time model =
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
-            |> touchdown time model.map.bricks 
+            |> touchdown time model.map.bricks
+            |> changeText model.state
+            |> cleartext
             |> changePos time
             |> changeFrame time
+            |> changeTextframe time
             |> attackedByCharacters model.map.characters
         characters = List.map
             (\character-> character
@@ -219,6 +221,9 @@ nextPos speed time pos=
 
 changeFrame time player =
     {player | frame = player.frame + 1}
+
+changeTextframe time player =
+    { player | textframe = player.textframe +1 }
 
 
 -- Todo: 

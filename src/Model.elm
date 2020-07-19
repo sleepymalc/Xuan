@@ -40,8 +40,8 @@ type alias Pos =
 type alias Speed = 
     Vector Float
 
-type State
-    = Playing
+type Stage
+    = One
 
 type alias Brick =
     { pos: Pos,
@@ -60,6 +60,7 @@ type alias Player =
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
     , frame: Int
+    , textframe: Int
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
@@ -83,7 +84,7 @@ type alias Character =
 type alias Model =
     { player: Player
     , map: Map
-    , state: State
+    , state: Stage
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
@@ -99,18 +100,19 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer
       ,map = initMap1
-      ,state = Playing
+      ,state = One
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
     },Task.perform GetViewport getViewport)
 
 initPlayer =
-    { text = "To test if we can present stories here, let's try a long long sentence."
+    { text = "I need to get outta here."
     , pos = Pos 2300 2400 3830 3930
     , collisionPos = standcollisionPos
     , anim = Stand
     , frame = 0
+    , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0

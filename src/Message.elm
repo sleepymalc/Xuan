@@ -2,6 +2,7 @@ module Message exposing (..)
 import Browser.Dom exposing (Viewport)
 
 
+
 type MoveDirection = Left | Right
 
 type Jump = L | Up | R
