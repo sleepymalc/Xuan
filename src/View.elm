@@ -107,8 +107,6 @@ getAnimUrl anim frame player=
         name = case anim of
             Stand -> 
                 "color/walk/walk_0000"
-            Run ->
-                "run/run_"
             Walk ->
                 "color/walk/walk_" ++ String.padLeft 4 '0' (String.fromInt (modBy 65 frame))
             Charge ->

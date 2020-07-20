@@ -25,7 +25,6 @@ animate time model =
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |>List.map (\character-> character
             |> attackPlayer model.player
-            |> attackedByCharacters model.map.characters
             |> changeAnim model.map.bricks time
             |> tour time
             |> changePos time
@@ -92,7 +91,6 @@ playerAttackRange player=
             else
                 80
     in
-        --if character.speed 
         {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 tour time character = 
@@ -154,7 +152,6 @@ attackRange character =
         pos = character.pos
         dx = character.speed.x * 2000
     in
-        --if character.speed 
         {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 changeChargeTime time player = 
@@ -168,6 +165,7 @@ changeChargeTime time player =
 
 changeAnim bricks time player=
     let
+        playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
         newplayer={player | chargetime=0}
     in
@@ -175,24 +173,27 @@ changeAnim bricks time player=
             player
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
-        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
+        else if player.anim == Jump && List.any (downImpact player.speed time posList) playerPos
             || (player.anim == Attack && player.frame >= 30)
             || (player.anim == Crouch && player.frame >= 60)
             || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
+        else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
+            { newplayer | anim = Jump}
         else newplayer
 
 changeSpeed time bricks player =
     let
+        playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dx = if List.any (rightImpact player.speed time posList) player.collisionPos 
-                || List.any (leftImpact player.speed time posList) player.collisionPos then
-                if player.anim == Walk then
+        dx = if List.any (rightImpact player.speed time posList) playerPos 
+                || List.any (leftImpact player.speed time posList) playerPos then
+                if player.anim == Walk || player.anim == Attacked then
                     -player.speed.x
                 else -1.8 * player.speed.x
             else
                 0
-        dy = if List.any (upImpact player.speed time posList) player.collisionPos then
+        dy = if List.any (upImpact player.speed time posList) playerPos then
                 -1.8* player.speed.y
             else 
                 0.03
@@ -203,8 +204,9 @@ changeSpeed time bricks player =
 
 touchdown time bricks player =
     let
+        playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dy = if List.any (downImpact player.speed time posList) player.collisionPos  then
+        dy = if List.any (downImpact player.speed time posList) playerPos  then
                     -player.speed.y
             else 0
         speed = Vector player.speed.x (player.speed.y + dy) 
