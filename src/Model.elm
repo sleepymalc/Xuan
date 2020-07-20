@@ -16,7 +16,6 @@ import MapSetting exposing (..)
 
 type AnimState =
     Stand 
-    | Run 
     | Walk
     | Crouch
     | Charge
@@ -107,7 +106,7 @@ initPlayer =
     { text = "I need to get outta here."
     , pos = Pos 2300 2400 3830 3930
     , collisionPos = standcollisionPos (Pos 2300 2400 3830 3930)
-    , anim = Stand
+    , anim = Crouch
     , frame = 0
     , textframe = 0
     , direction = Left
