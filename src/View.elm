@@ -25,8 +25,8 @@ view model =
                         ([ renderBackground 
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
-                        --++ debugCollision model.map.characters model.player
-                        --++ debugAttack model.map.characters model.player
+                        ++ debugCollision model.map.characters model.player
+                        ++ debugAttack model.map.characters model.player
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
                         )
@@ -86,7 +86,7 @@ renderCharacters player characters=
 
 renderCharacter player character =
     let
-        url = getAnimUrl character.anim character.frame character
+        url = getAnimUrl character.anim character.frame character "character_"
         attr = getDirectionAttr character.direction
         viewpos = character.pos |> offset player |> resizePlayer|> clearOutsideImage
         --character.pos
@@ -100,39 +100,58 @@ clearOutsideImage viewpos=
         Pos 0 0 0 0
     else
         viewpos
-getAnimUrl anim frame player= 
+
+connectName namePrefix anim id=
+    namePrefix ++ anim ++ "/" ++ namePrefix ++ anim ++"_"
+    ++ String.padLeft 4 '0' (String.fromInt id)
+
+getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "img/character/"
+        prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
-                "color/walk/walk_0000"
-            Run ->
-                "run/run_"
+                    connectName namePrefix "walk" 0
             Walk ->
-                "color/walk/walk_" ++ String.padLeft 4 '0' (String.fromInt (modBy 65 frame))
+                let
+                    id = if namePrefix == "" then
+                            modBy 65 frame
+                        else 
+                            modBy 60 frame
+
+                in
+                    connectName namePrefix "walk" id
             Charge ->
-                "color/charge/charge_" ++ String.padLeft 4 '0' (String.fromInt
-                    (if frame < 50 then 1 
-                        else if frame < 120 then 0 else 2)) 
+                let
+                    id = if frame < 50 then 
+                                1 
+                            else if frame < 120 then 
+                                0 
+                            else 
+                                2
+                in
+                    connectName namePrefix "charge" id
                 -- might use chargetime to decide       
             Jump -> 
-                "color/jump/jump_0000"
-
+                    connectName namePrefix "jump" 0
             Attack ->
-                "color/attack/attack_" ++ (String.padLeft 4 '0' (String.fromInt (modBy 60 frame)))
+                let
+                    id = modBy 60 frame
+                in
+                    connectName namePrefix "attack" id
 
             Crouch ->
-                "color/charge/charge_0002"
-
+                    connectName namePrefix "charge" 2
             Attacked ->
                 if ( player.speed.x < 0 && player.direction == Left)
                 || ( player.speed.x > 0 && player.direction == Right) then
-                    "color/attacked/attackedBack_0000"
+                    namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
                 else
-                    "color/attacked/attackedFront_0000"
+                    namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
     in
         prefix ++ name ++ surfix
+
+
 
 getDirectionAttr direction =
     case direction of
@@ -148,7 +167,7 @@ getPlayerViewPos player =
 
 renderPlayer player= 
     let
-        url = getAnimUrl player.anim player.frame player
+        url = getAnimUrl player.anim player.frame player ""
         attr = getDirectionAttr player.direction
         pos = getPlayerViewPos player
     in
