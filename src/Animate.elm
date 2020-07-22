@@ -6,6 +6,7 @@ import Collision exposing (..)
 import Text exposing (..)
 import Message exposing (..)
 import MapSetting exposing (..)
+import Model exposing (Stage(..))
 
 
 animate time model =
@@ -29,50 +30,29 @@ animate time model =
             |> tour time
             |> changePos time
             |> changeFrame time)
-
         map = model.map
         newMap = {map |characters = characters}
+        newmodel = 
+            if changeMap model then 
+                case model.state of
+                    One -> 
+                        { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
+                    DiscoverI ->
+                        { model | map = initMap2, state = Two, player = initPlayer2}
+                    Two ->
+                        { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
+                    DiscoverII ->
+                        { model | map = initMap3, state = Three, player = initPlayer3}
+                    Three ->
+                        { model | map = initMap1, state = One, player = initPlayer1}
+            else
+                { model | map=newMap, player=player}
     in
-        { model| player = player, map = newMap}
+        newmodel
 
 changeMap model =
-    case model.state of
-        One ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                { model | map = initMap4, state = Discover }
-            else
-                model
-
-        Two ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 { model | map = initMap5, state = Discovery }
-            else
-                 model
-
-        Three ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 { model | map = initMap5, state = Discovery }
-            else
-                 model
-
-        Discover ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 --{ model | map = initMap2, state = Two } 有报错
-                 { model | state = Two }
-            else
-                 model
-
-        Discovery ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 --{ model | map = initMap3, state = Three } 有报错
-                 { model | state = Three }
-            else
-                 model
+    model.player.pos.x2 >= model.map.exit.x1 && model.player.pos.x1 <= model.map.exit.x2
+ && model.player.pos.y1 <= model.map.exit.y2 && model.player.pos.y2 >= model.map.exit.y1
 
 attackedByPlayer player character =
     let
