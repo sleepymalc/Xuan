@@ -16,7 +16,7 @@ animate time model =
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
-            |> touchdown time model.map.bricks
+            |> touchDown time model.map.bricks
             |> changeTextframe time
             |> changeText model.state
             |> cleartext
@@ -30,27 +30,35 @@ animate time model =
             |> tour time
             |> changePos time
             |> changeFrame time)
-        map = model.map
-        newMap = {map |characters = characters}
-        newmodel = 
-            if changeMap model then 
-                case model.state of
-                    One -> 
-                        { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
-                    DiscoverI ->
-                        { model | map = initMap2, state = Two, player = initPlayer2}
-                    Two ->
-                        { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
-                    DiscoverII ->
-                        { model | map = initMap3, state = Three, player = initPlayer3}
-                    Three ->
-                        { model | map = initMap1, state = One, player = initPlayer1}
-            else
-                { model | map=newMap, player=player}
-    in
-        newmodel
 
-changeMap model =
+        map = model.map
+            |> changeCharacters characters
+        
+    in
+        { model | map = map, player = player } 
+            |> changeState
+
+changeState model =
+    if arriveExit model then 
+        case model.state of
+            One -> 
+                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
+            DiscoverI ->
+                { model | map = initMap2, state = Two, player = initPlayer2}
+            Two ->
+                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
+            DiscoverII ->
+                { model | map = initMap3, state = Three, player = initPlayer3}
+            Three ->
+                { model | map = initMap1, state = One, player = initPlayer1}
+    else
+        model
+
+changeCharacters characters map =
+    {map |characters = characters}
+
+
+arriveExit model =
     model.player.pos.x2 >= model.map.exit.x1 && model.player.pos.x1 <= model.map.exit.x2
  && model.player.pos.y1 <= model.map.exit.y2 && model.player.pos.y2 >= model.map.exit.y1
 
@@ -153,8 +161,7 @@ changeAnim bricks time player=
             player
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
-        else if player.anim == Jump && List.any (downImpact player.speed time posList) playerPos
-            || (player.anim == Attack && player.frame >= 30)
+        else if (player.anim == Attack && player.frame >= 30)
             || (player.anim == Crouch && player.frame >= 60)
             || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
@@ -182,16 +189,31 @@ changeSpeed time bricks player =
     in
         {player | speed = speed}
 
-touchdown time bricks player =
+touchDown time bricks player =
     let
-        playerPos = List.map (nextPos player.speed time) player.collisionPos 
-        posList = List.map .pos bricks
-        dy = if List.any (downImpact player.speed time posList) playerPos  then
-                    -player.speed.y
-            else 0
-        speed = Vector player.speed.x (player.speed.y + dy) 
+        brickSpeed = Vector -player.speed.x -player.speed.y
+        posList = bricks
+                    |> List.map .pos 
+                    |> List.map (nextPos brickSpeed time)
     in
-        {player | speed = speed}
+        List.foldl (touchDownBrick brickSpeed time) player posList
+
+touchDownBrick brickSpeed time brickPos player =    
+    if upImpact brickSpeed time player.collisionPos brickPos then
+        let 
+            y2 = brickPos.y1
+            y1 = y2 - player.pos.y2 + player.pos.y1
+            speed = Vector player.speed.x 0
+            pos = Pos player.pos.x1 player.pos.x2 y1 y2
+        in
+            if player.anim == Jump then
+                { player | pos =pos } |> stand
+            else
+                {player | speed = speed, pos =pos }
+    else
+        player
+
+        
 
 changePos time player =
     let
