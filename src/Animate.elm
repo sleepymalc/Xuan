@@ -33,9 +33,12 @@ animate time model =
 
         map = model.map
             |> changeCharacters characters
-        
+
+        story = model.story
+            |> changeStoryframe time
+            |> changeStory model.state
     in
-        { model | map = map, player = player } 
+        { model | map = map, player = player, story = story }
             |> changeState
             |> storyEnd
 
@@ -250,4 +253,7 @@ changeFrame time player =
     {player | frame = player.frame + 1}
 
 changeTextframe time player =
-    { player | textframe = player.textframe +1 }
+    { player | textframe = player.textframe + 1 }
+
+changeStoryframe time story =
+    { story | storyframe = story.storyframe + 1 }
