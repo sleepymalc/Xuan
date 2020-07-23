@@ -118,7 +118,7 @@ initPlayer1 =
 
 
 initPlayerDiscoverI =
-    { text = "I need to get outta here."
+    { text = "What's going on?"
     , pos = MapSetting.playerPos4
     , collisionPos = standcollisionPos MapSetting.playerPos4
     , anim = Crouch
@@ -132,7 +132,7 @@ initPlayerDiscoverI =
     }
 
 initPlayer2 =
-    { text = "I need to get outta here."
+    { text = "I am Song Yuanhuai."
     , pos = MapSetting.playerPos2
     , collisionPos = standcollisionPos MapSetting.playerPos2
     , anim = Crouch
@@ -146,7 +146,7 @@ initPlayer2 =
     }
 
 initPlayerDiscoverII =
-    { text = "I need to get outta here."
+    { text = "Life is a series of choices, and you don't know about the consequences."
     , pos = MapSetting.playerPos5
     , collisionPos = standcollisionPos MapSetting.playerPos5
     , anim = Crouch
@@ -160,7 +160,7 @@ initPlayerDiscoverII =
     }
 
 initPlayer3 =
-    { text = "I need to get outta here."
+    { text = "I am back... FOR REVENGE!"
     , pos = MapSetting.playerPos3
     , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch

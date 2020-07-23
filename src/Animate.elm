@@ -24,7 +24,7 @@ animate time model =
             |> changeFrame time
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
-            |>List.map (\character-> character
+            |> List.map (\character-> character
             |> attackPlayer model.player
             |> changeAnim model.map.bricks time
             |> tour time
