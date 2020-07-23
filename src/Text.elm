@@ -41,10 +41,9 @@ changeText state player =
             else if player.pos.y2 <= 350 then
                 { player | text = "You are doomed…", textframe = 0 }
             else
-                { player | text = player.text }
-
-        --_ ->
-          --  { player | text = player.text }
+                { player | text = player.text }  
+        _ ->
+            { player | text = player.text }
 
 
 cleartext player =

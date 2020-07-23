@@ -17,11 +17,16 @@ viewAttrs =
     { size = Vector 1600 800
     }
 
+textStoryOne = "story one"
+
 view : Model -> Html Msg
 view model =
     let
         renderSvg =[ svg
                         (gameUIAttribute model.size)
+                        (if model.state == StoryOne then
+                            [renderTyper viewAttrs.size.x (Pos 0 0 0 0) 1600 3 textStoryOne model.frame]
+                        else
                         ([ renderBackground 
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
@@ -29,7 +34,7 @@ view model =
                         ++ debugAttack model.map.characters model.player
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
-                        )
+                        ))
                     ]
         renderHtml = []
     in        
@@ -304,6 +309,11 @@ renderT size pos w lines text =
                       [ Svg.text text ]
                   ]
 
+renderTyper size pos w lines text frame=
+    text
+        |> String.left (floor ((toFloat frame)/10))
+        |> renderT size pos w lines
+    
 
 renderPlayerText player=
     let

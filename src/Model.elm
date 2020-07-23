@@ -38,6 +38,7 @@ type Stage
     | Three
     | DiscoverI
     | DiscoverII
+    | StoryOne
 
 type alias Brick =
     { pos: Pos,
@@ -84,6 +85,7 @@ type alias Model =
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
+    , frame: Int
     }
 
 type alias CustomAttribute ={ }
@@ -96,10 +98,11 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = One
+      ,state = StoryOne
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
+      ,frame = 0
     },Task.perform GetViewport getViewport)
 
 initPlayer1 =
