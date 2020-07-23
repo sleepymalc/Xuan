@@ -16,7 +16,6 @@ import MapSetting exposing (..)
 
 type AnimState =
     Stand 
-    | Run 
     | Walk
     | Crouch
     | Charge
@@ -37,8 +36,8 @@ type Stage
     = One
     | Two
     | Three
-    | Discover
-    | Discovery
+    | DiscoverI
+    | DiscoverII
 
 type alias Brick =
     { pos: Pos,
@@ -95,7 +94,7 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayer
+    ({ player = initPlayer1
       ,map = initMap1
       ,state = One
       ,size = Vector 0 0
@@ -103,11 +102,11 @@ init _=
       ,attrs = {}
     },Task.perform GetViewport getViewport)
 
-initPlayer =
+initPlayer1 =
     { text = "I need to get outta here."
-    , pos = Pos 2300 2400 3830 3930
-    , collisionPos = standcollisionPos (Pos 2300 2400 3830 3930)
-    , anim = Stand
+    , pos = MapSetting.playerPos1
+    , collisionPos = standcollisionPos MapSetting.playerPos1
+    , anim = Crouch
     , frame = 0
     , textframe = 0
     , direction = Left
@@ -118,7 +117,64 @@ initPlayer =
     }
 
 
-standcollisionPos pos=   
+initPlayerDiscoverI =
+    { text = "What's going on?"
+    , pos = MapSetting.playerPos4
+    , collisionPos = standcollisionPos MapSetting.playerPos4
+    , anim = Crouch
+    , frame = 0
+    , textframe = 0
+    , direction = Left
+    , jumpdir = Up
+    , speed = Vector 0 0
+    , hp = 1
+    , chargetime = 0
+    }
+
+initPlayer2 =
+    { text = "I am Song Yuanhuai."
+    , pos = MapSetting.playerPos2
+    , collisionPos = standcollisionPos MapSetting.playerPos2
+    , anim = Crouch
+    , frame = 0
+    , textframe = 0
+    , direction = Left
+    , jumpdir = Up
+    , speed = Vector 0 0
+    , hp = 1
+    , chargetime = 0
+    }
+
+initPlayerDiscoverII =
+    { text = "Life is a series of choices, and you don't know about the consequences."
+    , pos = MapSetting.playerPos5
+    , collisionPos = standcollisionPos MapSetting.playerPos5
+    , anim = Crouch
+    , frame = 0
+    , textframe = 0
+    , direction = Left
+    , jumpdir = Up
+    , speed = Vector 0 0
+    , hp = 1
+    , chargetime = 0
+    }
+
+initPlayer3 =
+    { text = "I am back... FOR REVENGE!"
+    , pos = MapSetting.playerPos3
+    , collisionPos = standcollisionPos MapSetting.playerPos3
+    , anim = Crouch
+    , frame = 0
+    , textframe = 0
+    , direction = Left
+    , jumpdir = Up
+    , speed = Vector 0 0
+    , hp = 1
+    , chargetime = 0
+    }
+
+
+standcollisionPos pos=
     [ Pos (pos.x1+35) (pos.x2-35) (pos.y1+4) (pos.y1+35)
     , Pos (pos.x1+15) (pos.x2-15) (pos.y1+35) (pos.y2) ]
 
@@ -141,56 +197,32 @@ initBricks posList = posList
     |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
 
 initMap1 =
-    let
-        bricks = initBricks brickPosList1 
-        characters = initCharacters characterPosList1 
-        exit = exitPos1
-    in
-        { bricks = bricks
-        , characters = characters
-        , exit = exit
+        { bricks = initBricks brickPosList1 
+        , characters = initCharacters characterPosList1 
+        , exit = exitPos1
+        --exit = Pos 3000 10000 2000 3900
         }
 initMap2 =
-    let
-        bricks = initBricks brickPosList2
-        characters = initCharacters characterPosList2
-        exit = Pos 0 100 2000 2200
-    in
-        { bricks = bricks
-        ,characters = characters
-        ,exit = exit
+        { bricks = initBricks brickPosList2
+        ,characters = initCharacters characterPosList2
+        ,exit = exitPos2
         }
 
 initMap3 =
-    let
-        bricks = initBricks brickPosList3
-        characters = initCharacters characterPosList3
-        exit = Pos 0 0 0 0
-    in
-        { bricks = bricks
-        ,characters = characters
-        ,exit = exit
+        { bricks = initBricks brickPosList3
+        ,characters = initCharacters characterPosList3
+        ,exit = exitPos3
         }
-initMap4 =
-    let
-        bricks = initBricks brickPosList4
-        characters = initCharacters characterPosList4
-        exit = Pos 0 0 0 0
-    in
-        { bricks = bricks
-        , exit = exit
-        , characters = characters
+initMapDiscoverI =
+        { bricks = initBricks brickPosList4
+        , characters = initCharacters characterPosList4
+        , exit = exitPos4
         }
 
-initMap5 =
-    let
-        bricks = initBricks brickPosList5
-        characters = initCharacters characterPosList5
-        exit = Pos 0 0 0 0
-    in
-        { bricks = bricks
-        , exit = exit
-        , characters = characters
+initMapDiscoverII =
+        { bricks = initBricks brickPosList5
+        , characters = initCharacters characterPosList5
+        , exit = exitPos5
         }
     
 

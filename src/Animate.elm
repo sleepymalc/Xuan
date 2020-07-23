@@ -6,6 +6,7 @@ import Collision exposing (..)
 import Text exposing (..)
 import Message exposing (..)
 import MapSetting exposing (..)
+import Model exposing (Stage(..))
 
 
 animate time model =
@@ -15,7 +16,7 @@ animate time model =
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
             |> changeSpeed time model.map.bricks
-            |> touchdown time model.map.bricks
+            |> touchDown time model.map.bricks
             |> changeTextframe time
             |> changeText model.state
             |> cleartext
@@ -23,57 +24,43 @@ animate time model =
             |> changeFrame time
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
-            |>List.map (\character-> character
+            |> List.map (\character-> character
             |> attackPlayer model.player
-            |> attackedByCharacters model.map.characters
             |> changeAnim model.map.bricks time
             |> tour time
             |> changePos time
             |> changeFrame time)
 
         map = model.map
-        newMap = {map |characters = characters}
+            |> changeCharacters characters
+        
     in
-        { model| player = player, map = newMap}
+        { model | map = map, player = player } 
+            |> changeState
 
-changeMap model =
-    case model.state of
-        One ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                { model | map = initMap4, state = Discover }
-            else
-                model
+changeState model =
+    if arriveExit model then 
+        case model.state of
+            One -> 
+                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
+            DiscoverI ->
+                { model | map = initMap3, state = Two, player = initPlayer3}
+            Two ->
+                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
+            DiscoverII ->
+                { model | map = initMap2, state = Three, player = initPlayer2}
+            Three ->
+                { model | map = initMap1, state = One, player = initPlayer1}
+    else
+        model
 
-        Two ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 { model | map = initMap5, state = Discovery }
-            else
-                 model
+changeCharacters characters map =
+    {map |characters = characters}
 
-        Three ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 { model | map = initMap5, state = Discovery }
-            else
-                 model
 
-        Discover ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 --{ model | map = initMap2, state = Two } 有报错
-                 { model | state = Two }
-            else
-                 model
-
-        Discovery ->
-            if model.player.pos.x1 >= model.map.exit.x1
-            && model.player.pos.y2 >= (model.map.exit.y1+50) then
-                 --{ model | map = initMap3, state = Three } 有报错
-                 { model | state = Three }
-            else
-                 model
+arriveExit model =
+    model.player.pos.x2 >= model.map.exit.x1 && model.player.pos.x1 <= model.map.exit.x2
+ && model.player.pos.y1 <= model.map.exit.y2 && model.player.pos.y2 >= model.map.exit.y1
 
 attackedByPlayer player character =
     let
@@ -92,7 +79,6 @@ playerAttackRange player=
             else
                 80
     in
-        --if character.speed 
         {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 tour time character = 
@@ -154,7 +140,6 @@ attackRange character =
         pos = character.pos
         dx = character.speed.x * 2000
     in
-        --if character.speed 
         {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx }
 
 changeChargeTime time player = 
@@ -168,6 +153,7 @@ changeChargeTime time player =
 
 changeAnim bricks time player=
     let
+        playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
         newplayer={player | chargetime=0}
     in
@@ -175,24 +161,26 @@ changeAnim bricks time player=
             player
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
-        else if player.anim == Jump && List.any (downImpact player.speed time posList) player.collisionPos 
-            || (player.anim == Attack && player.frame >= 30)
+        else if (player.anim == Attack && player.frame >= 30)
             || (player.anim == Crouch && player.frame >= 60)
             || (player.anim == Attacked && player.frame >= 60) then
             player |> stand
+        else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
+            { newplayer | anim = Jump}
         else newplayer
 
 changeSpeed time bricks player =
     let
+        playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dx = if List.any (rightImpact player.speed time posList) player.collisionPos 
-                || List.any (leftImpact player.speed time posList) player.collisionPos then
-                if player.anim == Walk then
+        dx = if List.any (rightImpact player.speed time posList) playerPos 
+                || List.any (leftImpact player.speed time posList) playerPos then
+                if player.anim == Walk || player.anim == Attacked then
                     -player.speed.x
                 else -1.8 * player.speed.x
             else
                 0
-        dy = if List.any (upImpact player.speed time posList) player.collisionPos then
+        dy = if List.any (upImpact player.speed time posList) playerPos then
                 -1.8* player.speed.y
             else 
                 0.03
@@ -201,15 +189,31 @@ changeSpeed time bricks player =
     in
         {player | speed = speed}
 
-touchdown time bricks player =
+touchDown time bricks player =
     let
-        posList = List.map .pos bricks
-        dy = if List.any (downImpact player.speed time posList) player.collisionPos  then
-                    -player.speed.y
-            else 0
-        speed = Vector player.speed.x (player.speed.y + dy) 
+        brickSpeed = Vector -player.speed.x -player.speed.y
+        posList = bricks
+                    |> List.map .pos 
+                    |> List.map (nextPos brickSpeed time)
     in
-        {player | speed = speed}
+        List.foldl (touchDownBrick brickSpeed time) player posList
+
+touchDownBrick brickSpeed time brickPos player =    
+    if upImpact brickSpeed time player.collisionPos brickPos then
+        let 
+            y2 = brickPos.y1
+            y1 = y2 - player.pos.y2 + player.pos.y1
+            speed = Vector player.speed.x 0
+            pos = Pos player.pos.x1 player.pos.x2 y1 y2
+        in
+            if player.anim == Jump then
+                { player | pos =pos } |> stand
+            else
+                {player | speed = speed, pos =pos }
+    else
+        player
+
+        
 
 changePos time player =
     let

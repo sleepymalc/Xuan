@@ -35,7 +35,7 @@ update msg model =
                 ({model|
                     player=model.player |> jumpdirection moveDirection
                 },Cmd.none)
-            else if not on && model.player.anim /= Jump then
+            else if not on && model.player.anim /= Jump && model.player.speed.y == 0 then
                 ({model|
                     player=model.player |> stand
                 },Cmd.none)
