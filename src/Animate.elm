@@ -45,11 +45,11 @@ changeState model =
             One -> 
                 { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
             DiscoverI ->
-                { model | map = initMap2, state = Two, player = initPlayer2}
+                { model | map = initMap3, state = Two, player = initPlayer3}
             Two ->
                 { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
             DiscoverII ->
-                { model | map = initMap3, state = Three, player = initPlayer3}
+                { model | map = initMap2, state = Three, player = initPlayer2}
             Three ->
                 { model | map = initMap1, state = One, player = initPlayer1}
             _ ->
