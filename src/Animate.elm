@@ -24,7 +24,7 @@ animate time model =
             |> changeFrame time
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
-            |>List.map (\character-> character
+            |> List.map (\character-> character
             |> attackPlayer model.player
             |> changeAnim model.map.bricks time
             |> tour time
@@ -37,6 +37,7 @@ animate time model =
     in
         { model | map = map, player = player } 
             |> changeState
+            |> storyEnd
 
 changeState model =
     if arriveExit model then 
@@ -44,15 +45,28 @@ changeState model =
             One -> 
                 { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
             DiscoverI ->
-                { model | map = initMap2, state = Two, player = initPlayer2}
+                { model | map = initMap3, state = Two, player = initPlayer3}
             Two ->
                 { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
             DiscoverII ->
-                { model | map = initMap3, state = Three, player = initPlayer3}
+                { model | map = initMap2, state = Three, player = initPlayer2}
             Three ->
                 { model | map = initMap1, state = One, player = initPlayer1}
+            _ ->
+                model
     else
         model
+    
+storyOneFrame = 1000
+
+storyEnd model = 
+    case model.state of
+        StoryOne ->
+            if model.frame == storyOneFrame then
+                { model | map = initMap1, state = One, player = initPlayer1, frame = 0}
+            else { model | frame = model.frame + 1 }
+        _ -> model
+
 
 changeCharacters characters map =
     {map |characters = characters}
