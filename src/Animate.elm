@@ -60,7 +60,7 @@ changeState model =
     else
         model
     
-storyOneFrame = 1000
+storyOneFrame = 200
 
 storyEnd model = 
     case model.state of

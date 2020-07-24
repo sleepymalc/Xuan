@@ -24,3 +24,14 @@ complete player animations operation
 
 basic level story narrative
 
+2020.7.24
+
+complete the alpha version [0.3.0] [0.4.0]
+
+Fix map bugs
+
+Fix animation bugs
+
+Fix load bugs
+
+Polish story line
