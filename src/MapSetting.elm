@@ -37,7 +37,7 @@ brickPosList1 =
 characterPosList1 =
     [ Pos 2900 3000 3205 3305
     , Pos 1800 1900 2935 3035
-    , Pos 1750 1850 2250 2350
+    , Pos 1800 1900 2250 2350
     , Pos 2000 2100 1075 1175
     , Pos 2700 2800 1075 1175
     , Pos 2900 3000 3700 3800  --debug
@@ -45,7 +45,7 @@ characterPosList1 =
 
 playerPos1 = Pos 300 400 3830 3930
 
-exitPos1 = Pos 700 800 3830 3930
+exitPos1 = Pos 3200 10000 2000 3900
 
 brickPosList2 =
     [ Pos 0 100 0 2000
@@ -176,7 +176,7 @@ characterPosList4 = []
 
 playerPos4 = Pos 200 300 3830 3930
 
-exitPos4 = Pos 400 500 3830 3930
+exitPos4 = Pos 1600 10000 2400 3000
     
 
 brickPosList5 = 

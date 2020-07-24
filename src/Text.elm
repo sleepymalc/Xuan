@@ -68,22 +68,22 @@ changeStory state story =
                 , storyframe = 0
                 }
 
-            StoryTwo ->
+            StoryThree ->
                 { story | text = ""
                 , storyframe = 0
                 }
 
-            StoryTwo ->
+            StoryFour ->
                 { story | text = ""
                 , storyframe = 0
                 }
 
-            StoryTwo ->
+            StoryFive ->
                 { story | text = ""
                 , storyframe = 0
                 }
 
-            StoryTwo ->
+            StorySix ->
                 { story | text = ""
                 , storyframe = 0
                 }
