@@ -303,7 +303,7 @@ renderT size pos w lines text =
     foreignObject [ x (String.fromFloat (pos.x1+70))
                   , y (String.fromFloat (pos.y1-(toFloat(lines)*20)))
                   , width (String.fromFloat w)
-                  , height (String.fromFloat (toFloat(lines)*20))
+                  , height (String.fromFloat (toFloat(lines)*22))
                   ]
                   [ p [ Html.Attributes.style "font-size" ((String.fromFloat size)++"px") ]
                       [ Svg.text text ]
@@ -316,7 +316,7 @@ renderTyper size pos w lines text frame =
 
 renderPlayerText player =
     let
-        size = 20
+        size = 18
         pos = getPlayerViewPos player
         w = 180
         lines = (floor(toFloat(String.length(player.text))/20)+2)
