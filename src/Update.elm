@@ -18,7 +18,42 @@ update msg model =
               }
             , Cmd.none
             )
-            
+
+        ImageLoaded url ->
+            let
+                loadPack = List.filter (\loadingurl-> loadingurl/=url) model.loadPack
+            in
+                if List.isEmpty loadPack then
+                    ( { model
+                            | state = StoryOne
+                    }
+                    , Cmd.none
+                    )
+                else 
+                    ( { model
+                            | loadPack = loadPack
+                    }
+                    , Cmd.none
+                    )
+        
+        ImageError url ->
+            let
+                loadPack = List.filter (\loadingurl-> loadingurl/=url) model.loadPack
+            in
+                if List.isEmpty loadPack then
+                    ( { model
+                            | state = StoryOne
+                    }
+                    , Cmd.none
+                    )
+                else 
+                    ( { model
+                            | loadPack = loadPack
+                    }
+                    , Cmd.none
+                    )
+        
+
         Resize width height -> 
             ( { model 
                 | size = Vector (toFloat width) (toFloat height )

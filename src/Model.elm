@@ -12,6 +12,7 @@ import Json.Decode exposing (Value)
 import Svg.Attributes exposing (direction)
 import Message exposing (..)
 import MapSetting exposing (..)
+import Load exposing (..)
 
 type alias Story =
     { text: String
@@ -48,6 +49,7 @@ type Stage
     | StoryFour
     | StoryFive
     | StorySix
+    | Loading
 
 type alias Brick =
     { pos: Pos,
@@ -96,6 +98,7 @@ type alias Model =
     , attrs: CustomAttribute
     , frame: Int
     , story: Story
+    , loadPack: List String
     }
 
 type alias CustomAttribute ={ }
@@ -108,13 +111,15 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = StoryOne
+      ,state = Loading
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
       ,frame = 0
       ,story = initstory
-    },Task.perform GetViewport getViewport)
+      ,loadPack = initLoadPack
+    },Cmd.batch 
+        [ Task.perform GetViewport getViewport ])
 
 initstory =
     { text = ""
