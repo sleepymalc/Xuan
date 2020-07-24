@@ -13,6 +13,10 @@ import Svg.Attributes exposing (direction)
 import Message exposing (..)
 import MapSetting exposing (..)
 
+type alias Story =
+    { text: String
+    , storyframe: Int
+    }
 
 type AnimState =
     Stand 
@@ -38,6 +42,12 @@ type Stage
     | Three
     | DiscoverI
     | DiscoverII
+    | StoryOne
+    | StoryTwo
+    | StoryThree
+    | StoryFour
+    | StoryFive
+    | StorySix
 
 type alias Brick =
     { pos: Pos,
@@ -84,6 +94,8 @@ type alias Model =
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
+    , frame: Int
+    , story: Story
     }
 
 type alias CustomAttribute ={ }
@@ -96,11 +108,18 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = One
+      ,state = StoryOne
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
+      ,frame = 0
+      ,story = initstory
     },Task.perform GetViewport getViewport)
+
+initstory =
+    { text = ""
+    , storyframe = 0
+    }
 
 initPlayer1 =
     { text = "I need to get outta here."

@@ -17,11 +17,16 @@ viewAttrs =
     { size = Vector 1600 800
     }
 
+textStoryOne = "story one"
+
 view : Model -> Html Msg
 view model =
     let
         renderSvg =[ svg
                         (gameUIAttribute model.size)
+                        (if model.state == StoryOne then
+                            [renderStory model.story]
+                        else
                         ([ renderBackground 
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
@@ -29,7 +34,7 @@ view model =
                         --++ debugAttack model.map.characters model.player
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
-                        )
+                        ))
                     ]
         renderHtml = []
     in        
@@ -285,14 +290,14 @@ renderImage url pos attr=
         ++ attr)
     []
 
---renderText size pos text lines=
---    Svg.text_
---        [ fontSize (String.fromFloat size)
---        ]
---        [ tspan [x (String.fromFloat (pos.x1+70)),
---            y (String.fromFloat (pos.y1-(toFloat(lines)*20)))]
---            [Svg.text text]
---        ]
+renderText size xx yy text =
+    Svg.text_
+        [ fontSize (String.fromFloat size)
+        ]
+        [ tspan [x (String.fromFloat xx),
+            y (String.fromFloat yy)]
+            [Svg.text text]
+        ]
 
 renderT size pos w lines text =
     foreignObject [ x (String.fromFloat (pos.x1+70))
@@ -304,8 +309,12 @@ renderT size pos w lines text =
                       [ Svg.text text ]
                   ]
 
+renderTyper size pos w lines text frame =
+    text
+        |> String.left (floor ((toFloat frame)/10))
+        |> renderT size pos w lines
 
-renderPlayerText player=
+renderPlayerText player =
     let
         size = 20
         pos = getPlayerViewPos player
@@ -314,3 +323,22 @@ renderPlayerText player=
         text = player.text
     in
         renderT size pos w lines text
+
+renderS size w lines text =
+    foreignObject [ x "200"
+                  , y "80"
+                  , width (String.fromFloat w)
+                  , height (String.fromFloat (toFloat(lines)*20))
+                  ]
+                  [ p [ fontSize (String.fromFloat size) ]
+                      [ Svg.text text ]
+                  ]
+
+renderStory story =
+    let
+        size = 200
+        w = 1000
+        lines = (floor(toFloat(String.length(story.text))/20)+2)
+        text = story.text
+    in
+        renderS size w lines text

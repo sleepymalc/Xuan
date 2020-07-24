@@ -41,10 +41,9 @@ changeText state player =
             else if player.pos.y2 <= 350 then
                 { player | text = "You are doomed…", textframe = 0 }
             else
-                { player | text = player.text }
-
-        --_ ->
-          --  { player | text = player.text }
+                { player | text = player.text }  
+        _ ->
+            { player | text = player.text }
 
 
 cleartext player =
@@ -52,3 +51,24 @@ cleartext player =
         { player | text = "", textframe = 0}
     else
         { player | text = player.text }
+
+changeStory state story =
+    case state of
+            StoryOne ->
+                { story | text =  "Old man：\"Poor kid, to improve the status of your family, your father and I decide to send you to attend the experiments in our sect. For the rest of your life, you will need to practice all kinds"
+                                 ++"of internal skills and receive all kinds of stimulations. Don’t feel unfair. This is the brutality of the sects. Without sacrifice, there will be no strong sects.\""
+                                 ++"A mysterious voice: \"Bullshit! How can anyone believe this old bastard? Sending your apprentice to be a testimony and feel sorry for him? You are one of a kind!\""
+                                 ++"Song：\"Who are you? What’s that voice in my head? What’s going on with me?\""
+                                 ++"A mysterious voice:\"You’re wondering who I am? My name is XUAN, and I can set you free.\""
+                , storyframe = 0
+                }
+
+            _ ->
+                { story | text = story.text }
+
+
+
+
+
+
+

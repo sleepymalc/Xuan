@@ -33,10 +33,14 @@ animate time model =
 
         map = model.map
             |> changeCharacters characters
-        
+
+        story = model.story
+            |> changeStoryframe time
+            |> changeStory model.state
     in
-        { model | map = map, player = player } 
+        { model | map = map, player = player, story = story }
             |> changeState
+            |> storyEnd
 
 changeState model =
     if arriveExit model then 
@@ -51,8 +55,21 @@ changeState model =
                 { model | map = initMap2, state = Three, player = initPlayer2}
             Three ->
                 { model | map = initMap1, state = One, player = initPlayer1}
+            _ ->
+                model
     else
         model
+    
+storyOneFrame = 1000
+
+storyEnd model = 
+    case model.state of
+        StoryOne ->
+            if model.frame == storyOneFrame then
+                { model | map = initMap1, state = One, player = initPlayer1, frame = 0}
+            else { model | frame = model.frame + 1 }
+        _ -> model
+
 
 changeCharacters characters map =
     {map |characters = characters}
@@ -236,4 +253,7 @@ changeFrame time player =
     {player | frame = player.frame + 1}
 
 changeTextframe time player =
-    { player | textframe = player.textframe +1 }
+    { player | textframe = player.textframe + 1 }
+
+changeStoryframe time story =
+    { story | storyframe = story.storyframe + 1 }
