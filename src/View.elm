@@ -305,7 +305,7 @@ renderT size pos w lines text =
                   , width (String.fromFloat w)
                   , height (String.fromFloat (toFloat(lines)*20))
                   ]
-                  [ p [ fontSize (String.fromFloat size) ]
+                  [ p [ Html.Attributes.style "font-size" ((String.fromFloat size)++"px") ]
                       [ Svg.text text ]
                   ]
 
@@ -330,13 +330,13 @@ renderS size w lines text =
                   , width (String.fromFloat w)
                   , height (String.fromFloat (toFloat(lines)*20))
                   ]
-                  [ p [ fontSize (String.fromFloat size) ]
+                  [ p [ Html.Attributes.style "font-size" ((String.fromFloat size)++"px") ]
                       [ Svg.text text ]
                   ]
 
 renderStory story =
     let
-        size = 200
+        size = 20
         w = 1000
         lines = (floor(toFloat(String.length(story.text))/20)+2)
         text = story.text
