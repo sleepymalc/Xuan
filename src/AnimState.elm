@@ -2,6 +2,7 @@ module AnimState exposing(..)
 import Model exposing (..)
 import Message exposing (..)
 import Model exposing (AnimState(..))
+--import Animate exposing (player)
 
 
 crouch player =
@@ -55,3 +56,12 @@ attack player =
     
 charge player =
     {player | anim = Charge}
+
+grovel player = 
+    { player | anim = Grovel, frame = 0, speed = Vector 0 0}
+
+rage player = 
+    { player | mood = Rage, frame = 0, speed = Vector 0 0}
+
+normal player = 
+    { player | mood = Normal, frame = 0, speed = Vector 0 0}

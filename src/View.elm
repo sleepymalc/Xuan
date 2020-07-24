@@ -116,7 +116,7 @@ connectName namePrefix anim id=
     namePrefix ++ anim ++ "/" ++ namePrefix ++ anim ++"_"
     ++ String.padLeft 4 '0' (String.fromInt id)
 
-
+--Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
         prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" ++ "img/character/color/"
@@ -154,12 +154,17 @@ getAnimUrl anim frame player namePrefix=
 
             Crouch ->
                     connectName namePrefix "charge" 2
+
+            Grovel ->
+                    connectName namePrefix "charge" 2
+
             Attacked ->
                 if ( player.speed.x < 0 && player.direction == Left)
                 || ( player.speed.x > 0 && player.direction == Right) then
                     namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
                 else
                     namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
+            
     in
         prefix ++ name ++ surfix
 

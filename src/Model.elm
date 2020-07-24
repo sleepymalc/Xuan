@@ -27,6 +27,11 @@ type AnimState =
     | Jump 
     | Attack
     | Attacked
+    | Grovel
+
+type Mood = 
+    Normal
+    | Rage
 
 
 type alias Vector a=
@@ -67,13 +72,15 @@ type alias Player =
     , pos: Pos --
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
+    , mood: Mood
     , frame: Int
     , textframe: Int
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
-    , hp: Int
+    , hp: Float
     , chargetime: Float
+    , ragetime: Float
     }
 
 type alias Character =
@@ -131,13 +138,15 @@ initPlayer1 =
     , pos = MapSetting.playerPos1
     , collisionPos = standcollisionPos MapSetting.playerPos1
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
     }
 
 
@@ -146,13 +155,15 @@ initPlayerDiscoverI =
     , pos = MapSetting.playerPos4
     , collisionPos = standcollisionPos MapSetting.playerPos4
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
     }
 
 initPlayer2 =
@@ -160,13 +171,15 @@ initPlayer2 =
     , pos = MapSetting.playerPos2
     , collisionPos = standcollisionPos MapSetting.playerPos2
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
     }
 
 initPlayerDiscoverII =
@@ -174,13 +187,15 @@ initPlayerDiscoverII =
     , pos = MapSetting.playerPos5
     , collisionPos = standcollisionPos MapSetting.playerPos5
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
     }
 
 initPlayer3 =
@@ -188,13 +203,15 @@ initPlayer3 =
     , pos = MapSetting.playerPos3
     , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
     }
 
 

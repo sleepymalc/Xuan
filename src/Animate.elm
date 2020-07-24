@@ -12,6 +12,8 @@ import Model exposing (Stage(..))
 animate time model =
     let
         player = model.player
+            |> rage 
+            |> changeRageTime time
             |> attackedByCharacters model.map.characters            
             |> changeChargeTime time
             |> changeAnim model.map.bricks time
@@ -146,8 +148,10 @@ attackedByCharacter character player =
         if character.anim == Attack then
            if character.direction == Left then
                 player |> attacked (Vector -0.2 0)
+                       |> loseBlood 0.08
             else
                 player |> attacked (Vector 0.2 0)
+                       |> loseBlood 0.08
         else
             player
 
@@ -175,7 +179,9 @@ changeAnim bricks time player=
         newplayer={player | chargetime=0}
     in
         if player.anim == Charge then
-            player
+            player        
+        else if player.anim == Grovel then
+            player |> grovel
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
         else if (player.anim == Attack && player.frame >= 30)
@@ -185,6 +191,31 @@ changeAnim bricks time player=
         else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
             { newplayer | anim = Jump}
         else newplayer
+
+loseBlood damage player = 
+    let 
+        hp = player.hp - damage
+    in
+    { player | hp = hp }
+
+rage player = 
+    if player.hp <= 0 then
+        { player | mood=Rage }
+    else
+        player
+
+changeRageTime time player = 
+    let
+        newragetime = player.ragetime + time
+        newplayer = normal player
+    in
+    if player.ragetime <= 25000 && player.mood== Rage then
+        { player | ragetime = newragetime }
+    else if player.ragetime >= 25000 then
+        { newplayer | ragetime = 0, hp = 10}
+    else 
+        player
+
 
 changeSpeed time bricks player =
     let
@@ -222,9 +253,13 @@ touchDownBrick brickSpeed time brickPos player =
             y1 = y2 - player.pos.y2 + player.pos.y1
             speed = Vector player.speed.x 0
             pos = Pos player.pos.x1 player.pos.x2 y1 y2
+            newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                { player | pos =pos } |> stand
+                if player.speed.y >= 2 then
+                    { newplayer | pos = pos } |> grovel
+                else 
+                    { player | pos = pos } |> stand
             else
                 {player | speed = speed, pos =pos }
     else
