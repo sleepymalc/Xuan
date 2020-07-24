@@ -63,6 +63,31 @@ changeStory state story =
                 , storyframe = 0
                 }
 
+            StoryTwo ->
+                { story | text = ""
+                , storyframe = 0
+                }
+
+            StoryTwo ->
+                { story | text = ""
+                , storyframe = 0
+                }
+
+            StoryTwo ->
+                { story | text = ""
+                , storyframe = 0
+                }
+
+            StoryTwo ->
+                { story | text = ""
+                , storyframe = 0
+                }
+
+            StoryTwo ->
+                { story | text = ""
+                , storyframe = 0
+                }
+
             _ ->
                 { story | text = story.text }
 
