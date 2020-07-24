@@ -11,7 +11,7 @@ import Message exposing (..)
 import Update exposing (..)
 import Animate exposing (..)
 import MapSetting exposing (..)
-
+import Load exposing (..)
 
 viewAttrs =
     { size = Vector 1600 800
@@ -26,6 +26,8 @@ view model =
                         (gameUIAttribute model.size)
                         (if model.state == StoryOne then
                             [renderStory model.story]
+                        else if model.state == Loading then
+                            [renderS 20 100 1 "Loading..."]
                         else
                         ([ renderBackground 
                         , renderPlayer model.player]
@@ -36,12 +38,16 @@ view model =
                         ++ [renderPlayerText model.player]
                         ))
                     ]
-        renderHtml = []
+        renderHtml = if model.state == Loading then
+                        List.map loadImg initLoadPack
+                    else []
+
+
     in        
         div
             []
             [ span[]renderSvg
-            , span[]renderHtml
+            , span[Html.Attributes.style "opacity" "0"]renderHtml
             ]
 
 offset player pos =
@@ -110,9 +116,10 @@ connectName namePrefix anim id=
     namePrefix ++ anim ++ "/" ++ namePrefix ++ anim ++"_"
     ++ String.padLeft 4 '0' (String.fromInt id)
 
+
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "img/character/color/"
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" ++ "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
@@ -314,6 +321,8 @@ renderTyper size pos w lines text frame =
         |> String.left (floor ((toFloat frame)/10))
         |> renderT size pos w lines
 
+
+
 renderPlayerText player =
     let
         size = 18
@@ -342,3 +351,4 @@ renderStory story =
         text = story.text
     in
         renderS size w lines text
+

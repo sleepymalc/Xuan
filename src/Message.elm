@@ -15,4 +15,6 @@ type Msg
     | Tick Float
     | Noop
     | GetViewport Viewport
+    | ImageError String
+    | ImageLoaded String
     
