@@ -108,7 +108,7 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = StoryOne
+      ,state = One
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
