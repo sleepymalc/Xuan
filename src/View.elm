@@ -22,7 +22,7 @@ textStoryOne = "story one"
 view : Model -> Html Msg
 view model =
     let
-        renderSvg =[ svg
+        renderSvg = svg
                         (gameUIAttribute model.size)
                         (if model.state == StoryOne then
                             [renderStory model.story]
@@ -37,7 +37,7 @@ view model =
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
                         ))
-                    ]
+                    
         renderHtml = if model.state == Loading then
                         List.map loadImg initLoadPack
                     else []
@@ -45,8 +45,8 @@ view model =
 
     in        
         div
-            []
-            [ span[]renderSvg
+            [ Html.Attributes.style "height" "0px"]
+            [ renderSvg
             , span[Html.Attributes.style "opacity" "0"]renderHtml
             ]
 
@@ -63,6 +63,21 @@ renderbricks posList player=
 renderbrick player pos=
     let
         viewpos = pos |> offset player
+                    |> cutBrickView
+                    |> clearOutsideImage
+        
+    in
+    rect
+        [ x (String.fromFloat viewpos.x1)
+        , y (String.fromFloat viewpos.y1)
+        , width (String.fromFloat (viewpos.x2-viewpos.x1))
+        , height (String.fromFloat (viewpos.y2-viewpos.y1))
+        , fill "#000000"
+        ]
+        []
+
+cutBrickView viewpos =
+    let
         x1 = if viewpos.x1<0 then
                     0
                 else
@@ -80,14 +95,9 @@ renderbrick player pos=
                 else
                     viewpos.y2
     in
-    rect
-        [ x (String.fromFloat x1)
-        , y (String.fromFloat y1)
-        , width (String.fromFloat (x2-x1))
-        , height (String.fromFloat (y2-y1))
-        , fill "#000000"
-        ]
-        []
+        Pos x1 x2 y1 y2
+
+
 
 renderBackground =
     renderImage "img/background.jpg" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
