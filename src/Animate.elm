@@ -249,19 +249,19 @@ touchDown time bricks player =
 touchDownBrick brickSpeed time brickPos player =    
     if upImpact brickSpeed time player.collisionPos brickPos then
         let 
-            y2 = brickPos.y1
-            y1 = y2 - player.pos.y2 + player.pos.y1
+            dy = brickPos.y1 - time * brickSpeed.y - player.pos.y2
             speed = Vector player.speed.x 0
-            pos = Pos player.pos.x1 player.pos.x2 y1 y2
+            pos = Pos player.pos.x1 player.pos.x2 (player.pos.y1 + dy) (player.pos.y2 + dy)
+            collisionPos = standcollisionPos pos
             newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
                 if player.speed.y >= 2 then
-                    { newplayer | pos = pos } |> grovel
+                    { newplayer | pos = pos , collisionPos = collisionPos} |> grovel
                 else 
-                    { player | pos = pos } |> stand
+                    { player | pos = pos, collisionPos = collisionPos} |> stand
             else
-                {player | speed = speed, pos =pos }
+                {player | speed = speed, pos =pos , collisionPos = collisionPos}
     else
         player
 
@@ -277,8 +277,7 @@ changePos time player =
 
 nextPos speed time pos=
     let
-        dx = speed.x * time 
-        
+        dx = speed.x * time
         dy = speed.y * time 
     in
         Pos (pos.x1 + dx) (pos.x2 + dx)
