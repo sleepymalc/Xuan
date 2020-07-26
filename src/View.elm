@@ -28,8 +28,6 @@ view model =
                             [renderStory model.story]
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
-                        else if model.state == DiscoverII then
-                            [renderRecord model.record]
                         else
                         ([ renderBackground 
                         , renderPlayer model.player]
