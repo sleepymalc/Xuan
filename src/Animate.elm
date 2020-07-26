@@ -38,7 +38,7 @@ animate time model =
                 |> changeSpeed time model.map.bricks
                 |> touchDown time model.map.bricks
                 |> changeTextframe time
-                |> changeText model.state
+                |> changeText model.state model.speedAI
                 |> cleartext
                 |> changePos time
                 |> changeFrame time

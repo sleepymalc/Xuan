@@ -154,17 +154,17 @@ initSpeedAIAnimList =
     , { msg = AICharge Up True, time = 32148 }
     , { msg = AICharge R False, time = 34030 }
     , { msg = AIWalk Right True, time = 35080 }
-    , { msg = AIWalk Right False, time = 37146 }
+    , { msg = AIWalk Right False, time = 37140 }
     , { msg = AICharge Up True, time = 37230 }
-    , { msg = AICharge L False, time = 38563 }
+    , { msg = AICharge L False, time = 38580 }
     , { msg = AICharge Up True, time = 39646 }
     , { msg = AICharge L False, time = 41563 }
     , { msg = AIWalk Left True, time = 42897 }
-    , { msg = AIWalk Left False, time = 43146 }
+    , { msg = AIWalk Left False, time = 43140 }
     , { msg = AICharge Up True, time = 43330 }
     , { msg = AICharge L False, time = 45363 }
     , { msg = AIWalk Left True, time = 46547 }
-    , { msg = AIWalk Left False, time = 46746 }
+    , { msg = AIWalk Left False, time = 46770 }
     , { msg = AICharge Up True, time = 47080 }
     , { msg = AICharge L False, time = 49129 }
     , { msg = AIWalk Right True, time = 50346 }
@@ -178,7 +178,7 @@ initSpeedAIAnimList =
     , { msg = AIWalk Right True, time = 60496 }
     , { msg = AIWalk Right False, time = 61946 }
     , { msg = AICharge Up True, time = 62097 }
-    , { msg = AICharge L False, time = 63731 }
+    , { msg = AICharge L False, time = 63500 }
     ]
 
 initSpeedAI = 
