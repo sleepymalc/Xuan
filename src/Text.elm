@@ -2,7 +2,7 @@ module Text exposing (..)
 import Model exposing (..)
 import Message exposing (..)
 
-changeText state player =
+changeText state speedAI player=
     case state of
         One ->
             if player.pos.y2 <= 3680 && player.pos.y2 >= 3500
@@ -20,11 +20,11 @@ changeText state player =
                 { player | text = player.text }
 
         Two ->
-            if player.pos.y1 < player.pos.y1 then      --The latter "player" should be the AI in this level.
+            if player.pos.y1 > (speedAI.pos.y1 + 500) then      --The latter "player" should be the AI in this level.
                 { player | text = "I need to catch up!", textframe = 0 }
             else if player.pos.y2 <= 300 then
                 { player | text = "No one can control me!", textframe = 0 }
-            else if player.pos.y2 <= 300 then     --The "player" should refer to the AI in this level.
+            else if speedAI.pos.y2 <= 300 then     --The "player" should refer to the AI in this level.
                 { player | text = "No! Please! I don't want to...", textframe = 0 }
             else
                 { player | text = player.text }

@@ -33,7 +33,12 @@ view model =
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
                         ++ debugCollision model.map.characters model.player
-                        ++ debugAttack model.map.characters model.player
+                        --++ debugAttack model.map.characters model.player
+                        ++ ( if model.state == Two then
+                                renderSpeedAI model.player model.speedAI
+                           else
+                                []
+                        )
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
                         ))
@@ -48,7 +53,17 @@ view model =
             [ Html.Attributes.style "height" "0px"]
             [ renderSvg
             , span[Html.Attributes.style "opacity" "0"]renderHtml
-            ]
+            ]    
+
+renderSpeedAI player speedAI= 
+    let
+        url = getAnimUrl speedAI.anim speedAI.frame speedAI ""
+        attr = getDirectionAttr speedAI.direction
+        viewpos = speedAI.pos |> offset player |> resizePlayer|> clearOutsideImage
+    in
+        [renderImage url viewpos attr]
+
+
 
 offset player pos =
     let
@@ -100,7 +115,7 @@ cutBrickView viewpos =
 
 
 renderBackground =
-    renderImage "img/background.jpg" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+    renderImage "img/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
@@ -129,7 +144,7 @@ connectName namePrefix anim id=
 --Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" ++ "img/character/color/"
+        prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
@@ -174,7 +189,8 @@ getAnimUrl anim frame player namePrefix=
                     namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
                 else
                     namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
-            
+            DebugMode ->
+                    connectName namePrefix "walk" 0
     in
         prefix ++ name ++ surfix
 
