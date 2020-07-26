@@ -98,7 +98,6 @@ type alias Character =
     , chargetime: Float
     }
 
-<<<<<<< HEAD
 type alias NPC = 
     { pos: Pos
     , anim: AnimState
@@ -111,8 +110,7 @@ type alias Bird =
     { pos: Pos
     , collisionPos: List Pos 
     , anim: AnimState
-    , frame: Int
-=======
+    , frame: Int}
 -- for jump jumpdir time
 -- for walk walkdir pos
 
@@ -207,7 +205,6 @@ initSpeedAI =
     , speedAIAnimList = initSpeedAIAnimList
     , chargetime = 0
     , hp = 10
->>>>>>> 36f4ff03a5f60aa76e7b76b5709066413fabcade
     }
 
 type alias Model =
