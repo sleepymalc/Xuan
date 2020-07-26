@@ -123,15 +123,67 @@ type alias SpeedAI =
     }
 
 initSpeedAIAnimList = 
-    [ { msg = AIWalk Left True, time = 2721 }
-    , { msg = AIWalk Left False, time = 4606 }
-    , { msg = AICharge Up True, time = 6222 }
-    , { msg = AICharge L False, time = 7555 }
+    [ { msg = AIWalk Right True, time = 1564 }
+    , { msg = AIWalk Right False, time = 1782 }
+    , { msg = AICharge Up True, time = 2131 }
+    , { msg = AICharge L False, time = 3248 }
+    , { msg = AIWalk Left True, time = 4280 }
+    , { msg = AIWalk Left False, time = 4731 }
+    , { msg = AICharge Up True, time = 5064 }
+    , { msg = AICharge L False, time = 6997 }
+    , { msg = AICharge Up True, time = 8164 }
+    , { msg = AICharge R False, time = 10130 }
+    , { msg = AICharge Up True, time = 11630 }
+    , { msg = AICharge L False, time = 13413 }
+    , { msg = AIWalk Right True, time = 14747 }
+    , { msg = AIWalk Right False, time = 15731 }
+    , { msg = AICharge Up True, time = 15863 }
+    , { msg = AICharge L False, time = 17997 }
+    , { msg = AICharge Up True, time = 19631 }
+    , { msg = AICharge R False, time = 21397 }
+    , { msg = AIWalk Right True, time = 22297 }
+    , { msg = AIWalk Right False, time = 23830 }
+    , { msg = AICharge Up True, time = 23913 }
+    , { msg = AICharge L False, time = 25981 }
+    , { msg = AIWalk Left True, time = 27230 }
+    , { msg = AIWalk Left False, time = 27713 }
+    , { msg = AICharge Up True, time = 27780 }
+    , { msg = AICharge L False, time = 29913 }
+    , { msg = AIWalk Right True, time = 31280 }
+    , { msg = AIWalk Right False, time = 31897 }
+    , { msg = AICharge Up True, time = 32148 }
+    , { msg = AICharge R False, time = 34030 }
+    , { msg = AIWalk Right True, time = 35080 }
+    , { msg = AIWalk Right False, time = 37146 }
+    , { msg = AICharge Up True, time = 37230 }
+    , { msg = AICharge L False, time = 38563 }
+    , { msg = AICharge Up True, time = 39646 }
+    , { msg = AICharge L False, time = 41563 }
+    , { msg = AIWalk Left True, time = 42897 }
+    , { msg = AIWalk Left False, time = 43146 }
+    , { msg = AICharge Up True, time = 43330 }
+    , { msg = AICharge L False, time = 45363 }
+    , { msg = AIWalk Left True, time = 46547 }
+    , { msg = AIWalk Left False, time = 46746 }
+    , { msg = AICharge Up True, time = 47080 }
+    , { msg = AICharge L False, time = 49129 }
+    , { msg = AIWalk Right True, time = 50346 }
+    , { msg = AIWalk Right False, time = 51179 }
+    , { msg = AICharge Up True, time = 51230 }
+    , { msg = AICharge L False, time = 53496 }
+    , { msg = AIWalk Left True, time = 54246 }
+    , { msg = AIWalk Left False, time = 57415 }
+    , { msg = AICharge Up True, time = 57512 }
+    , { msg = AICharge R False, time = 59696 }
+    , { msg = AIWalk Right True, time = 60496 }
+    , { msg = AIWalk Right False, time = 61946 }
+    , { msg = AICharge Up True, time = 62097 }
+    , { msg = AICharge L False, time = 63731 }
     ]
 
 initSpeedAI = 
-    { pos = speedAIPos2
-    , collisionPos = standcollisionPos speedAIPos2
+    { pos = speedAIPos3
+    , collisionPos = standcollisionPos speedAIPos3
     , anim = Stand
     , frame = 0
     , direction = Left
@@ -164,8 +216,8 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayer2
-      ,map = initMap2
+    ({ player = initPlayer3
+      ,map = initMap3
       ,state = Two
       ,size = Vector 0 0
       ,audioList = []
