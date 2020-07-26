@@ -32,7 +32,7 @@ animate time model =
                 model.player
                 |> rage 
                 |> changeRageTime time
-                |> attackedByCharacters model.map.characters            
+                |> attackedByCharacters model.map.characters
                 |> changeChargeTime time
                 |> changeAnim model.map.bricks time
                 |> changeSpeed time model.map.bricks
