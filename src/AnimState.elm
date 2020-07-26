@@ -33,11 +33,11 @@ jump player =
     in
         case player.jumpdir of
             L ->
-               { player| anim = Jump, frame = 0, speed = Vector (-0.5) (0.25*time^3-0.75*time^2-0.25) }
+               { player| anim = Jump, frame = 0, speed = Vector (-0.5) (0.25*time^3-0.75*time^2-0.25)}
             R ->
                { player| anim = Jump, frame = 0, speed = Vector 0.5 (0.25*time^3-0.75*time^2-0.25) }
             Up ->
-                { player| anim = Jump, frame = 0, speed = Vector 0 (0.25*time^3-0.75*time^2-0.25) }
+                { player| anim = Jump, frame = 0, speed = Vector 0 (0.25*time^3-0.75*time^2-0.25)}
 
 walk moveDirection player = 
     if player.anim == Stand then

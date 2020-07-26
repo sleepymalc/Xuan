@@ -107,6 +107,9 @@ characterPosList2 =
     ]
 playerPos2 = Pos 200 300 4630 4730
 
+speedAIPos2 = Pos 1300 1400 4630 4730
+
+
 exitPos2 = Pos 2000 2100 0 100
 
 brickPosList3 = 

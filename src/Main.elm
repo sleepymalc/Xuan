@@ -55,6 +55,21 @@ keyNormal on keycode =
         --J
         74 ->
             AnimAttack on
+        --Left
+        37 ->
+            DebugLeft on
+        --Up
+        38 ->
+            DebugUp on
+        --Right
+        39 ->
+            DebugRight on
+        -- Down
+        40 ->
+            DebugDown on
+        --Enter
+        13 ->
+            ExitDebugMode 
         _ ->
             Noop
 
@@ -73,5 +88,20 @@ keyRage on keycode =
         --J
         74 ->
             AnimAttack on
+        --Left
+        37 ->
+            DebugLeft on
+        --Up
+        38 ->
+            DebugUp on
+        --Right
+        39 ->
+            DebugRight on
+        -- Down
+        40 ->
+            DebugDown on
+        --Enter
+        13 ->
+            ExitDebugMode 
         _ ->
             Noop

@@ -11,19 +11,37 @@ import Model exposing (Stage(..))
 
 animate time model =
     let
-        player = model.player
-            |> rage 
-            |> changeRageTime time
-            |> attackedByCharacters model.map.characters            
-            |> changeChargeTime time
-            |> changeAnim model.map.bricks time
-            |> changeSpeed time model.map.bricks
-            |> touchDown time model.map.bricks
-            |> changeTextframe time
-            |> changeText model.state
-            |> cleartext
-            |> changePos time
-            |> changeFrame time
+        speedAI = if model.state == Two then
+                model.speedAI 
+                
+                |> moveSpeedAI model.time
+                |> changeChargeTime time
+                |> changeAnim model.map.bricks time
+                |> changeSpeed time model.map.bricks
+                |> touchDown time model.map.bricks
+                |> changePos time
+                |> changeFrame time
+
+            else
+                model.speedAI
+        player = 
+            if model.player.anim == DebugMode then
+                model.player
+                |> changePos time
+            else
+                model.player
+                |> rage 
+                |> changeRageTime time
+                |> attackedByCharacters model.map.characters            
+                |> changeChargeTime time
+                |> changeAnim model.map.bricks time
+                |> changeSpeed time model.map.bricks
+                |> touchDown time model.map.bricks
+                |> changeTextframe time
+                |> changeText model.state
+                |> cleartext
+                |> changePos time
+                |> changeFrame time
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |> List.map (\character-> character
@@ -40,9 +58,34 @@ animate time model =
             |> changeStoryframe time
             |> changeStory model.state
     in
-        { model | map = map, player = player, story = story }
+        { model | map = map, player = player, story = story, speedAI = speedAI}
             |> changeState
-            |> storyEnd
+            |> storyEnd time
+
+moveSpeedAI time speedAI =
+    case List.head speedAI.speedAIAnimList of
+        Just anim->
+            if anim.time > time then
+                speedAI
+            else
+                let
+                    speedAIAnimList = List.drop 1 speedAI.speedAIAnimList
+                    newSpeedAI = {speedAI| speedAIAnimList = speedAIAnimList}
+                in
+                case anim.msg of
+                    AIWalk moveDirection on->
+                        if on then
+                            newSpeedAI |> walk moveDirection
+                        else 
+                            newSpeedAI |> stand
+                        
+                    AICharge jumpdir on->
+                            if on then
+                                newSpeedAI |> charge 
+                            else 
+                                { newSpeedAI| jumpdir = jumpdir}|> jump          
+        Nothing ->
+            speedAI
 
 changeState model =
     if arriveExit model then 
@@ -50,7 +93,7 @@ changeState model =
             One -> 
                 { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
             DiscoverI ->
-                { model | map = initMap3, state = Two, player = initPlayer3}
+                { model | map = initMap3, state = Two, player = initPlayer3, time = 0}
             Two ->
                 { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
             DiscoverII ->
@@ -62,15 +105,16 @@ changeState model =
     else
         model
     
-storyOneFrame = 200
+storyOneTime = 2000
 
-storyEnd model = 
+storyEnd time model= 
     case model.state of
-        StoryOne ->
-            if model.frame == storyOneFrame then
-                { model | map = initMap1, state = One, player = initPlayer1, frame = 0}
-            else { model | frame = model.frame + 1 }
-        _ -> model
+        --StoryOne ->
+        _ ->
+            if model.time == storyOneTime then
+                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
+            else { model | time = model.time + time }
+        --_ -> model
 
 
 changeCharacters characters map =

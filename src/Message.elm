@@ -17,4 +17,9 @@ type Msg
     | GetViewport Viewport
     | ImageError String
     | ImageLoaded String
+    | DebugUp Bool
+    | DebugDown Bool
+    | DebugLeft Bool
+    | DebugRight Bool
+    | ExitDebugMode
     

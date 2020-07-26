@@ -28,6 +28,7 @@ type AnimState =
     | Attack
     | Attacked
     | Grovel
+    | DebugMode
 
 type Mood = 
     Normal
@@ -55,6 +56,7 @@ type Stage
     | StoryFive
     | StorySix
     | Loading
+    
 
 type alias Brick =
     { pos: Pos,
@@ -84,9 +86,9 @@ type alias Player =
     }
 
 type alias Character =
-    { pos: Pos --
-    , collisionPos: List Pos -- 
-    , anim: AnimState -- 
+    { pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
     , frame: Int
     , direction: MoveDirection
     , jumpdir: Jump
@@ -96,6 +98,50 @@ type alias Character =
     , chargetime: Float
     }
 
+-- for jump jumpdir time
+-- for walk walkdir pos
+
+type AIMsg = 
+    AIWalk MoveDirection Bool
+    | AICharge Jump Bool
+
+type alias SpeedAIAnim = 
+    { time: Float
+    , msg: AIMsg}
+
+type alias SpeedAI =
+    {  pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
+    , frame: Int
+    , direction: MoveDirection
+    , jumpdir: Jump
+    , speed: Speed
+    , speedAIAnimList : List SpeedAIAnim
+    , chargetime : Float
+    , hp : Int
+    }
+
+initSpeedAIAnimList = 
+    [ { msg = AIWalk Left True, time = 2721 }
+    , { msg = AIWalk Left False, time = 4606 }
+    , { msg = AICharge Up True, time = 6222 }
+    , { msg = AICharge L False, time = 7555 }
+    ]
+
+initSpeedAI = 
+    { pos = speedAIPos2
+    , collisionPos = standcollisionPos speedAIPos2
+    , anim = Stand
+    , frame = 0
+    , direction = Left
+    , jumpdir = Up
+    , speed = Vector 0 0
+    , speedAIAnimList = initSpeedAIAnimList
+    , chargetime = 0
+    , hp = 10
+    }
+
 type alias Model =
     { player: Player
     , map: Map
@@ -103,9 +149,11 @@ type alias Model =
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
-    , frame: Int
+    , time: Float
     , story: Story
     , loadPack: List String
+    , speedAI: SpeedAI
+    , record: List SpeedAIAnim
     }
 
 type alias CustomAttribute ={ }
@@ -116,15 +164,17 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayer1
-      ,map = initMap1
-      ,state = Loading
+    ({ player = initPlayer2
+      ,map = initMap2
+      ,state = Two
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
-      ,frame = 0
+      ,time = 0
       ,story = initstory
       ,loadPack = initLoadPack
+      ,speedAI = initSpeedAI
+      ,record = []
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
@@ -132,6 +182,8 @@ initstory =
     { text = ""
     , storyframe = 0
     }
+
+
 
 initPlayer1 =
     { text = "I need to get outta here."
@@ -147,6 +199,7 @@ initPlayer1 =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    
     }
 
 
@@ -164,12 +217,13 @@ initPlayerDiscoverI =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    
     }
 
 initPlayer2 =
     { text = "I am Song Yuanhuai."
-    , pos = MapSetting.playerPos2
-    , collisionPos = standcollisionPos MapSetting.playerPos2
+    , pos = speedAIPos2 --MapSetting.playerPos2
+    , collisionPos = standcollisionPos speedAIPos2--MapSetting.playerPos2
     , anim = Crouch
     , mood = Normal
     , frame = 0
@@ -180,6 +234,7 @@ initPlayer2 =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    
     }
 
 initPlayerDiscoverII =
@@ -196,6 +251,7 @@ initPlayerDiscoverII =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    
     }
 
 initPlayer3 =
@@ -212,6 +268,7 @@ initPlayer3 =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    
     }
 
 
