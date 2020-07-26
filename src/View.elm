@@ -32,7 +32,7 @@ view model =
                         ([ renderBackground 
                         , renderPlayer model.player]
                         ++ renderCharacters model.player model.map.characters
-                        ++ debugCollision model.map.characters model.player
+                        --++ debugCollision model.map.characters model.player
                         --++ debugAttack model.map.characters model.player
                         ++ ( if model.state == Two then
                                 renderSpeedAI model.player model.speedAI

@@ -91,15 +91,15 @@ changeState model =
     if arriveExit model then 
         case model.state of
             One -> 
-                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
+                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI, time = 0}
             DiscoverI ->
                 { model | map = initMap3, state = Two, player = initPlayer3, time = 0}
             Two ->
-                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
+                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII, time = 0}
             DiscoverII ->
-                { model | map = initMap2, state = Three, player = initPlayer2}
+                { model | map = initMap2, state = Three, player = initPlayer2, time = 0}
             Three ->
-                { model | map = initMap1, state = One, player = initPlayer1}
+                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
             _ ->
                 model
     else
@@ -109,12 +109,11 @@ storyOneTime = 2000
 
 storyEnd time model= 
     case model.state of
-        --StoryOne ->
-        _ ->
-            if model.time == storyOneTime then
+        StoryOne ->
+            if model.time > storyOneTime then
                 { model | map = initMap1, state = One, player = initPlayer1, time = 0}
             else { model | time = model.time + time }
-        --_ -> model
+        _ -> { model | time = model.time + time }
 
 
 changeCharacters characters map =
