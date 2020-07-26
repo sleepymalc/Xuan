@@ -96,6 +96,21 @@ type alias Character =
     , chargetime: Float
     }
 
+type alias NPC = 
+    { pos: Pos
+    , anim: AnimState
+    , frame: Int
+    , count: Int
+    , text: String
+    }
+
+type alias Bird = 
+    { pos: Pos
+    , collisionPos: List Pos 
+    , anim: AnimState
+    , frame: Int
+    }
+
 type alias Model =
     { player: Player
     , map: Map
