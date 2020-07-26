@@ -111,8 +111,12 @@ type alias Bird =
     { pos: Pos
     , collisionPos: List Pos 
     , anim: AnimState
+<<<<<<< HEAD
     , frame: Int
     }
+=======
+    , frame: Int}
+>>>>>>> 1c7e330292d7c1bba7650cb7dc476b1eddb857e1
 -- for jump jumpdir time
 -- for walk walkdir pos
 
