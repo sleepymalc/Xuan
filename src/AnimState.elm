@@ -2,7 +2,6 @@ module AnimState exposing(..)
 import Model exposing (..)
 import Message exposing (..)
 import Model exposing (AnimState(..))
---import Animate exposing (player)
 
 
 crouch player =
