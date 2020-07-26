@@ -25,15 +25,23 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
+    if model.player.mood == Rage then
     Sub.batch
         [ onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
-        , onKeyUp (Decode.map (key False) keyCode)
-        , onKeyDown (Decode.map (key True) keyCode)
+        , onKeyUp (Decode.map (keyRage False) keyCode)
+        , onKeyDown (Decode.map (keyRage True) keyCode)
+        , onResize Resize
+        ]
+    else
+    Sub.batch
+        [ onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
+        , onKeyUp (Decode.map (keyNormal False) keyCode)
+        , onKeyDown (Decode.map (keyNormal True) keyCode)
         , onResize Resize
         ]
 
-key : Bool -> Int -> Msg
-key on keycode =
+keyNormal : Bool -> Int -> Msg
+keyNormal on keycode =
     case keycode of 
         --A
         65 ->
@@ -47,5 +55,58 @@ key on keycode =
         --J
         74 ->
             AnimAttack on
+        --Left
+ {-       
+        37 ->
+            DebugLeft on
+        --Up
+        38 ->
+            DebugUp on
+        --Right
+        39 ->
+            DebugRight on
+        -- Down
+        40 ->
+            DebugDown on
+        --Enter
+        13 ->
+            ExitDebugMode 
+-}
+        _ ->
+            Noop
+
+keyRage : Bool -> Int -> Msg
+keyRage on keycode =
+    case keycode of 
+        --A
+        68 ->
+            AnimWalk Left on
+        --D
+        65 ->
+            AnimWalk Right on
+        --Space
+        32 ->
+            AnimCharge on
+        --J
+        74 ->
+            AnimAttack on
+ {-       
+        --Left
+        37 ->
+            DebugLeft on
+        --Up
+        38 ->
+            DebugUp on
+        --Right
+        39 ->
+            DebugRight on
+        -- Down
+        40 ->
+            DebugDown on
+        --Enter
+        13 ->
+            ExitDebugMode 
+-}
+
         _ ->
             Noop

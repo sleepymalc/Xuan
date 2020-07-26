@@ -27,6 +27,12 @@ type AnimState =
     | Jump 
     | Attack
     | Attacked
+    | Grovel
+    | DebugMode
+
+type Mood = 
+    Normal
+    | Rage
 
 
 type alias Vector a=
@@ -50,6 +56,7 @@ type Stage
     | StoryFive
     | StorySix
     | Loading
+    
 
 type alias Brick =
     { pos: Pos,
@@ -67,19 +74,21 @@ type alias Player =
     , pos: Pos --
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
+    , mood: Mood
     , frame: Int
     , textframe: Int
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
-    , hp: Int
+    , hp: Float
     , chargetime: Float
+    , ragetime: Float
     }
 
 type alias Character =
-    { pos: Pos --
-    , collisionPos: List Pos -- 
-    , anim: AnimState -- 
+    { pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
     , frame: Int
     , direction: MoveDirection
     , jumpdir: Jump
@@ -89,6 +98,115 @@ type alias Character =
     , chargetime: Float
     }
 
+type alias NPC = 
+    { pos: Pos
+    , anim: AnimState
+    , frame: Int
+    , count: Int
+    , text: String
+    }
+
+type alias Bird = 
+    { pos: Pos
+    , collisionPos: List Pos 
+    , anim: AnimState
+    , frame: Int}
+-- for jump jumpdir time
+-- for walk walkdir pos
+
+type AIMsg = 
+    AIWalk MoveDirection Bool
+    | AICharge Jump Bool
+
+type alias SpeedAIAnim = 
+    { time: Float
+    , msg: AIMsg}
+
+type alias SpeedAI =
+    {  pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
+    , frame: Int
+    , direction: MoveDirection
+    , jumpdir: Jump
+    , speed: Speed
+    , speedAIAnimList : List SpeedAIAnim
+    , chargetime : Float
+    , hp : Int
+    }
+
+initSpeedAIAnimList = 
+    [ { msg = AIWalk Right True, time = 1564 }
+    , { msg = AIWalk Right False, time = 1782 }
+    , { msg = AICharge Up True, time = 2131 }
+    , { msg = AICharge L False, time = 3248 }
+    , { msg = AIWalk Left True, time = 4280 }
+    , { msg = AIWalk Left False, time = 4731 }
+    , { msg = AICharge Up True, time = 5064 }
+    , { msg = AICharge L False, time = 6997 }
+    , { msg = AICharge Up True, time = 8164 }
+    , { msg = AICharge R False, time = 10130 }
+    , { msg = AICharge Up True, time = 11630 }
+    , { msg = AICharge L False, time = 13413 }
+    , { msg = AIWalk Right True, time = 14747 }
+    , { msg = AIWalk Right False, time = 15731 }
+    , { msg = AICharge Up True, time = 15863 }
+    , { msg = AICharge L False, time = 17997 }
+    , { msg = AICharge Up True, time = 19631 }
+    , { msg = AICharge R False, time = 21397 }
+    , { msg = AIWalk Right True, time = 22297 }
+    , { msg = AIWalk Right False, time = 23830 }
+    , { msg = AICharge Up True, time = 23913 }
+    , { msg = AICharge L False, time = 25981 }
+    , { msg = AIWalk Left True, time = 27230 }
+    , { msg = AIWalk Left False, time = 27713 }
+    , { msg = AICharge Up True, time = 27780 }
+    , { msg = AICharge L False, time = 29913 }
+    , { msg = AIWalk Right True, time = 31280 }
+    , { msg = AIWalk Right False, time = 31897 }
+    , { msg = AICharge Up True, time = 32148 }
+    , { msg = AICharge R False, time = 34030 }
+    , { msg = AIWalk Right True, time = 35080 }
+    , { msg = AIWalk Right False, time = 37140 }
+    , { msg = AICharge Up True, time = 37230 }
+    , { msg = AICharge L False, time = 38580 }
+    , { msg = AICharge Up True, time = 39646 }
+    , { msg = AICharge L False, time = 41563 }
+    , { msg = AIWalk Left True, time = 42897 }
+    , { msg = AIWalk Left False, time = 43140 }
+    , { msg = AICharge Up True, time = 43330 }
+    , { msg = AICharge L False, time = 45363 }
+    , { msg = AIWalk Left True, time = 46547 }
+    , { msg = AIWalk Left False, time = 46774 }
+    , { msg = AICharge Up True, time = 47080 }
+    , { msg = AICharge L False, time = 49133 }
+    , { msg = AIWalk Right True, time = 50346 }
+    , { msg = AIWalk Right False, time = 51183 }
+    , { msg = AICharge Up True, time = 51230 }
+    , { msg = AICharge L False, time = 53500 }
+    , { msg = AIWalk Left True, time = 54246 }
+    , { msg = AIWalk Left False, time = 57415 }
+    , { msg = AICharge Up True, time = 57512 }
+    , { msg = AICharge R False, time = 59696 }
+    , { msg = AIWalk Right True, time = 60496 }
+    , { msg = AIWalk Right False, time = 61946 }
+    , { msg = AICharge Up True, time = 62097 }
+    , { msg = AICharge L False, time = 63500 }
+    ]
+
+initSpeedAI = 
+    { pos = speedAIPos3
+    , collisionPos = standcollisionPos speedAIPos3
+    , anim = Stand
+    , frame = 0
+    , direction = Left
+    , jumpdir = Up
+    , speed = Vector 0 0
+    , speedAIAnimList = initSpeedAIAnimList
+    , chargetime = 0
+    , hp = 10
+    }
+
 type alias Model =
     { player: Player
     , map: Map
@@ -96,9 +214,11 @@ type alias Model =
     , size: Vector Float
     , audioList: List String
     , attrs: CustomAttribute
-    , frame: Int
+    , time: Float
     , story: Story
     , loadPack: List String
+    , speedAI: SpeedAI
+    , record: List SpeedAIAnim
     }
 
 type alias CustomAttribute ={ }
@@ -111,13 +231,15 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = Loading
+      ,state = StoryOne
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
-      ,frame = 0
+      ,time = 0
       ,story = initstory
       ,loadPack = initLoadPack
+      ,speedAI = initSpeedAI
+      ,record = []
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
@@ -126,18 +248,23 @@ initstory =
     , storyframe = 0
     }
 
+
+
 initPlayer1 =
     { text = "I need to get outta here."
     , pos = MapSetting.playerPos1
     , collisionPos = standcollisionPos MapSetting.playerPos1
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
+    
     }
 
 
@@ -146,27 +273,33 @@ initPlayerDiscoverI =
     , pos = MapSetting.playerPos4
     , collisionPos = standcollisionPos MapSetting.playerPos4
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
+    
     }
 
 initPlayer2 =
     { text = "I am Song Yuanhuai."
-    , pos = MapSetting.playerPos2
-    , collisionPos = standcollisionPos MapSetting.playerPos2
+    , pos = speedAIPos2 --MapSetting.playerPos2
+    , collisionPos = standcollisionPos speedAIPos2--MapSetting.playerPos2
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
+    
     }
 
 initPlayerDiscoverII =
@@ -174,13 +307,16 @@ initPlayerDiscoverII =
     , pos = MapSetting.playerPos5
     , collisionPos = standcollisionPos MapSetting.playerPos5
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
+    
     }
 
 initPlayer3 =
@@ -188,13 +324,16 @@ initPlayer3 =
     , pos = MapSetting.playerPos3
     , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch
+    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 1
+    , hp = 10
     , chargetime = 0
+    , ragetime = 0
+    
     }
 
 

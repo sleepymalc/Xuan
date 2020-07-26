@@ -11,17 +11,37 @@ import Model exposing (Stage(..))
 
 animate time model =
     let
-        player = model.player
-            |> attackedByCharacters model.map.characters            
-            |> changeChargeTime time
-            |> changeAnim model.map.bricks time
-            |> changeSpeed time model.map.bricks
-            |> touchDown time model.map.bricks
-            |> changeTextframe time
-            |> changeText model.state
-            |> cleartext
-            |> changePos time
-            |> changeFrame time
+        speedAI = if model.state == Two then
+                model.speedAI 
+                
+                |> moveSpeedAI model.time
+                |> changeChargeTime time
+                |> changeAnim model.map.bricks time
+                |> changeSpeed time model.map.bricks
+                |> touchDown time model.map.bricks
+                |> changePos time
+                |> changeFrame time
+
+            else
+                model.speedAI
+        player = 
+            if model.player.anim == DebugMode then
+                model.player
+                |> changePos time
+            else
+                model.player
+                |> rage 
+                |> changeRageTime time
+                |> attackedByCharacters model.map.characters
+                |> changeChargeTime time
+                |> changeAnim model.map.bricks time
+                |> changeSpeed time model.map.bricks
+                |> touchDown time model.map.bricks
+                |> changeTextframe time
+                |> changeText model.state model.speedAI
+                |> cleartext
+                |> changePos time
+                |> changeFrame time
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |> List.map (\character-> character
@@ -38,37 +58,62 @@ animate time model =
             |> changeStoryframe time
             |> changeStory model.state
     in
-        { model | map = map, player = player, story = story }
+        { model | map = map, player = player, story = story, speedAI = speedAI}
             |> changeState
-            |> storyEnd
+            |> storyEnd time
+
+moveSpeedAI time speedAI =
+    case List.head speedAI.speedAIAnimList of
+        Just anim->
+            if anim.time > time then
+                speedAI
+            else
+                let
+                    speedAIAnimList = List.drop 1 speedAI.speedAIAnimList
+                    newSpeedAI = {speedAI| speedAIAnimList = speedAIAnimList}
+                in
+                case anim.msg of
+                    AIWalk moveDirection on->
+                        if on then
+                            newSpeedAI |> walk moveDirection
+                        else 
+                            newSpeedAI |> stand
+                        
+                    AICharge jumpdir on->
+                            if on then
+                                newSpeedAI |> charge 
+                            else 
+                                { newSpeedAI| jumpdir = jumpdir}|> jump          
+        Nothing ->
+            speedAI
 
 changeState model =
     if arriveExit model then 
         case model.state of
             One -> 
-                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI}
+                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI, time = 0}
             DiscoverI ->
-                { model | map = initMap3, state = Two, player = initPlayer3}
+                { model | map = initMap3, state = Two, player = initPlayer3, time = 0}
             Two ->
-                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII}
+                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII, time = 0}
             DiscoverII ->
-                { model | map = initMap2, state = Three, player = initPlayer2}
+                { model | map = initMap2, state = Three, player = initPlayer2, time = 0}
             Three ->
-                { model | map = initMap1, state = One, player = initPlayer1}
+                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
             _ ->
                 model
     else
         model
     
-storyOneFrame = 200
+storyOneTime = 2000
 
-storyEnd model = 
+storyEnd time model= 
     case model.state of
         StoryOne ->
-            if model.frame == storyOneFrame then
-                { model | map = initMap1, state = One, player = initPlayer1, frame = 0}
-            else { model | frame = model.frame + 1 }
-        _ -> model
+            if model.time > storyOneTime then
+                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
+            else { model | time = model.time + time }
+        _ -> { model | time = model.time + time }
 
 
 changeCharacters characters map =
@@ -146,8 +191,10 @@ attackedByCharacter character player =
         if character.anim == Attack then
            if character.direction == Left then
                 player |> attacked (Vector -0.2 0)
+                       |> loseBlood 0.08
             else
                 player |> attacked (Vector 0.2 0)
+                       |> loseBlood 0.08
         else
             player
 
@@ -175,7 +222,9 @@ changeAnim bricks time player=
         newplayer={player | chargetime=0}
     in
         if player.anim == Charge then
-            player
+            player        
+        else if player.anim == Grovel then
+            player |> grovel
         else if player.anim == Jump && player.chargetime > 0 then
             newplayer |> jump
         else if (player.anim == Attack && player.frame >= 30)
@@ -185,6 +234,31 @@ changeAnim bricks time player=
         else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
             { newplayer | anim = Jump}
         else newplayer
+
+loseBlood damage player = 
+    let 
+        hp = player.hp - damage
+    in
+    { player | hp = hp }
+
+rage player = 
+    if player.hp <= 0 then
+        { player | mood=Rage }
+    else
+        player
+
+changeRageTime time player = 
+    let
+        newragetime = player.ragetime + time
+        newplayer = normal player
+    in
+    if player.ragetime <= 25000 && player.mood== Rage then
+        { player | ragetime = newragetime }
+    else if player.ragetime >= 25000 then
+        { newplayer | ragetime = 0, hp = 10}
+    else 
+        player
+
 
 changeSpeed time bricks player =
     let
@@ -218,15 +292,19 @@ touchDown time bricks player =
 touchDownBrick brickSpeed time brickPos player =    
     if upImpact brickSpeed time player.collisionPos brickPos then
         let 
-            y2 = brickPos.y1
-            y1 = y2 - player.pos.y2 + player.pos.y1
+            dy = brickPos.y1 - time * brickSpeed.y - player.pos.y2
             speed = Vector player.speed.x 0
-            pos = Pos player.pos.x1 player.pos.x2 y1 y2
+            pos = Pos player.pos.x1 player.pos.x2 (player.pos.y1 + dy) (player.pos.y2 + dy)
+            collisionPos = standcollisionPos pos
+            newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                { player | pos =pos } |> stand
+                if player.speed.y >= 2 then
+                    { newplayer | pos = pos , collisionPos = collisionPos} |> grovel
+                else 
+                    { player | pos = pos, collisionPos = collisionPos} |> stand
             else
-                {player | speed = speed, pos =pos }
+                {player | speed = speed, pos =pos , collisionPos = collisionPos}
     else
         player
 
@@ -242,8 +320,7 @@ changePos time player =
 
 nextPos speed time pos=
     let
-        dx = speed.x * time 
-        
+        dx = speed.x * time
         dy = speed.y * time 
     in
         Pos (pos.x1 + dx) (pos.x2 + dx)

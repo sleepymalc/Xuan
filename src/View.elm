@@ -22,7 +22,7 @@ textStoryOne = "story one"
 view : Model -> Html Msg
 view model =
     let
-        renderSvg =[ svg
+        renderSvg = svg
                         (gameUIAttribute model.size)
                         (if model.state == StoryOne then
                             [renderStory model.story]
@@ -34,10 +34,15 @@ view model =
                         ++ renderCharacters model.player model.map.characters
                         --++ debugCollision model.map.characters model.player
                         --++ debugAttack model.map.characters model.player
+                        ++ ( if model.state == Two then
+                                renderSpeedAI model.player model.speedAI
+                           else
+                                []
+                        )
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
                         ))
-                    ]
+                    
         renderHtml = if model.state == Loading then
                         List.map loadImg initLoadPack
                     else []
@@ -45,10 +50,20 @@ view model =
 
     in        
         div
-            []
-            [ span[]renderSvg
+            [ Html.Attributes.style "height" "0px"]
+            [ renderSvg
             , span[Html.Attributes.style "opacity" "0"]renderHtml
-            ]
+            ]    
+
+renderSpeedAI player speedAI= 
+    let
+        url = getAnimUrl speedAI.anim speedAI.frame speedAI ""
+        attr = getDirectionAttr speedAI.direction
+        viewpos = speedAI.pos |> offset player |> resizePlayer|> clearOutsideImage
+    in
+        [renderImage url viewpos attr]
+
+
 
 offset player pos =
     let
@@ -63,6 +78,21 @@ renderbricks posList player=
 renderbrick player pos=
     let
         viewpos = pos |> offset player
+                    |> cutBrickView
+                    |> clearOutsideImage
+        
+    in
+    rect
+        [ x (String.fromFloat viewpos.x1)
+        , y (String.fromFloat viewpos.y1)
+        , width (String.fromFloat (viewpos.x2-viewpos.x1))
+        , height (String.fromFloat (viewpos.y2-viewpos.y1))
+        , fill "#000000"
+        ]
+        []
+
+cutBrickView viewpos =
+    let
         x1 = if viewpos.x1<0 then
                     0
                 else
@@ -80,17 +110,12 @@ renderbrick player pos=
                 else
                     viewpos.y2
     in
-    rect
-        [ x (String.fromFloat x1)
-        , y (String.fromFloat y1)
-        , width (String.fromFloat (x2-x1))
-        , height (String.fromFloat (y2-y1))
-        , fill "#000000"
-        ]
-        []
+        Pos x1 x2 y1 y2
+
+
 
 renderBackground =
-    renderImage "img/background.jpg" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+    renderImage "img/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
@@ -116,10 +141,10 @@ connectName namePrefix anim id=
     namePrefix ++ anim ++ "/" ++ namePrefix ++ anim ++"_"
     ++ String.padLeft 4 '0' (String.fromInt id)
 
-
+--Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" ++ "img/character/color/"
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
@@ -154,12 +179,18 @@ getAnimUrl anim frame player namePrefix=
 
             Crouch ->
                     connectName namePrefix "charge" 2
+
+            Grovel ->
+                    connectName namePrefix "charge" 2
+
             Attacked ->
                 if ( player.speed.x < 0 && player.direction == Left)
                 || ( player.speed.x > 0 && player.direction == Right) then
                     namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
                 else
                     namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
+            DebugMode ->
+                    connectName namePrefix "walk" 0
     in
         prefix ++ name ++ surfix
 

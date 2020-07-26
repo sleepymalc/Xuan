@@ -24,6 +24,7 @@ complete player animations operation
 
 basic level story narrative
 
+
 2020.7.24
 
 complete the alpha version [0.3.0] [0.4.0]
@@ -35,3 +36,24 @@ Fix animation bugs
 Fix load bugs
 
 Polish story line
+
+
+2020.7.26 
+
+complete the bata version [0.6.0]
+
+feature 
+
+complete speed competition AI (still unstable)
+
+complete boss
+
+update background
+
+complete story narrative
+
+bug fix
+
+fix animation bugs
+
+fix bug that scrolling down when player jump
