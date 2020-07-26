@@ -100,7 +100,7 @@ cutBrickView viewpos =
 
 
 renderBackground =
-    renderImage "img/background.jpg" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+    renderImage "img/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
