@@ -164,13 +164,13 @@ initSpeedAIAnimList =
     , { msg = AICharge Up True, time = 43330 }
     , { msg = AICharge L False, time = 45363 }
     , { msg = AIWalk Left True, time = 46547 }
-    , { msg = AIWalk Left False, time = 46770 }
+    , { msg = AIWalk Left False, time = 46774 }
     , { msg = AICharge Up True, time = 47080 }
-    , { msg = AICharge L False, time = 49129 }
+    , { msg = AICharge L False, time = 49133 }
     , { msg = AIWalk Right True, time = 50346 }
-    , { msg = AIWalk Right False, time = 51179 }
+    , { msg = AIWalk Right False, time = 51183 }
     , { msg = AICharge Up True, time = 51230 }
-    , { msg = AICharge L False, time = 53496 }
+    , { msg = AICharge L False, time = 53500 }
     , { msg = AIWalk Left True, time = 54246 }
     , { msg = AIWalk Left False, time = 57415 }
     , { msg = AICharge Up True, time = 57512 }
