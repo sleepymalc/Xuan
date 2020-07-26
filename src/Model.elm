@@ -71,6 +71,7 @@ type alias Map =
 
 type alias Player =
     { text: String
+    , teachtextstate: Int
     , pos: Pos --
     , collisionPos: List Pos -- 
     , anim: AnimState -- 
@@ -98,7 +99,6 @@ type alias Character =
     , chargetime: Float
     }
 
-<<<<<<< HEAD
 type alias NPC = 
     { pos: Pos
     , anim: AnimState
@@ -112,7 +112,7 @@ type alias Bird =
     , collisionPos: List Pos 
     , anim: AnimState
     , frame: Int
-=======
+    }
 -- for jump jumpdir time
 -- for walk walkdir pos
 
@@ -207,7 +207,6 @@ initSpeedAI =
     , speedAIAnimList = initSpeedAIAnimList
     , chargetime = 0
     , hp = 10
->>>>>>> 36f4ff03a5f60aa76e7b76b5709066413fabcade
     }
 
 type alias Model =
@@ -234,7 +233,7 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = StoryOne
+      ,state = One
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
@@ -255,6 +254,7 @@ initstory =
 
 initPlayer1 =
     { text = "I need to get outta here."
+    , teachtextstate = 0
     , pos = MapSetting.playerPos1
     , collisionPos = standcollisionPos MapSetting.playerPos1
     , anim = Crouch
@@ -273,6 +273,7 @@ initPlayer1 =
 
 initPlayerDiscoverI =
     { text = "What's going on?"
+    , teachtextstate = -1
     , pos = MapSetting.playerPos4
     , collisionPos = standcollisionPos MapSetting.playerPos4
     , anim = Crouch
@@ -290,6 +291,7 @@ initPlayerDiscoverI =
 
 initPlayer2 =
     { text = "I am Song Yuanhuai."
+    , teachtextstate = -1
     , pos = speedAIPos2 --MapSetting.playerPos2
     , collisionPos = standcollisionPos speedAIPos2--MapSetting.playerPos2
     , anim = Crouch
@@ -307,6 +309,7 @@ initPlayer2 =
 
 initPlayerDiscoverII =
     { text = "Life is a series of choices, and you don't know about the consequences."
+    , teachtextstate = -1
     , pos = MapSetting.playerPos5
     , collisionPos = standcollisionPos MapSetting.playerPos5
     , anim = Crouch
@@ -324,6 +327,7 @@ initPlayerDiscoverII =
 
 initPlayer3 =
     { text = "I am back... FOR REVENGE!"
+    , teachtextstate = -1
     , pos = MapSetting.playerPos3
     , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch
