@@ -5,10 +5,40 @@ import Message exposing (..)
 changeText state speedAI player=
     case state of
         One ->
-            if player.pos.y2 <= 3680 && player.pos.y2 >= 3500
-            && player.pos.x1 <= 2650 && player.pos.x1 >= 2350 then
-                { player | text = "I don’t think I can fight him…… ", textframe = 0 }
-            else if player.pos.y2 <= 970 then
+            if  player.teachtextstate /= -1 then
+                if player.pos.x1 >=0 && player.pos.x2 <= 1500 then
+                    if player.anim == Stand && player.teachtextstate == 0 then
+                        { player | text = "Use A and D to move right and left.", textframe = -500 }
+                    else if player.anim == Walk && player.teachtextstate == 0 then
+                        { player | teachtextstate = 1}
+                    else if player.anim == Stand && player.teachtextstate == 1 then
+                        { player | text = "Press Space to Jump.", textframe = -500 }
+                    else if player.anim == Jump && player.teachtextstate == 1 then
+                        { player | teachtextstate = 2 }
+                    else if player.anim == Stand && player.teachtextstate == 2 then
+                        { player | text = "Try to hold it longer...", textframe = -500 }     
+                    else if player.chargetime >= 1500 && player.teachtextstate == 2 then
+                        { player | teachtextstate = 3}
+                    else if player.anim == Stand && player.teachtextstate == 3 then
+                        { player | text = "Now, before releasing Space key, hold A or D.", textframe = -500 }
+                    else if  player.anim == Jump && player.speed.x /= 0 && player.pos.y2 >= 3090 && player.speed.y >0 && player.teachtextstate == 3 then
+                        { player | teachtextstate = 4 }
+                    else if player.teachtextstate == 4 then
+                        { player | text = "You are ready to run away from here... Go right.", textframe = -500, teachtextstate = 5} 
+                    else
+                        { player | text = player.text }   
+                else if player.pos.x1 <= 2650 && player.pos.x1 >= 2350 then
+                    if player.anim == Stand && player.teachtextstate == 5 then
+                        { player | text = "See the soliers? Try to attack them using J.", textframe = -500 }
+                    else if player.anim == Attack && player.teachtextstate == 5 then
+                        { player | teachtextstate = 6}
+                    else if player.teachtextstate == 6 then
+                        { player | text = "You have learned everything you need, just be careful...", textframe = -50, teachtextstate = -1}
+                    else
+                        { player | text = player.text}
+                else
+                    { player | text = player.text}
+            else if player.pos.y2 <= 970 && player.anim == Stand then
                 { player | text = "Finally...", textframe = 0 }
             else
                 { player | text = player.text }

@@ -54,7 +54,7 @@ attack player =
     else player
     
 charge player =
-    {player | anim = Charge}
+    {player | anim = Charge, frame = 0}
 
 grovel player = 
     { player | anim = Grovel, frame = 0, speed = Vector 0 0}

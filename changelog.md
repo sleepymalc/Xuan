@@ -57,3 +57,13 @@ bug fix
 fix animation bugs
 
 fix bug that scrolling down when player jump
+
+2020.7.27
+
+complete the alpha version [0.7.0] 
+
+bug fix 
+
+fix charge animation bug
+
+fix loading bug
