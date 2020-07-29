@@ -189,6 +189,8 @@ getAnimUrl anim frame player namePrefix=
                     namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
                 else
                     namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
+            Fly ->
+                    connectName namePrefix "jump" 0
             DebugMode ->
                     connectName namePrefix "walk" 0
     in

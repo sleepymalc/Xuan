@@ -5,7 +5,7 @@ type alias Pos =
     , x2: Float
     , y1: Float
     , y2: Float }
-
+--1
 brickPosList1 =
     [ Pos 0 100 3200 3935
     , Pos 0 1500 3100 3200
@@ -43,10 +43,24 @@ characterPosList1 =
     , Pos 2900 3000 3700 3800  --debug
     ]
 
+npcPosList1 = 
+    [ 
+
+
+    ]
+
+birdPosList1 = 
+    [
+
+
+    ]
+
 playerPos1 = Pos 300 400 3830 3930
 
 exitPos1 = Pos 3200 10000 2000 3900
 
+
+--2
 brickPosList2 =
     [ Pos 0 100 0 2000
     , Pos 0 100 2200 4800
@@ -122,6 +136,19 @@ characterPosList2 =
     , Pos -500 -400 3700 3800 -- secret room
     , Pos -300 -200 3700 3800
     ]
+
+npcPosList2 = 
+    [ 
+
+
+    ]
+
+birdPosList2 = 
+    [
+
+        
+    ]
+
 playerPos2 = Pos 200 300 4630 4730
 
 speedAIPos2 = Pos 1300 1400 4630 4730
@@ -129,6 +156,8 @@ speedAIPos2 = Pos 1300 1400 4630 4730
 
 exitPos2 = Pos 2000 2100 0 100
 
+
+--3
 brickPosList3 = 
     [ Pos 0 100 0 4800
     , Pos 100 1500 4735 4800
@@ -164,12 +193,27 @@ brickPosList3 =
 characterPosList3 = 
     [ Pos 750 850 150 250
     ]
+
+npcPosList3 = 
+    [ 
+
+
+    ]
+
+birdPosList3 = 
+    [
+
+        
+    ]
+
 playerPos3 = Pos 300 400 4630 4730  -- the pos of AI is 1200 1300 4630 4730
 
 speedAIPos3 = Pos 1200 1300 4630 4730
 
 exitPos3 = Pos 750 850 150 250
 
+
+--4
 brickPosList4 = 
     [ Pos 0 100 0 4000
     , Pos 1500 1600 750 4000
@@ -200,11 +244,24 @@ brickPosList4 =
 
 characterPosList4 = []
 
+npcPosList4 = 
+    [ 
+
+
+    ]
+
+birdPosList4 = 
+    [
+
+        
+    ]
+
 playerPos4 = Pos 200 300 3830 3930
 
 exitPos4 = Pos 1600 10000 2400 3000
     
 
+--5
 brickPosList5 = 
     [ Pos 0 100 0 4000
     , Pos 1500 1600 0 4000
@@ -235,6 +292,18 @@ brickPosList5 =
     ]
 
 characterPosList5 = []
+
+npcPosList5 = 
+    [ 
+
+
+    ]
+
+birdPosList5 = 
+    [
+
+        
+    ]
 
 playerPos5 = Pos 200 300 3830 3930
 

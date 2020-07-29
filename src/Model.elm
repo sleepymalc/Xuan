@@ -28,6 +28,7 @@ type AnimState =
     | Attack
     | Attacked
     | Grovel
+    | Fly
     | DebugMode
 
 type Mood = 
@@ -66,6 +67,8 @@ type alias Brick =
 type alias Map = 
     { bricks: List Brick
      ,characters: List Character
+     ,birds: List Bird
+     ,npcs: List NPC
      ,exit: Pos
     }
 
@@ -109,10 +112,10 @@ type alias NPC =
 
 type alias Bird = 
     { pos: Pos
-    , collisionPos: List Pos 
     , anim: AnimState
     , frame: Int
     }
+
 -- for jump jumpdir time
 -- for walk walkdir pos
 
@@ -363,6 +366,22 @@ initCharacters posList=
                 , chargetime=0
                 }) posList
 
+initNpcs posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Nice to see you!"
+        }) posList
+
+initBirds posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+        }) posList
+
 initBricks posList = posList
     |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
 
@@ -370,31 +389,36 @@ initMap1 =
         { bricks = initBricks brickPosList1 
         , characters = initCharacters characterPosList1 
         , exit = exitPos1
-        --exit = Pos 3000 10000 2000 3900
+        , npcs = initNpcs npcPosList1
+        , birds = initBirds birdPosList1
         }
 initMap2 =
         { bricks = initBricks brickPosList2
         ,characters = initCharacters characterPosList2
         ,exit = exitPos2
+        , npcs = initNpcs npcPosList2
+        , birds = initBirds birdPosList2
         }
 
 initMap3 =
         { bricks = initBricks brickPosList3
         ,characters = initCharacters characterPosList3
         ,exit = exitPos3
+        , npcs = initNpcs npcPosList3
+        , birds = initBirds birdPosList3
         }
 initMapDiscoverI =
         { bricks = initBricks brickPosList4
         , characters = initCharacters characterPosList4
         , exit = exitPos4
+        , npcs = initNpcs npcPosList4
+        , birds = initBirds birdPosList4
         }
 
 initMapDiscoverII =
         { bricks = initBricks brickPosList5
         , characters = initCharacters characterPosList5
         , exit = exitPos5
+        , npcs = initNpcs npcPosList5
+        , birds = initBirds birdPosList5
         }
-    
-
-
-

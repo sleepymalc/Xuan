@@ -6,7 +6,7 @@ import Collision exposing (..)
 import Text exposing (..)
 import Message exposing (..)
 import MapSetting exposing (..)
-import Model exposing (Stage(..))
+--import Model exposing (Stage(..))
 
 
 animate time model =
