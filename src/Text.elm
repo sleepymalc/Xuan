@@ -20,24 +20,25 @@ changeText state speedAI player=
                     else if player.chargetime >= 1500 && player.teachtextstate == 2 then
                         { player | teachtextstate = 3}
                     else if player.anim == Stand && player.teachtextstate == 3 then
-                        { player | text = "Now, before releasing Space key, hold A or D.", textframe = -500 }
-                    else if  player.anim == Jump && player.speed.x /= 0 && player.pos.y2 >= 3090 && player.speed.y >0 && player.teachtextstate == 3 then
-                        { player | teachtextstate = 4 }
-                    else if player.teachtextstate == 4 then
-                        { player | text = "You are ready to run away from here... Go right.", textframe = -500, teachtextstate = 5} 
+                        { player | text = "Now, hold A or D while jumping.", textframe = -500, teachtextstate =4}
+                    else if player.anim == Jump && player.speed.x == 0 && player.teachtextstate == 4 then
+                        { player | teachtextstate = 5}
+                    else if player.teachtextstate == 5 then
+                        { player | text = "You need to hold it until you release the space key!", textframe = -500}
+                    else if  player.anim == Jump && player.speed.x /= 0 && player.pos.y2 >= 3090 && player.speed.y >0 && (player.teachtextstate == 5 || player.teachtextstate == 4) then
+                        { player | teachtextstate = 6 }
+                    else if player.teachtextstate == 6 then
+                        { player | text = "You are ready to run away from here... Go right.", textframe = -500, teachtextstate = 7} 
                     else
                         { player | text = player.text }   
-                else if player.pos.x1 <= 2650 && player.pos.x1 >= 2350 then
-                    if player.anim == Stand && player.teachtextstate == 5 then
-                        { player | text = "See the soliers? Try to attack them using J.", textframe = -500 }
-                    else if player.anim == Attack && player.teachtextstate == 5 then
-                        { player | teachtextstate = 6}
-                    else if player.teachtextstate == 6 then
-                        { player | text = "You have learned everything you need, just be careful...", textframe = -50, teachtextstate = -1}
+                else if player.pos.x1 <= 2650 && player.pos.x1 >= 2350 && player.teachtextstate == 7 then
+                        { player | text = "See the soliers? Try to attack them using J.", textframe = -500, teachtextstate = 8}
+                else if player.anim == Attack && player.teachtextstate == 8 then
+                        { player | teachtextstate = 9}
+                else if player.teachtextstate == 9 then
+                        { player | text = "You have learned everything you need. Hurry up, they are coming for you... just go up, up and up...", textframe = -200, teachtextstate = -1}
                     else
                         { player | text = player.text}
-                else
-                    { player | text = player.text}
             else if player.pos.y2 <= 970 && player.anim == Stand then
                 { player | text = "Finally...", textframe = 0 }
             else
