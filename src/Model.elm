@@ -106,18 +106,21 @@ type alias NPC =
     { pos: Pos
     , anim: AnimState
     , frame: Int
+    , textframe: Int
     , count: Int
     , text: String
+    , direction: MoveDirection
+    , speed: Speed
+    , countPlayerHP: Float
     }
 
 type alias Bird = 
     { pos: Pos
     , anim: AnimState
     , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
     }
-
--- for jump jumpdir time
--- for walk walkdir pos
 
 type AIMsg = 
     AIWalk MoveDirection Bool
@@ -135,9 +138,9 @@ type alias SpeedAI =
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
-    , speedAIAnimList : List SpeedAIAnim
-    , chargetime : Float
-    , hp : Int
+    , speedAIAnimList: List SpeedAIAnim
+    , chargetime: Float
+    , hp: Int
     }
 
 initSpeedAIAnimList = 
@@ -248,6 +251,7 @@ init _=
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
+
 initstory =
     { text = ""
     , storyframe = 0
@@ -342,7 +346,7 @@ initCharacters posList=
                 , jumpdir = Up
                 , speed = Vector -0.05 0
                 , hp = 1
-                , chargetime=0
+                , chargetime = 0
                 }) posList
 
 initNpcs posList=
@@ -352,6 +356,10 @@ initNpcs posList=
                 , frame = 0
                 , count = 0
                 , text = "Nice to see you!"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+                , countPlayerHP = 10
         }) posList
 
 initBirds posList=
@@ -359,6 +367,8 @@ initBirds posList=
         (\pos-> { pos = pos
                 , anim = Stand
                 , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
         }) posList
 
 initBricks posList = posList
@@ -373,16 +383,16 @@ initMap1 =
         }
 initMap2 =
         { bricks = initBricks brickPosList2
-        ,characters = initCharacters characterPosList2
-        ,exit = exitPos2
+        , characters = initCharacters characterPosList2
+        , exit = exitPos2
         , npcs = initNpcs npcPosList2
         , birds = initBirds birdPosList2
         }
 
 initMap3 =
         { bricks = initBricks brickPosList3
-        ,characters = initCharacters characterPosList3
-        ,exit = exitPos3
+        , characters = initCharacters characterPosList3
+        , exit = exitPos3
         , npcs = initNpcs npcPosList3
         , birds = initBirds birdPosList3
         }

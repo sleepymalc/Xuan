@@ -57,7 +57,7 @@ charge player =
     {player | anim = Charge, frame = 0}
 
 grovel player = 
-    { player | anim = Grovel, frame = 0, speed = Vector 0 0}
+    { player | anim = Grovel, frame = 0, speed = Vector 0 0 }
 
 rage player = 
     { player | mood = Rage, frame = 0, speed = Vector 0 0}

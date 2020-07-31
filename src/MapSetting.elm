@@ -44,15 +44,11 @@ characterPosList1 =
     ]
 
 npcPosList1 = 
-    [ 
-
-
+    [ Pos 300 400 3830 3930 
     ]
 
 birdPosList1 = 
-    [
-
-
+    [ Pos 300 400 3830 3930
     ]
 
 playerPos1 = Pos 300 400 3830 3930

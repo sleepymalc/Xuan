@@ -34,6 +34,7 @@ view model =
                         ++ renderCharacters model.player model.map.characters
                         --++ debugCollision model.map.characters model.player
                         --++ debugAttack model.map.characters model.player
+                        ++ renderNPCs model.player model.map.npcs 
                         ++ ( if model.state == Two then
                                 renderSpeedAI model.player model.speedAI
                            else
@@ -41,6 +42,7 @@ view model =
                         )
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
+                        ++ renderNPCsText model.player model.map.npcs
                         ))
                     
         renderHtml = if model.state == Loading then
@@ -223,6 +225,18 @@ renderPlayer player=
             renderImage url pos attr
 
 
+renderNPC player npc=
+    let
+        url = getAnimUrl npc.anim npc.frame npc "NPC_"
+        attr = getDirectionAttr npc.direction
+        pos = npc.pos |> offset player |> clearOutsideImage
+
+    in    
+    renderImage url (Pos pos.x1 pos.x2 (pos.y1+10) (pos.y2+10)) attr
+
+renderNPCs player npcs =
+    List.map (renderNPC player) npcs
+
 debugCollision characters player=
     let
         charactersCollisionPos = characters
@@ -367,6 +381,19 @@ renderPlayerText player =
         w = 180
         lines = (floor(toFloat(String.length(player.text))/20)+2)
         text = player.text
+    in
+        renderT size pos w lines text
+
+renderNPCsText player npcs = 
+    List.map (renderNPCText player) npcs
+
+renderNPCText player npc = 
+    let
+        size = 18
+        pos = (Pos (npc.pos.x1-90) (npc.pos.x2-90) (npc.pos.y1+10) (npc.pos.y2+10)) |> offset player |> clearOutsideImage
+        w = 180
+        lines = (floor(toFloat(String.length(player.text))/20)+2) 
+        text = npc.text
     in
         renderT size pos w lines text
 

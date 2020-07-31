@@ -51,12 +51,19 @@ animate time model =
             |> changePos time
             |> changeFrame time)
 
+        npcs=model.map.npcs
+            |> List.map (\npc-> npc
+            |> count model.player
+            |> changeTextframe time
+            |> changeNPCText)
+
         map = model.map
-            |> changeCharacters characters
+            |> changeCharactersAndNpcs characters npcs
 
         story = model.story
             |> changeStoryframe time
             |> changeStory model.state
+
     in
         { model | map = map, player = player, story = story, speedAI = speedAI}
             |> changeState
@@ -88,16 +95,24 @@ moveSpeedAI time speedAI =
             speedAI
 
 changeState model =
+
+    let
+        playerDiscoverI = initPlayerDiscoverI model.player
+        player3 = initPlayer3 model.player
+        playerDiscoverII = initPlayerDiscoverII model.player
+        player2 = initPlayer2 model.player
+    in
+
     if arriveExit model then 
         case model.state of
             One -> 
-                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI, time = 0}
+                { model | map = initMapDiscoverI, state = DiscoverI, player = playerDiscoverI, time = 0}
             DiscoverI ->
-                { model | map = initMap3, state = Two, player = initPlayer3, time = 0}
+                { model | map = initMap3, state = Two, player = player3, time = 0}
             Two ->
-                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII, time = 0}
+                { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverII, time = 0}
             DiscoverII ->
-                { model | map = initMap2, state = Three, player = initPlayer2, time = 0}
+                { model | map = initMap2, state = Three, player = player2, time = 0}
             Three ->
                 { model | map = initMap1, state = One, player = initPlayer1, time = 0}
             _ ->
@@ -116,8 +131,8 @@ storyEnd time model=
         _ -> { model | time = model.time + time }
 
 
-changeCharacters characters map =
-    {map |characters = characters}
+changeCharactersAndNpcs characters npcs map =
+    { map |characters = characters, npcs = npcs}
 
 
 arriveExit model =
@@ -234,6 +249,15 @@ changeAnim bricks time player=
         else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
             { newplayer | anim = Jump}
         else newplayer
+
+count player npc = 
+    let
+        newcount = npc.count+1
+    in
+    if player.anim == Grovel && abs(player.pos.y1-npc.pos.y1) <200 && npc.countPlayerHP /= player.hp then
+        { npc | count=newcount, countPlayerHP = player.hp }
+    else
+        npc
 
 loseBlood damage player = 
     let 

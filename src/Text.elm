@@ -78,6 +78,18 @@ changeText state speedAI player=
         _ ->
             { player | text = player.text }
 
+changeNPCText npc = 
+    case npc.count of
+       1 ->
+        { npc | text = "Nice to see you... Again?", textframe = -300}
+       2 ->
+        { npc | text = "You must miss me so much, nice to see you again and again!", textframe = -300}
+       3 ->
+        { npc | text = "Hey, do you really want to escape??", textframe = -300}
+       4 ->
+        { npc | text = "... Why don't you just stay here?", textframe = -300}
+       _ ->
+        { npc | text = npc.text}
 
 cleartext player =
     if player.textframe >= 100 then
