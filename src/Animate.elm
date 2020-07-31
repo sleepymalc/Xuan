@@ -56,7 +56,7 @@ animate time model =
             |> List.map (\npc-> npc
             |> count model.player
             |> changeTextframe time
-            |> changeNPCText)
+            |> changeNPCText model)
 
         map = model.map
             |> changeCharactersAndNpcs characters npcs

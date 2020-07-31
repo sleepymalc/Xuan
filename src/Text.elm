@@ -78,18 +78,54 @@ changeText state speedAI player=
         _ ->
             { player | text = player.text }
 
-changeNPCText npc = 
-    case npc.count of
-       1 ->
-        { npc | text = "Nice to see you... Again?", textframe = -300}
-       2 ->
-        { npc | text = "You must miss me so much, nice to see you again and again!", textframe = -300}
-       3 ->
-        { npc | text = "Hey, do you really want to escape??", textframe = -300}
-       4 ->
-        { npc | text = "... Why don't you just stay here?", textframe = -300}
-       _ ->
-        { npc | text = npc.text}
+changeNPCText model npc = 
+    case model.state of
+        One->
+            case npc.count of
+                1 ->
+                    { npc | text = "Nice to see you... Again?", textframe = -300}
+                2 ->
+                    { npc | text = "You must miss me so much, nice to see you again and again!", textframe = -300}
+                3 ->
+                    { npc | text = "Hey, do you really want to escape??", textframe = -300}
+                4 ->
+                    { npc | text = "... Why don't you just stay here?", textframe = -300}
+                _ ->
+                    { npc | text = npc.text}
+        DiscoverI->
+            case npc.count of
+                1 ->
+                    { npc | text = "Hey!!! I said be careful!!!", textframe = -300}
+                2 ->
+                    { npc | text = "Fine, if you don't be careful... Hahaha....", textframe = -300} 
+                3 ->
+                    { npc | text = "OMG, is that XUAN????????", textframe = -300}
+                _ ->
+                    { npc | text = npc.text}
+        Two->
+            case npc.count of
+                1 ->
+                    { npc | text = "You have no chance to win XUAN anymore....", textframe = -300}
+                _ -> 
+                    { npc | text = npc.text}
+        DiscoverII->
+            case npc.count of
+                1 ->
+                    { npc | text = "I'm glad to see you!", textframe = -300}
+                2 ->
+                    { npc | text = "I'm glad to see you, AGAIN!", textframe = -300}
+                _ -> 
+                    { npc | text = npc.text}
+        Three->
+            case npc.count of
+                1->
+                    { npc | text = "Don't you want to revenge?", textframe = -300}
+                2 ->
+                    { npc | text = "I can understand you, Revenge is scary, right?", textframe = -300}
+                _ -> 
+                    { npc | text = npc.text}
+        _->
+            { npc | text = npc.text}
 
 cleartext player =
     if player.textframe >= 100 then

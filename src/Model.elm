@@ -285,27 +285,6 @@ initCharacters posList=
                 , chargetime = 0
                 }) posList
 
-initNpcs posList=
-    List.map
-        (\pos-> { pos = pos
-                , anim = Stand
-                , frame = 0
-                , count = 0
-                , text = "Nice to see you!"
-                , direction = Left
-                , speed = Vector 0 0
-                , textframe = 0
-                , countPlayerHP = 10
-        }) posList
-
-initBirds posList=
-    List.map
-        (\pos-> { pos = pos
-                , anim = Stand
-                , frame = 0
-                , direction = Right
-                , speed = Vector 0 0
-        }) posList
 
 initBricks posList = posList
     |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
@@ -314,36 +293,150 @@ initMap1 =
         { bricks = initBricks brickPosList1 
         , characters = initCharacters characterPosList1 
         , exit = exitPos1
-        , npcs = initNpcs npcPosList1
-        , birds = initBirds birdPosList1
+        , npcs = initNpcs1 npcPosList1
+        , birds = initBirds1 birdPosList1
         }
 initMap2 =
         { bricks = initBricks brickPosList2
         , characters = initCharacters characterPosList2
         , exit = exitPos2
-        , npcs = initNpcs npcPosList2
-        , birds = initBirds birdPosList2
+        , npcs = initNpcs2 npcPosList2
+        , birds = initBirds2 birdPosList2
         }
 
 initMap3 =
         { bricks = initBricks brickPosList3
         , characters = initCharacters characterPosList3
         , exit = exitPos3
-        , npcs = initNpcs npcPosList3
-        , birds = initBirds birdPosList3
+        , npcs = initNpcs3 npcPosList3
+        , birds = initBirds3 birdPosList3
         }
 initMapDiscoverI =
         { bricks = initBricks brickPosList4
         , characters = initCharacters characterPosList4
         , exit = exitPos4
-        , npcs = initNpcs npcPosList4
-        , birds = initBirds birdPosList4
+        , npcs = initNpcsDiscoverI npcPosList4
+        , birds = initBirdsDiscoverI birdPosList4
         }
 
 initMapDiscoverII =
         { bricks = initBricks brickPosList5
         , characters = initCharacters characterPosList5
         , exit = exitPos5
-        , npcs = initNpcs npcPosList5
-        , birds = initBirds birdPosList5
+        , npcs = initNpcsDiscoverII npcPosList5
+        , birds = initBirdsDiscoverII birdPosList5
         }
+        
+initNpcs1 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Go UP!!! ESCAPE!!! By the way, nice to see you!"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+                , countPlayerHP = 10
+        }) posList
+
+
+initNpcsDiscoverI posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Try to find a way out... Be careful, your power is very strong now..."
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+                , countPlayerHP = 10
+        }) posList
+
+
+initNpcs2 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Go HIGH, Go FAST! Don't let XUAN takeover your body!!!"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+                , countPlayerHP = 10
+        }) posList
+
+initNpcsDiscoverII posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Hey, where are you going?"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+                , countPlayerHP = 10
+        }) posList
+
+initNpcs3 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "REVENG... Interesting..."
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+                , countPlayerHP = 10
+        }) posList
+
+
+
+initBirds1 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+
+initBirdsDiscoverI posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+
+initBirds2 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+
+initBirdsDiscoverII posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+        
+initBirds3 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList

@@ -44,7 +44,7 @@ characterPosList1 =
     ]
 
 npcPosList1 = 
-    [ Pos 300 400 3830 3930 
+    [ Pos 2720 2820 3830 3930 
     ]
 
 birdPosList1 = 
