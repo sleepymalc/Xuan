@@ -32,6 +32,7 @@ animate time model =
                 model.player
                 |> rage 
                 |> health
+                |> chargeEffectTime time
                 |> changeRageTime time
                 |> attackedByCharacters model.map.characters
                 |> changeChargeTime time
@@ -231,6 +232,15 @@ changeChargeTime time player =
     else    
         {player | chargetime=0}    
 
+chargeEffectTime time player = 
+    let
+        newEffectTime = player.effecttime + time
+    in
+    if player.effecttime <= 1000 then
+        { player | effecttime = newEffectTime }
+    else
+        { player | effecttime = -newEffectTime }
+
 changeAnim bricks time player=
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
@@ -342,8 +352,6 @@ touchDownBrick brickSpeed time brickPos player =
                 {player | speed = speed, pos =pos , collisionPos = collisionPos}
     else
         player
-
-        
 
 changePos time player =
     let

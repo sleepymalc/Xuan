@@ -95,7 +95,7 @@ changeNPCText model npc =
         DiscoverI->
             case npc.count of
                 1 ->
-                    { npc | text = "Hey!!! I control your power carefully!!!", textframe = -300}
+                    { npc | text = "Hey!!! Control your power carefully!!!", textframe = -300}
                 2 ->
                     { npc | text = "Fine, if you don't be careful... Hahaha....", textframe = -300} 
                 3 ->

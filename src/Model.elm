@@ -89,6 +89,7 @@ type alias Player =
     , chargetime: Float
     , ragetime: Float
     , fallcount: Int
+    , effecttime: Float
     }
 
 type alias Character =
@@ -102,6 +103,7 @@ type alias Character =
     , range: Vector Float
     , hp: Int
     , chargetime: Float
+    , effecttime: Float
     }
 
 type alias NPC = 
@@ -213,6 +215,7 @@ initPlayer1 =
     , chargetime = 0
     , ragetime = 0
     , fallcount = 0
+    , effecttime = 0
     }
 
 
@@ -290,6 +293,7 @@ initCharacters posList=
                 , speed = Vector -0.05 0
                 , hp = 1
                 , chargetime = 0
+                , effecttime = 0
                 }) posList
 
 

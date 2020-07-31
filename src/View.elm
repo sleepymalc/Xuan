@@ -29,9 +29,10 @@ view model =
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
                         else
-                        ([ renderBackground, (renderBlood model.player)
+                        ([ renderBackground
                         , renderPlayer model.state model.player]
                         ++ renderCharacters model.player model.map.characters
+                        ++ renderBlood model.player
                         --++ debugCollision model.map.characters model.player
                         --++ debugAttack model.map.characters model.player
                         ++ renderNPCs model.player model.map.npcs 
@@ -64,20 +65,33 @@ renderSpeedAI player speedAI=
 
 renderBlood player = 
     if player.mood == Normal then
-        if player.hp >= 9 && player.hp <=10 then
-            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
-        else if player.hp >= 7 then
-            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
-        else if player.hp >= 5 then
-            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
-        else if player.hp >= 3 then
-            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
-        else if player.hp >= 1 then
-            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        if player.hp >= 7 && player.hp <10 then
+            [ renderImage "img/Effect/blood_1.png" (Pos 0 400 0 400) [opacity (String.fromFloat (abs(player.effecttime+100)/1000))]
+            ]
+        else if player.hp >= 5 && player.hp < 7 then
+            [ renderImage "img/Effect/blood_1.png" (Pos 0 400 0 400) [opacity (String.fromFloat (abs(player.effecttime+100)/1000))]
+            , renderImage "img/Effect/blood_2.png" (Pos 1200 1600 100 500) [opacity (String.fromFloat (abs(player.effecttime+200)/1000))]
+            , renderImage "img/Effect/blood_1.png" (Pos 1200 1400 300 500) [opacity (String.fromFloat (abs(player.effecttime+300)/1000))]            
+            ]
+        else if player.hp >= 3 && player.hp < 5 then
+            [ renderImage "img/Effect/blood_1.png" (Pos 0 400 0 400) [opacity (String.fromFloat (abs(player.effecttime+100)/1000))]
+            , renderImage "img/Effect/blood_2.png" (Pos 1200 1600 100 500) [opacity (String.fromFloat (abs(player.effecttime+250)/1000))]
+            , renderImage "img/Effect/blood_1.png" (Pos 1200 1400 300 500) [opacity (String.fromFloat (abs(player.effecttime+300)/1000))]
+            , renderImage "img/Effect/blood_5.png" (Pos 200 600 300 700) [opacity (String.fromFloat (abs(player.effecttime+300)/1000))]
+            , renderImage "img/Effect/blood_6.png" (Pos 1200 1600 400 800) [opacity (String.fromFloat (abs(player.effecttime+700)/1000))]
+            ] 
+        else if player.hp > 0 && player.hp < 3 then
+            [ renderImage "img/Effect/blood_1.png" (Pos 0 400 0 400) [opacity (String.fromFloat (abs(player.effecttime)/1000))]
+            , renderImage "img/Effect/blood_2.png" (Pos 1200 1600 100 500) [opacity (String.fromFloat (abs(player.effecttime+50)/1000))]
+            , renderImage "img/Effect/blood_1.png" (Pos 1200 1400 300 500) [opacity (String.fromFloat (abs(player.effecttime+300)/1000))]
+            , renderImage "img/Effect/blood_5.png" (Pos 200 600 300 700) [opacity (String.fromFloat (abs(player.effecttime+200)/1000))]
+            , renderImage "img/Effect/blood_6.png" (Pos 1200 1600 400 800) [opacity (String.fromFloat (abs(player.effecttime+100)/1000))]
+            , renderImage "img/Effect/blood_3.png" (Pos 400 1300 200 800) [opacity (String.fromFloat (abs(player.effecttime+950)/1000))]
+            ]  
         else
-            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+            [renderImage "img/Effect/blood_1.png" (Pos 0 0 0 0) [opacity "1"]]
     else 
-        renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        [renderImage "img/Effect/blood_1.png" (Pos 0 0 0 0) [opacity "1"]]
 
         
 
