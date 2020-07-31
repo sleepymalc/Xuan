@@ -56,7 +56,7 @@ keyNormal on keycode =
         74 ->
             AnimAttack on
         --Left
- {-       
+
         37 ->
             DebugLeft on
         --Up
@@ -71,7 +71,7 @@ keyNormal on keycode =
         --Enter
         13 ->
             ExitDebugMode 
--}
+
         _ ->
             Noop
 

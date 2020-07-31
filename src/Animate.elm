@@ -6,6 +6,7 @@ import Collision exposing (..)
 import Text exposing (..)
 import Message exposing (..)
 import MapSetting exposing (..)
+import AISettings exposing (..)
 --import Model exposing (Stage(..))
 
 
@@ -15,12 +16,12 @@ animate time model =
                 model.speedAI 
                 
                 |> moveSpeedAI model.time
-                |> changeChargeTime time
-                |> changeAnim model.map.bricks time
-                |> changeSpeed time model.map.bricks
-                |> touchDown time model.map.bricks
-                |> changePos time
-                |> changeFrame time
+                |> changeChargeTime 17
+                |> changeAnim model.map.bricks 17
+                |> changeSpeed 17 model.map.bricks
+                |> touchDown 17 model.map.bricks
+                |> changePos 17
+                |> changeFrame 17
 
             else
                 model.speedAI
@@ -60,7 +61,7 @@ animate time model =
     in
         { model | map = map, player = player, story = story, speedAI = speedAI}
             |> changeState
-            |> storyEnd time
+            |> storyEnd 17
 
 moveSpeedAI time speedAI =
     case List.head speedAI.speedAIAnimList of
