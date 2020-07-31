@@ -89,8 +89,31 @@ offset player pos =
         Pos (pos.x1-dx) (pos.x2-dx) (pos.y1-dy) (pos.y2-dy)
 
 renderbricks posList player=
-    List.map (renderbrick player) posList
+    List.map (renderbrick1 player) posList
 
+renderbrick1 player pos=
+    let
+        viewpos = pos |> offset player
+                    |> cutBrickView
+                    |> clearOutsideImage
+        
+    in
+    svg 
+        [ x (String.fromFloat (viewpos.x1-8))
+        , y (String.fromFloat viewpos.y1)
+        , width (String.fromFloat (viewpos.x2-viewpos.x1+16))
+        , height (String.fromFloat (viewpos.y2-viewpos.y1))
+        , viewBox "0 0 100 100"
+        , preserveAspectRatio"none"
+        ]
+        [   
+            Svg.image
+                [xlinkHref "img/stone.jpg"]
+                []
+        ]
+    
+
+    
 renderbrick player pos=
     let
         viewpos = pos |> offset player
