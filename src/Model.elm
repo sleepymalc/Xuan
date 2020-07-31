@@ -123,9 +123,6 @@ type alias Bird =
     , speed: Speed
     }
 
-type AIMsg = 
-    AIWalk MoveDirection Bool
-    | AICharge Jump Bool
 
 
 type alias SpeedAI =
