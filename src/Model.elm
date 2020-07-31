@@ -89,7 +89,11 @@ type alias Player =
     , chargetime: Float
     , ragetime: Float
     , fallcount: Int
-    , effecttime: Float
+    , effecttimeOne: Float
+    , effecttimeTwo: Float
+    , effecttimeThree: Float
+    , effecttimeFour: Float
+    , effecttimeFive: Float
     }
 
 type alias Character =
@@ -215,7 +219,11 @@ initPlayer1 =
     , chargetime = 0
     , ragetime = 0
     , fallcount = 0
-    , effecttime = 0
+    , effecttimeOne = 0
+    , effecttimeTwo = 200
+    , effecttimeThree = 400
+    , effecttimeFour = 600
+    , effecttimeFive = 800
     }
 
 

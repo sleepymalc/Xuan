@@ -7,6 +7,7 @@ import Text exposing (..)
 import Message exposing (..)
 import MapSetting exposing (..)
 import AISettings exposing (..)
+import Html exposing (th)
 --import Model exposing (Stage(..))
 
 
@@ -234,12 +235,32 @@ changeChargeTime time player =
 
 chargeEffectTime time player = 
     let
-        newEffectTime = player.effecttime + time
+        newEffectTimeOne = if player.effecttimeOne <=1000 then 
+                                player.effecttimeOne + time
+                            else 
+                                -(player.effecttimeOne + time)
+        newEffectTimeTwo = if player.effecttimeTwo <=1000 then
+                                player.effecttimeTwo+ 1.25*time
+                            else 
+                                -(player.effecttimeTwo + 1.25*time)
+        newEffectTimeThree = if player.effecttimeThree <= 1000 then 
+                                player.effecttimeThree+ 1.5*time
+                            else 
+                                -(player.effecttimeThree + 1.5*time)
+        newEffectTimeFour = if player.effecttimeFour <= 1000 then
+                                player.effecttimeFour+ 1.75*time
+                            else    
+                                -(player.effecttimeFour + 1.75*time)
+        newEffectTimeFive = if player.effecttimeFive <=1000 then 
+                                player.effecttimeFive+ 2*time
+                            else
+                                -(player.effecttimeFive + 2*time)
     in
-    if player.effecttime <= 1000 then
-        { player | effecttime = newEffectTime }
-    else
-        { player | effecttime = -newEffectTime }
+    { player | 
+        effecttimeOne = newEffectTimeOne,effecttimeTwo = newEffectTimeTwo,     
+        effecttimeThree = newEffectTimeThree, effecttimeFour = newEffectTimeFour, 
+        effecttimeFive = newEffectTimeFive} 
+        
 
 changeAnim bricks time player=
     let
@@ -278,10 +299,10 @@ loseBlood damage player =
 
 health player = 
     let
-        hp=if player.hp==10 then
-            player.hp
+        hp=if player.hp>=10 then
+            10
             else
-            player.hp+0.0005        
+            player.hp+0.0013        
     in
     { player | hp=hp }
 
@@ -344,7 +365,7 @@ touchDownBrick brickSpeed time brickPos player =
             newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                if player.speed.y >= 1.5 then
+                if player.speed.y >= 0.1 then
                     { newplayer | pos = pos , collisionPos = collisionPos, fallcount = fallcount} |> grovel
                 else 
                     { player | pos = pos, collisionPos = collisionPos} |> stand
