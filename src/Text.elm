@@ -31,10 +31,10 @@ changeText state speedAI player=
                         { player | text = "You are ready to run away from here... Go right.", textframe = -500, teachtextstate = 7} 
                     else
                         { player | text = player.text }   
-                else if player.pos.x1 <= 2650 && player.pos.x1 >= 2350 && player.teachtextstate == 7 then
+                else if player.pos.x1 <= 2650 && player.pos.x1 >= 2000 && player.teachtextstate == 7 then
                     { player | text = "See the soliers? Try to attack them using J.", textframe = -500, teachtextstate = 8}
-                else if player.pos.x1 >= 1500 && player.teachtextstate /= 7 then
-                    { player | text = "You don't needs any instruction!?? Fine, good luck.....", textframe = -500, teachtextstate = -1} 
+                else if player.pos.x1 >= 1500 && player.teachtextstate < 7 then
+                    { player | text = "You don't needs more instructions !?? Fine, good luck.....", textframe = -500, teachtextstate = -1} 
                 else if player.anim == Attack && player.teachtextstate == 8 then
                     { player | teachtextstate = 9}
                 else if player.teachtextstate == 9 then
