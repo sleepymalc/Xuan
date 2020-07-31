@@ -270,80 +270,59 @@ initPlayer1 =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
-    
     }
 
 
-initPlayerDiscoverI =
-    { text = "What's going on?"
-    , teachtextstate = -1
+initPlayerDiscoverI player=
+    { player |
+      text = "What's going on?"
     , pos = MapSetting.playerPos4
     , collisionPos = standcollisionPos MapSetting.playerPos4
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
     }
 
-initPlayer2 =
-    { text = "I am Song Yuanhuai."
-    , teachtextstate = -1
-    , pos = speedAIPos2 --MapSetting.playerPos2
-    , collisionPos = standcollisionPos speedAIPos2--MapSetting.playerPos2
+initPlayer2 player =
+    { player |
+      text = "I am Song Yuanhuai."
+    , pos = speedAIPos2
+    , collisionPos = standcollisionPos speedAIPos2
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
     }
 
-initPlayerDiscoverII =
-    { text = "Life is a series of choices, and you don't know about the consequences."
-    , teachtextstate = -1
+initPlayerDiscoverII player =
+    { player |
+      text = "Life is a series of choices, and you don't know about the consequences."
     , pos = MapSetting.playerPos5
     , collisionPos = standcollisionPos MapSetting.playerPos5
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
     }
 
-initPlayer3 =
-    { text = "I am back... FOR REVENGE!"
-    , teachtextstate = -1
+initPlayer3 player=
+    { player |
+      text = "I am back... FOR REVENGE!"
     , pos = MapSetting.playerPos3
     , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
     }
 
 
