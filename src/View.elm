@@ -144,7 +144,8 @@ connectName namePrefix anim id=
 --Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+        --prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
@@ -181,7 +182,7 @@ getAnimUrl anim frame player namePrefix=
                     connectName namePrefix "charge" 2
 
             Grovel ->
-                    connectName namePrefix "charge" 2
+                    connectName namePrefix "grovel" 0
 
             Attacked ->
                 if ( player.speed.x < 0 && player.direction == Left)
@@ -216,7 +217,10 @@ renderPlayer player=
         attr = getDirectionAttr player.direction
         pos = getPlayerViewPos player
     in
-        renderImage url pos attr
+        if player.anim == Grovel then
+            renderImage url (Pos (pos.x1+80) (pos.x2-80) (pos.y1+30) (pos.y2+30)) attr
+        else
+            renderImage url pos attr
 
 
 debugCollision characters player=
