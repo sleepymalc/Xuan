@@ -30,7 +30,7 @@ view model =
                             [renderS 20 100 1 "Loading..."]
                         else
                         ([ renderBackground 
-                        , renderPlayer model.player]
+                        , renderPlayer model.state model.player]
                         ++ renderCharacters model.player model.map.characters
                         --++ debugCollision model.map.characters model.player
                         --++ debugAttack model.map.characters model.player
@@ -210,10 +210,13 @@ getPlayerViewPos player =
     |> offset player 
     |> resizePlayer
 
-renderPlayer player= 
+renderPlayer state player=
     let
         url = getAnimUrl player.anim player.frame player ""
-        attr = getDirectionAttr player.direction
+        attr = if state == Two then
+                    getDirectionAttr player.direction ++ [opacity "0.5"]
+               else
+                    getDirectionAttr player.direction
         pos = getPlayerViewPos player
     in
         renderImage url pos attr
@@ -361,7 +364,7 @@ renderPlayerText player =
         size = 18
         pos = getPlayerViewPos player
         w = 180
-        lines = (floor(toFloat(String.length(player.text))/20)+2)
+        lines = (floor(toFloat(String.length(player.text))/20)+3)
         text = player.text
     in
         renderT size pos w lines text
