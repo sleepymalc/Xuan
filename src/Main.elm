@@ -52,6 +52,9 @@ keyNormal on keycode =
         --Space
         32 ->
             AnimCharge on
+        --B
+        66 ->
+            AnimCharge on
         --J
         74 ->
             AnimAttack on
@@ -86,6 +89,9 @@ keyRage on keycode =
             AnimWalk Right on
         --Space
         32 ->
+            AnimCharge on
+        --B
+        66 ->
             AnimCharge on
         --J
         74 ->
