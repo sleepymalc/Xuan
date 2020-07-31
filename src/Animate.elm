@@ -14,7 +14,6 @@ animate time model =
     let
         speedAI = if model.state == Two then
                 model.speedAI 
-                
                 |> moveSpeedAI model.time
                 |> changeChargeTime 17
                 |> changeAnim model.map.bricks 17
@@ -22,9 +21,9 @@ animate time model =
                 |> touchDown 17 model.map.bricks
                 |> changePos 17
                 |> changeFrame 17
-
             else
                 model.speedAI
+
         player = 
             if model.player.anim == DebugMode then
                 model.player
@@ -32,6 +31,7 @@ animate time model =
             else
                 model.player
                 |> rage 
+                |> health
                 |> changeRageTime time
                 |> attackedByCharacters model.map.characters
                 |> changeChargeTime time
@@ -253,10 +253,10 @@ changeAnim bricks time player=
 
 count player npc = 
     let
-        newcount = npc.count+1
+        newNPCCount = npc.count+1
     in
-    if player.anim == Grovel && abs(player.pos.y1-npc.pos.y1) <200 && npc.countPlayerHP /= player.hp then
-        { npc | count=newcount, countPlayerHP = player.hp }
+    if player.anim == Grovel && abs(player.pos.y1-npc.pos.y1) <400 && npc.count+1 == player.fallcount then
+        { npc | count=newNPCCount}
     else
         npc
 
@@ -265,6 +265,15 @@ loseBlood damage player =
         hp = player.hp - damage
     in
     { player | hp = hp }
+
+health player = 
+    let
+        hp=if player.hp==10 then
+            player.hp
+            else
+            player.hp+0.0005        
+    in
+    { player | hp=hp }
 
 rage player = 
     if player.hp <= 0 then
@@ -321,11 +330,12 @@ touchDownBrick brickSpeed time brickPos player =
             speed = Vector player.speed.x 0
             pos = Pos player.pos.x1 player.pos.x2 (player.pos.y1 + dy) (player.pos.y2 + dy)
             collisionPos = standcollisionPos pos
+            fallcount = player.fallcount+1
             newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                if player.speed.y >= 2 then
-                    { newplayer | pos = pos , collisionPos = collisionPos} |> grovel
+                if player.speed.y >= 1.5 then
+                    { newplayer | pos = pos , collisionPos = collisionPos, fallcount = fallcount} |> grovel
                 else 
                     { player | pos = pos, collisionPos = collisionPos} |> stand
             else

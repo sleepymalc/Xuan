@@ -40,11 +40,11 @@ characterPosList1 =
     , Pos 1800 1900 2250 2350
     , Pos 2000 2100 1075 1175
     , Pos 2700 2800 1075 1175
-    , Pos 2900 3000 3700 3800  --debug
+    , Pos 2430 2530 3540 3640  --debug
     ]
 
 npcPosList1 = 
-    [ Pos 2720 2820 3830 3930 
+    [ Pos  3000 3100 3700 3800
     ]
 
 birdPosList1 = 

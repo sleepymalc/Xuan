@@ -29,7 +29,7 @@ view model =
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
                         else
-                        ([ renderBackground 
+                        ([ renderBackground, (renderBlood model.player)
                         , renderPlayer model.state model.player]
                         ++ renderCharacters model.player model.map.characters
                         --++ debugCollision model.map.characters model.player
@@ -43,13 +43,10 @@ view model =
                         ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
                         ++ renderNPCsText model.player model.map.npcs
-                        ))
-                    
+                        ))                    
         renderHtml = if model.state == Loading then
                         List.map loadImg initLoadPack
                     else []
-
-
     in        
         div
             [ Html.Attributes.style "height" "0px"]
@@ -65,7 +62,24 @@ renderSpeedAI player speedAI=
     in
         [renderImage url viewpos attr]
 
+renderBlood player = 
+    if player.mood == Normal then
+        if player.hp >= 9 && player.hp <=10 then
+            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        else if player.hp >= 7 then
+            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        else if player.hp >= 5 then
+            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        else if player.hp >= 3 then
+            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        else if player.hp >= 1 then
+            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+        else
+            renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
+    else 
+        renderImage "img/background/blood_1.png" (Pos 0 400 0 200) []
 
+        
 
 offset player pos =
     let
@@ -117,7 +131,7 @@ cutBrickView viewpos =
 
 
 renderBackground =
-    renderImage "img/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+    renderImage "img/background/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
@@ -135,7 +149,7 @@ renderCharacter player character =
 
 clearOutsideImage viewpos=
     if viewpos.x2<0 || viewpos.x1>viewAttrs.size.x || viewpos.y2<0 || viewpos.y1>viewAttrs.size.y then
-        Pos 0 0 0 0
+        Pos -1600 -1600 0 0
     else
         viewpos
 
@@ -223,7 +237,7 @@ renderPlayer state player=
         pos = getPlayerViewPos player
     in
         if player.anim == Grovel then
-            renderImage url (Pos (pos.x1+80) (pos.x2-80) (pos.y1+30) (pos.y2+30)) attr
+            renderImage url (Pos (pos.x1+85) (pos.x2-85) (pos.y1+30) (pos.y2+30)) attr
         else
             renderImage url pos attr
 
@@ -393,12 +407,11 @@ renderNPCsText player npcs =
 renderNPCText player npc = 
     let
         size = 18
-        pos = (Pos (npc.pos.x1-90) (npc.pos.x2-90) (npc.pos.y1+10) (npc.pos.y2+10)) |> offset player |> clearOutsideImage
+        pos = (Pos (npc.pos.x1-150) (npc.pos.x2-150) (npc.pos.y1+10) (npc.pos.y2+10)) |> offset player |> clearOutsideImage
         w = 180
-        lines = (floor(toFloat(String.length(player.text))/20)+2) 
-        text = npc.text
+        lines = (floor(toFloat(String.length(npc.text))/20)+2) 
     in
-        renderT size pos w lines text
+        renderT size pos w lines npc.text
 
 renderS size w lines text =
     foreignObject [ x "200"

@@ -88,6 +88,7 @@ type alias Player =
     , hp: Float
     , chargetime: Float
     , ragetime: Float
+    , fallcount: Int
     }
 
 type alias Character =
@@ -112,7 +113,6 @@ type alias NPC =
     , text: String
     , direction: MoveDirection
     , speed: Speed
-    , countPlayerHP: Float
     }
 
 type alias Bird = 
@@ -136,6 +136,7 @@ type alias SpeedAI =
     , speedAIAnimList: List SpeedAIAnim
     , chargetime: Float
     , hp: Int
+    , fallcount: Int
     }
 
 initSpeedAI = 
@@ -149,6 +150,7 @@ initSpeedAI =
     , speedAIAnimList = AISettings.initSpeedAIAnimList
     , chargetime = 0
     , hp = 10
+    , fallcount = 0
     }
 
 type alias Model =
@@ -210,6 +212,7 @@ initPlayer1 =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    , fallcount = 0
     }
 
 
@@ -224,6 +227,7 @@ initPlayerDiscoverI player=
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0 
+    , fallcount = 0
     }
 
 initPlayer2 player =
@@ -237,6 +241,7 @@ initPlayer2 player =
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0 
+    , fallcount = 0
     }
 
 initPlayerDiscoverII player =
@@ -250,6 +255,7 @@ initPlayerDiscoverII player =
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0 
+    , fallcount = 0
     }
 
 initPlayer3 player=
@@ -262,7 +268,8 @@ initPlayer3 player=
     , textframe = 0
     , direction = Left
     , jumpdir = Up
-    , speed = Vector 0 0 
+    , speed = Vector 0 0
+    , fallcount = 0
     }
 
 
@@ -337,7 +344,6 @@ initNpcs1 posList=
                 , direction = Left
                 , speed = Vector 0 0
                 , textframe = 0
-                , countPlayerHP = 10
         }) posList
 
 
@@ -345,13 +351,12 @@ initNpcsDiscoverI posList=
     List.map
         (\pos-> { pos = pos
                 , anim = Stand
-                , frame = 0
+                , frame = -500
                 , count = 0
-                , text = "Try to find a way out... Be careful, your power is very strong now..."
+                , text = "Be careful, your power is very strong now..."
                 , direction = Left
                 , speed = Vector 0 0
                 , textframe = 0
-                , countPlayerHP = 10
         }) posList
 
 
@@ -365,7 +370,6 @@ initNpcs2 posList=
                 , direction = Left
                 , speed = Vector 0 0
                 , textframe = 0
-                , countPlayerHP = 10
         }) posList
 
 initNpcsDiscoverII posList=
@@ -378,7 +382,6 @@ initNpcsDiscoverII posList=
                 , direction = Left
                 , speed = Vector 0 0
                 , textframe = 0
-                , countPlayerHP = 10
         }) posList
 
 initNpcs3 posList=
@@ -387,14 +390,11 @@ initNpcs3 posList=
                 , anim = Stand
                 , frame = 0
                 , count = 0
-                , text = "REVENG... Interesting..."
+                , text = "REVENGE?? Interesting..."
                 , direction = Left
                 , speed = Vector 0 0
                 , textframe = 0
-                , countPlayerHP = 10
         }) posList
-
-
 
 initBirds1 posList=
     List.map
