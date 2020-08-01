@@ -41,20 +41,25 @@ view model =
                            else
                                 []
                         )
-                        ++ renderbricks (List.map .pos model.map.bricks) model
                         ++ [renderPlayerText model.player]
                         ++ renderNPCsText model.player model.map.npcs
                         ++ renderBlood model.player
                         ))                    
-        renderHtml = if model.state == Loading then
+        renderLoad = if model.state == Loading then
                         List.map loadImg initLoadPack
                     else []
-    in        
-        div
-            [ Html.Attributes.style "height" "0px"]
-            [ renderSvg
-            , span[Html.Attributes.style "opacity" "0"]renderHtml
-            ]    
+        renderHtml = renderbricks (List.map .pos model.map.bricks) model
+
+    in  div[]
+        [         
+            div
+                [ Html.Attributes.style "height" "0px"]
+                [ renderSvg
+                , span[Html.Attributes.style "opacity" "0"] renderLoad
+                ]    
+        , div []renderHtml
+
+        ]
 
 renderSpeedAI player speedAI= 
     let
@@ -125,19 +130,9 @@ renderbrick1 model pos=
                 else
                     "img/map_1/stone_1.png"
     in
-    svg 
-        [ x (String.fromFloat (viewpos.x1-8))
-        , y (String.fromFloat viewpos.y1)
-        , width (String.fromFloat (viewpos.x2-viewpos.x1+16))
-        , height (String.fromFloat (viewpos.y2-viewpos.y1))
-        , viewBox "0 0 100 100"
-        , preserveAspectRatio"none"
-        ]
-        [   
-            Svg.image
-                [xlinkHref text]
-                []
-        ]
+        renderHtmlImg model.size text viewpos
+        --renderImage text viewpos []
+
     
 
     
@@ -409,6 +404,27 @@ renderButton msg url size pos=
         [ Html.img [src url
         , height ((String.fromFloat size.y)++"px") 
         , width ((String.fromFloat size.x)++"px")][] ]
+
+renderHtmlImg size url svgpos=
+    let
+        pos = svgpos|>toHtmlPos size
+    in
+        Html.img [src url
+            , height ((String.fromFloat (pos.y2-pos.y1))++"px") 
+            , width ((String.fromFloat (pos.x2-pos.x1))++"px")
+            , Html.Attributes.style "position" "absolute"
+            , Html.Attributes.style "left" ((String.fromFloat pos.x1)++"px")
+            , Html.Attributes.style "top" ((String.fromFloat pos.y1)++"px")][]
+            
+toHtmlPos size pos =
+    let
+        dy = size.y/2 - size.x/2/2
+        x1 = pos.x1 /1600 * size.x
+        x2 = pos.x2 /1600 * size.x
+        y1 = pos.y1 /1600 * size.x + dy
+        y2 = pos.y2 /1600 * size.x+dy
+    in
+        Pos x1 x2 y1 y2
 
 
 
