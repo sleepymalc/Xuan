@@ -29,7 +29,7 @@ view model =
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
                         else
-                        ([ renderBackground
+                        ([ renderBackground model
                         , renderPlayer model.state model.player]
                         ++ renderCharacters model.player model.map.characters
                         
@@ -41,7 +41,7 @@ view model =
                            else
                                 []
                         )
-                        ++ renderbricks (List.map .pos model.map.bricks) model.player
+                        ++ renderbricks (List.map .pos model.map.bricks) model
                         ++ [renderPlayerText model.player]
                         ++ renderNPCsText model.player model.map.npcs
                         ++ renderBlood model.player
@@ -104,14 +104,26 @@ offset player pos =
     in
         Pos (pos.x1-dx) (pos.x2-dx) (pos.y1-dy) (pos.y2-dy)
 
-renderbricks posList player=
-    List.map (renderbrick1 player) posList
+renderbricks posList model=
+    List.map (renderbrick1 model) posList
 
-renderbrick1 player pos=
+renderbrick1 model pos=
     let
-        viewpos = pos |> offset player
+        viewpos = pos |> offset model.player
                     |> cutBrickView
                     |> clearOutsideImage
+        text = if model.state == One then
+                    "img/map_1/stone_1.png"
+                else if model.state == DiscoverI then
+                    "img/map_2/stone_1.png"
+                else if model.state == Two then
+                    "img/map_3/stone_1.png"
+                else if model.state == DiscoverII then
+                    "img/map_4/stone_1.png"
+                else if model.state == Three then
+                    "img/map_5/stone_1.png"
+                else
+                    "img/map_1/stone_1.png"
     in
     svg 
         [ x (String.fromFloat (viewpos.x1-8))
@@ -123,7 +135,7 @@ renderbrick1 player pos=
         ]
         [   
             Svg.image
-                [xlinkHref "img/stone.jpg"]
+                [xlinkHref text]
                 []
         ]
     
@@ -168,8 +180,19 @@ cutBrickView viewpos =
 
 
 
-renderBackground =
-    renderImage "img/background/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+renderBackground model=
+    if model.state == One then
+        renderImage "img/background/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+    else if model.state == DiscoverI then
+        renderImage "img/background/background2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else if model.state == Two then
+        renderImage "img/background/background3.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else if model.state == DiscoverII then
+        renderImage "img/background/background4.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else if model.state == Three then
+        renderImage "img/background/background5.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else
+       renderImage "img/background/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 

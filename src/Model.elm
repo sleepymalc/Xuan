@@ -352,6 +352,8 @@ initMapDiscoverII =
         , birds = initBirdsDiscoverII birdPosList5
         }
         
+
+        
 initNpcs1 posList=
     List.map
         (\pos-> { pos = pos

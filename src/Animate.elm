@@ -101,9 +101,9 @@ changeState model =
 
     let
         playerDiscoverI = initPlayerDiscoverI model.player
-        player3 = initPlayer3 model.player
-        playerDiscoverII = initPlayerDiscoverII model.player
         player2 = initPlayer2 model.player
+        playerDiscoverII = initPlayerDiscoverII model.player
+        player3 = initPlayer3 model.player
     in
 
     if arriveExit model then 
@@ -111,11 +111,11 @@ changeState model =
             One -> 
                 { model | map = initMapDiscoverI, state = DiscoverI, player = playerDiscoverI, time = 0}
             DiscoverI ->
-                { model | map = initMap3, state = Two, player = player3, time = 0}
+                { model | map = initMap2, state = Two, player = player2, time = 0}
             Two ->
                 { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverII, time = 0}
             DiscoverII ->
-                { model | map = initMap2, state = Three, player = player2, time = 0}
+                { model | map = initMap3, state = Three, player = player3, time = 0}
             Three ->
                 { model | map = initMap1, state = One, player = initPlayer1, time = 0}
             _ ->
