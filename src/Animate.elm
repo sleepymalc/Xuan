@@ -64,13 +64,12 @@ animate time model =
             |> changeCharactersAndNpcs characters npcs
 
         story = model.story
-            |> changeStoryframe time
             |> changeStory model.state
 
     in
         { model | map = map, player = player, story = story, speedAI = speedAI}
             |> changeState
-            |> storyEnd 17
+            |> changeCGandStory time
 
 moveSpeedAI time speedAI =
     case List.head speedAI.speedAIAnimList of
@@ -98,7 +97,6 @@ moveSpeedAI time speedAI =
             speedAI
 
 changeState model =
-
     let
         playerDiscoverI = initPlayerDiscoverI model.player
         player2 = initPlayer2 model.player
@@ -128,14 +126,6 @@ changeState model =
         model
     
 storyOneTime = 2000
-
-storyEnd time model= 
-    case model.state of
-        StoryOne ->
-            if model.time > storyOneTime then
-                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
-            else { model | time = model.time + time }
-        _ -> { model | time = model.time + time }
 
 
 changeCharactersAndNpcs characters npcs map =
@@ -407,5 +397,126 @@ changeFrame time player =
 changeTextframe time player =
     { player | textframe = player.textframe + 1 }
 
-changeStoryframe time story =
-    { story | storyframe = story.storyframe + 1 }
+changeCGandStory time model =
+    let 
+        cgtime = model.cgtime + time
+    in
+
+    case model.state of
+        Story1_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG1_1, cgtime = 0 }
+        CG1_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Story1_2, cgtime = 0 }
+        Story1_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG1_2, cgtime = 0 }
+        CG1_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Story1_3, cgtime = 0 }
+        Story1_3 -> 
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG1_3, cgtime = 0 }
+        CG1_3 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Story1_4, cgtime = 0 }
+        Story1_4 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG1_4, cgtime = 0 }
+        CG1_4 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = One, cgtime = 0 }
+        Story2_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG2_1, cgtime = 0 }        
+        CG2_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Story2_2, cgtime = 0 }
+        Story2_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG2_2, cgtime = 0 }
+        CG2_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = DiscoverI, cgtime = 0 }
+        Story3_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG3_1, cgtime = 0 }
+        CG3_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Two, cgtime = 0 }
+        Story4_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = DiscoverII, cgtime = 0 }
+        Story5_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG5_1, cgtime = 0 }
+        CG5_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Story5_2, cgtime = 0 }
+        Story5_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG5_2, cgtime = 0 }
+        CG5_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = Three, cgtime = 0 }
+        Story6_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG6_1, cgtime = 0 }
+        CG6_1 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = CG6_2, cgtime = 0 }
+        CG6_2 ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = LOGO, cgtime = 0 }
+        LOGO ->
+            if model.cgtime <= 5000 then
+                { model | cgtime = cgtime }
+            else
+                { model | state = One, cgtime = 0 }
+        _ ->
+            model

@@ -24,13 +24,18 @@ view model =
     let
         renderSvg = svg
                         (gameUIAttribute model.size)
-                        (if model.state == StoryOne then
+                        (if model.state == Story1_1 || model.state == Story1_2 || 
+                            model.state == Story1_3 || model.state == Story1_4  then
                             [renderStory model.story]
+                        else if model.state == CG1_1 || model.state == CG1_2 ||
+                                model.state == CG1_3 || model.state == CG1_4    then 
+                            [renderCG model]
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
                         else
                         ([ renderBackground model
-                        , renderPlayer model.state model.player]
+                        , renderPlayer model.state model.player
+                        ]
                         ++ renderCharacters model.player model.map.characters
                         
                         --++ debugCollision model.map.characters model.player
@@ -508,4 +513,17 @@ renderStory story =
         text = story.text
     in
         renderS size w lines text
+
+renderCG model = 
+    case model.state of 
+        CG1_1 ->
+            renderImage "img/CG/CG1/CG1_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+        CG1_2 ->
+            renderImage "img/CG/CG1/CG1_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+        CG1_3 ->
+            renderImage "img/CG/CG1/CG1_3.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+        CG1_4 ->
+            renderImage "img/CG/CG1/CG1_4.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+        _ ->
+            renderImage "img/background.png" (Pos 0 0 0 0) []
 
