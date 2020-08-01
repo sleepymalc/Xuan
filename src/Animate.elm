@@ -8,7 +8,7 @@ import Message exposing (..)
 import MapSetting exposing (..)
 import AISettings exposing (..)
 import Html exposing (th)
---import Model exposing (Stage(..))
+import ChangeState exposing (..)
 
 
 animate time model =
@@ -96,45 +96,11 @@ moveSpeedAI time speedAI =
         Nothing ->
             speedAI
 
-changeState model =
-    let
-        playerDiscoverI = initPlayerDiscoverI model.player
-        player2 = initPlayer2 model.player
-        playerDiscoverIIWin = initPlayerDiscoverII model.player
-        playerDiscoverIILose = { playerDiscoverIIWin | inrage = True }
-        player3 = initPlayer3 model.player
-    in
-
-    if arriveExit model model.player then 
-        case model.state of
-            One -> 
-                { model | map = initMapDiscoverI, state = DiscoverI, player = playerDiscoverI, time = 0}
-            DiscoverI ->
-                { model | map = initMap2, state = Two, player = player2, time = 0}
-            Two ->
-                if arriveExit model model.speedAI then
-                    { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverIILose, time = 0}
-                else
-                    { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverIIWin, time = 0}
-            DiscoverII ->
-                { model | map = initMap3, state = Three, player = player3, time = 0}
-            Three ->
-                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
-            _ ->
-                model
-    else
-        model
-    
-storyOneTime = 2000
-
-
 changeCharactersAndNpcs characters npcs map =
     { map |characters = characters, npcs = npcs}
 
 
-arriveExit model player =
-    player.pos.x2 >= model.map.exit.x1 && player.pos.x1 <= model.map.exit.x2
- && player.pos.y1 <= model.map.exit.y2 && player.pos.y2 >= model.map.exit.y1
+
 
 attackedByPlayer player character =
     let
@@ -397,126 +363,3 @@ changeFrame time player =
 changeTextframe time player =
     { player | textframe = player.textframe + 1 }
 
-changeCGandStory time model =
-    let 
-        cgtime = model.cgtime + time
-    in
-
-    case model.state of
-        Story1_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG1_1, cgtime = 0 }
-        CG1_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Story1_2, cgtime = 0 }
-        Story1_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG1_2, cgtime = 0 }
-        CG1_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Story1_3, cgtime = 0 }
-        Story1_3 -> 
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG1_3, cgtime = 0 }
-        CG1_3 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Story1_4, cgtime = 0 }
-        Story1_4 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG1_4, cgtime = 0 }
-        CG1_4 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = One, cgtime = 0 }
-        Story2_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG2_1, cgtime = 0 }        
-        CG2_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Story2_2, cgtime = 0 }
-        Story2_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG2_2, cgtime = 0 }
-        CG2_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = DiscoverI, cgtime = 0 }
-        Story3_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG3_1, cgtime = 0 }
-        CG3_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Two, cgtime = 0 }
-        Story4_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = DiscoverII, cgtime = 0 }
-        Story5_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG5_1, cgtime = 0 }
-        CG5_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Story5_2, cgtime = 0 }
-        Story5_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG5_2, cgtime = 0 }
-        CG5_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = Three, cgtime = 0 }
-        Story6_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG6_1, cgtime = 0 }
-        CG6_1 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = CG6_2, cgtime = 0 }
-        CG6_2 ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = LOGO, cgtime = 0 }
-        LOGO ->
-            if model.cgtime <= 5000 then
-                { model | cgtime = cgtime }
-            else
-                { model | state = One, cgtime = 0 }
-        _ ->
-            model
