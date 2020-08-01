@@ -7,8 +7,8 @@ type alias Pos =
     , y2: Float }
 --1
 brickPosList1 =
-    [ Pos 0 100 3200 3935
-    , Pos 0 1500 3100 3200
+    [ --Pos 0 100 3200 3935
+     Pos 0 1500 3100 3200
     , Pos 1700 3200 0 100
     , Pos 0 3135 3935 4000
     , Pos 3135 3200 775 4000
@@ -33,7 +33,10 @@ brickPosList1 =
     , Pos 1900 2300 775 950
     , Pos 2500 2900 775 950  --[1600,3200]*[800,1600]
     ]
-
+brickWallList1 = 
+    [ Pos 0 100 3200 3935 
+    ]
+    
 characterPosList1 =
     [ Pos 2900 3000 3205 3305
     , Pos 1800 1900 2935 3035
@@ -111,6 +114,10 @@ brickPosList2 =
     , Pos -600 -100 3800 3900
     ]
 
+brickWallList2 = 
+    [ Pos 0 100 3200 3935 
+    ]
+
 characterPosList2 =
     [ Pos 175 275 4150 4250
     , Pos 300 400 3735 3835
@@ -186,6 +193,10 @@ brickPosList3 =
     , Pos 700 900 250 325     --[0,1600]*[0,800]
     ]
 
+brickWallList3 = 
+    [ Pos 0 100 3200 3935 
+    ]
+
 characterPosList3 = 
     [ Pos 750 850 150 250
     ]
@@ -237,6 +248,9 @@ brickPosList4 =
     , Pos 2500 2550 300 850   --[1600,3200]*[0,800]
     , Pos 2650 2950 400 850   --[1600,3200]*[0,800]
     ]
+brickWallList4 = 
+    [ Pos 0 100 3200 3935 
+    ]
 
 characterPosList4 = []
 
@@ -285,6 +299,10 @@ brickPosList5 =
     , Pos 500 700 1150 1650
     , Pos 1100 1500 1150 1550 --[0,1600]*[800,1600]
     , Pos 800 1200 500 850   --[0,1600]*[0,800]
+    ]
+
+brickWallList5 = 
+    [ Pos 0 100 3200 3935 
     ]
 
 characterPosList5 = []

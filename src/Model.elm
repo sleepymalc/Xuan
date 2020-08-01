@@ -67,10 +67,11 @@ type alias Brick =
 
 type alias Map = 
     { bricks: List Brick
-     ,characters: List Character
-     ,birds: List Bird
-     ,npcs: List NPC
-     ,exit: Pos
+    , wallbricks: List Brick
+    , characters: List Character
+    , birds: List Bird
+    , npcs: List NPC
+    , exit: Pos
     }
 
 type alias Player =
@@ -309,7 +310,8 @@ initBricks posList = posList
     |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
 
 initMap1 =
-        { bricks = initBricks brickPosList1 
+        { bricks = initBricks brickPosList1
+        , wallbricks = initBricks brickWallList1
         , characters = initCharacters characterPosList1 
         , exit = exitPos1
         , npcs = initNpcs1 npcPosList1
@@ -317,6 +319,7 @@ initMap1 =
         }
 initMap2 =
         { bricks = initBricks brickPosList2
+        , wallbricks = initBricks brickWallList2
         , characters = initCharacters characterPosList2
         , exit = exitPos2
         , npcs = initNpcs2 npcPosList2
@@ -325,6 +328,7 @@ initMap2 =
 
 initMap3 =
         { bricks = initBricks brickPosList3
+        , wallbricks = initBricks brickWallList3
         , characters = initCharacters characterPosList3
         , exit = exitPos3
         , npcs = initNpcs3 npcPosList3
@@ -332,6 +336,7 @@ initMap3 =
         }
 initMapDiscoverI =
         { bricks = initBricks brickPosList4
+        , wallbricks = initBricks brickWallList4
         , characters = initCharacters characterPosList4
         , exit = exitPos4
         , npcs = initNpcsDiscoverI npcPosList4
@@ -340,6 +345,7 @@ initMapDiscoverI =
 
 initMapDiscoverII =
         { bricks = initBricks brickPosList5
+        , wallbricks = initBricks brickWallList5
         , characters = initCharacters characterPosList5
         , exit = exitPos5
         , npcs = initNpcsDiscoverII npcPosList5

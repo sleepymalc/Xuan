@@ -17,9 +17,9 @@ animate time model =
                 model.speedAI 
                 |> moveSpeedAI model.time
                 |> changeChargeTime 17
-                |> changeAnim model.map.bricks 17
-                |> changeSpeed 17 model.map.bricks
-                |> touchDown 17 model.map.bricks
+                |> changeAnim (model.map.bricks++model.map.wallbricks) 17
+                |> changeSpeed 17 (model.map.bricks++model.map.wallbricks)
+                |> touchDown 17 (model.map.bricks++ model.map.wallbricks)
                 |> changePos 17
                 |> changeFrame 17
             else
@@ -37,9 +37,9 @@ animate time model =
                 |> changeRageTime time
                 |> attackedByCharacters model.map.characters
                 |> changeChargeTime time
-                |> changeAnim model.map.bricks time
-                |> changeSpeed time model.map.bricks
-                |> touchDown time model.map.bricks
+                |> changeAnim (model.map.bricks++ model.map.wallbricks) time
+                |> changeSpeed time (model.map.bricks++ model.map.wallbricks)
+                |> touchDown time (model.map.bricks++ model.map.wallbricks)
                 |> changeTextframe time
                 |> changeText model.state model.speedAI
                 |> cleartext
@@ -49,7 +49,7 @@ animate time model =
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |> List.map (\character-> character
             |> attackPlayer model.player
-            |> changeAnim model.map.bricks time
+            |> changeAnim (model.map.bricks++ model.map.wallbricks) time
             |> tour time
             |> changePos time
             |> changeFrame time)

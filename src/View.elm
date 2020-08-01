@@ -112,7 +112,6 @@ renderbrick1 player pos=
         viewpos = pos |> offset player
                     |> cutBrickView
                     |> clearOutsideImage
-        
     in
     svg 
         [ x (String.fromFloat (viewpos.x1-8))
