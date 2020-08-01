@@ -41,8 +41,10 @@ changeText state speedAI player=
                     { player | text = "You have learned everything you need. Now, just go up, up and up...", textframe = -200, teachtextstate = -1}
                 else
                     { player | text = player.text}
-            else if player.pos.y2 <= 970 && player.anim == Stand then
-                { player | text = "Finally...", textframe = 0 }
+            else if player.pos.y2 <= 970 && player.pos.x2 <= 3200 && player.anim == Stand then
+                { player | text = "Finally", textframe = 0 }
+            else if player.pos.y2 <= 970 && player.pos.x1 >= 3200 && player.anim == Stand then
+                { player | text = "Cliff... ", textframe = -500 }
             else
                 { player | text = player.text }
 
