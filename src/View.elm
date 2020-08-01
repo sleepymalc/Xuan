@@ -192,7 +192,7 @@ renderBackground model=
     else if model.state == Three then
         renderImage "img/background/background5.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else
-       renderImage "img/background/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+       renderImage "img/background/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 

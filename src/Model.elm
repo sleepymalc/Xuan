@@ -89,6 +89,8 @@ type alias Player =
     , hp: Float
     , chargetime: Float
     , ragetime: Float
+    , ragecount: Float
+    , inrage: Bool
     , fallcount: Int
     , effecttimeOne: Float
     , effecttimeTwo: Float
@@ -219,6 +221,8 @@ initPlayer1 =
     , hp = 10
     , chargetime = 0
     , ragetime = 0
+    , ragecount = 0
+    , inrage = False
     , fallcount = 0
     , effecttimeOne = 0
     , effecttimeTwo = 200
@@ -353,7 +357,7 @@ initMapDiscoverII =
         }
         
 
-        
+
 initNpcs1 posList=
     List.map
         (\pos-> { pos = pos

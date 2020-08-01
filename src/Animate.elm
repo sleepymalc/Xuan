@@ -102,18 +102,22 @@ changeState model =
     let
         playerDiscoverI = initPlayerDiscoverI model.player
         player2 = initPlayer2 model.player
-        playerDiscoverII = initPlayerDiscoverII model.player
+        playerDiscoverIIWin = initPlayerDiscoverII model.player
+        playerDiscoverIILose = { playerDiscoverIIWin | inrage = True }
         player3 = initPlayer3 model.player
     in
 
-    if arriveExit model then 
+    if arriveExit model model.player then 
         case model.state of
             One -> 
                 { model | map = initMapDiscoverI, state = DiscoverI, player = playerDiscoverI, time = 0}
             DiscoverI ->
                 { model | map = initMap2, state = Two, player = player2, time = 0}
             Two ->
-                { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverII, time = 0}
+                if arriveExit model model.speedAI then
+                    { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverIILose, time = 0}
+                else
+                    { model | map = initMapDiscoverII, state = DiscoverII, player = playerDiscoverIIWin, time = 0}
             DiscoverII ->
                 { model | map = initMap3, state = Three, player = player3, time = 0}
             Three ->
@@ -138,9 +142,9 @@ changeCharactersAndNpcs characters npcs map =
     { map |characters = characters, npcs = npcs}
 
 
-arriveExit model =
-    model.player.pos.x2 >= model.map.exit.x1 && model.player.pos.x1 <= model.map.exit.x2
- && model.player.pos.y1 <= model.map.exit.y2 && model.player.pos.y2 >= model.map.exit.y1
+arriveExit model player =
+    player.pos.x2 >= model.map.exit.x1 && player.pos.x1 <= model.map.exit.x2
+ && player.pos.y1 <= model.map.exit.y2 && player.pos.y2 >= model.map.exit.y1
 
 attackedByPlayer player character =
     let
@@ -307,8 +311,11 @@ health player =
     { player | hp=hp }
 
 rage player = 
-    if player.hp <= 0 then
-        { player | mood=Rage }
+    let 
+        ragecount = player.ragecount + 1
+    in
+    if player.hp <= 0 && player.mood /= Rage then
+        { player | mood=Rage, ragecount = ragecount }
     else
         player
 
@@ -316,11 +323,15 @@ changeRageTime time player =
     let
         newragetime = player.ragetime + time
         newplayer = normal player
+        punishtime = if player.inrage then
+                        7500 * player.ragecount 
+                    else
+                        5000 * player.ragecount
     in
-    if player.ragetime <= 25000 && player.mood== Rage then
+    if player.ragetime < punishtime && player.mood == Rage then
         { player | ragetime = newragetime }
-    else if player.ragetime >= 25000 then
-        { newplayer | ragetime = 0, hp = 10}
+    else if player.ragetime > punishtime then
+        { newplayer | ragetime = 0, hp = 10 - 1 * player.ragecount}
     else 
         player
 
@@ -365,7 +376,7 @@ touchDownBrick brickSpeed time brickPos player =
             newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                if player.speed.y >= 0.1 then
+                if player.speed.y >= 1.5 then
                     { newplayer | pos = pos , collisionPos = collisionPos, fallcount = fallcount} |> grovel
                 else 
                     { player | pos = pos, collisionPos = collisionPos} |> stand
