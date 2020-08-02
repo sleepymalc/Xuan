@@ -42,6 +42,12 @@ changeCGandStory time model =
         { model | cgtime = cgtime}
     else 
         case model.state of
+        -- LOGO
+            LOGO ->
+                if model.player.teachtextstate == 0 then
+                    { model | state = Story1_1, cgtime = 0}
+                else
+                    { model | state = End, cgtime = 0}
         -- One
             Story1_1 ->
                 { model | state = CG1_1, cgtime = 0 }
@@ -92,7 +98,5 @@ changeCGandStory time model =
                 { model | state = CG6_2, cgtime = 0 }
             CG6_2 ->
                 { model | state = LOGO, cgtime = 0 }
-            LOGO ->
-                { model | state = One, cgtime = 0 }
             _ ->
                 model

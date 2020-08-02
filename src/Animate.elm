@@ -99,9 +99,6 @@ moveSpeedAI time speedAI =
 changeCharactersAndNpcs characters npcs map =
     { map |characters = characters, npcs = npcs}
 
-
-
-
 attackedByPlayer player character =
     let
         attackPos = playerAttackRange player
@@ -362,4 +359,3 @@ changeFrame time player =
 
 changeTextframe time player =
     { player | textframe = player.textframe + 1 }
-

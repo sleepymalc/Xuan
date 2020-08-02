@@ -52,6 +52,7 @@ type Stage
     | DiscoverI
     | DiscoverII
     | LOGO
+    | End
     | Loading
     | Story1_1
     | Story1_2
@@ -203,7 +204,7 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = Story1_1
+      ,state = LOGO
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}

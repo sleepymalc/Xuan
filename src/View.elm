@@ -32,6 +32,8 @@ view model =
                             [renderCG model]
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
+                        else if model.state == LOGO then
+                            [renderCG model]
                         else
                         ([ renderBackground model
                         , renderPlayer model.state model.player
@@ -524,6 +526,10 @@ renderCG model =
             renderImage "img/CG/CG1/CG1_3.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
         CG1_4 ->
             renderImage "img/CG/CG1/CG1_4.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+        LOGOII ->
+            renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+        LOGOI ->
+            renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
         _ ->
             renderImage "img/background.png" (Pos 0 0 0 0) []
 
