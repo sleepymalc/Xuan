@@ -58,7 +58,8 @@ view model =
                         ))                    
         renderLoad = if model.state == Loading then
                         List.map loadImg initLoadPack
-                    else []
+                    else 
+                        []
         renderHtml = if model.state == One || model.state == DiscoverI || model.state == Two ||
                         model.state == DiscoverII || model.state == Three then
                         renderbricks (List.map .pos model.map.bricks) model
@@ -133,17 +134,17 @@ renderbrick1 model pos=
                     |> cutBrickView
                     |> clearOutsideImage
         text = if model.state == One then
-                    "img/map_1/stone_1.png"
+                    "img/Stone/map_1/stone_1.png"
                 else if model.state == DiscoverI then
-                    "img/map_2/stone_1.png"
+                    "img/Stone/map_2/stone_1.png"
                 else if model.state == Two then
-                    "img/map_3/stone_1.png"
+                    "img/Stone/map_3/stone_1.png"
                 else if model.state == DiscoverII then
-                    "img/map_4/stone_1.png"
+                    "img/Stone/map_4/stone_1.png"
                 else if model.state == Three then
-                    "img/map_5/stone_1.png"
+                    "img/Stone/map_5/stone_1.png"
                 else
-                    "img/map_1/stone_1.png"
+                    "img/Stone/map_1/stone_1.png"
     in
         renderHtmlImg model.size text viewpos
         --renderImage text viewpos []
