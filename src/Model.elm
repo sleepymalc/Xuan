@@ -12,6 +12,7 @@ import Json.Decode exposing (Value)
 import Svg.Attributes exposing (direction)
 import Message exposing (..)
 import MapSetting exposing (..)
+import AISettings exposing (..)
 import Load exposing (..)
 
 type alias Story =
@@ -28,6 +29,7 @@ type AnimState =
     | Attack
     | Attacked
     | Grovel
+    | Fly
     | DebugMode
 
 type Mood = 
@@ -49,14 +51,31 @@ type Stage
     | Three
     | DiscoverI
     | DiscoverII
-    | StoryOne
-    | StoryTwo
-    | StoryThree
-    | StoryFour
-    | StoryFive
-    | StorySix
+    | LOGO
+    | End
     | Loading
-    
+    | Story1_1
+    | Story1_2
+    | Story1_3
+    | Story1_4    
+    | Story2_1
+    | Story2_2    
+    | Story3_1
+    | Story4_1
+    | Story5_1
+    | Story5_2
+    | Story6_1
+    | CG1_1
+    | CG1_2
+    | CG1_3
+    | CG1_4
+    | CG2_1
+    | CG2_2
+    | CG3_1
+    | CG5_1
+    | CG5_2
+    | CG6_1
+    | CG6_2
 
 type alias Brick =
     { pos: Pos,
@@ -65,8 +84,11 @@ type alias Brick =
 
 type alias Map = 
     { bricks: List Brick
-     ,characters: List Character
-     ,exit: Pos
+    , wallbricks: List Brick
+    , characters: List Character
+    , birds: List Bird
+    , npcs: List NPC
+    , exit: Pos
     }
 
 type alias Player =
@@ -84,6 +106,14 @@ type alias Player =
     , hp: Float
     , chargetime: Float
     , ragetime: Float
+    , ragecount: Float
+    , inrage: Bool
+    , fallcount: Int
+    , effecttimeOne: Float
+    , effecttimeTwo: Float
+    , effecttimeThree: Float
+    , effecttimeFour: Float
+    , effecttimeFive: Float
     }
 
 type alias Character =
@@ -97,32 +127,27 @@ type alias Character =
     , range: Vector Float
     , hp: Int
     , chargetime: Float
+    , effecttime: Float
     }
 
 type alias NPC = 
     { pos: Pos
     , anim: AnimState
     , frame: Int
+    , textframe: Int
     , count: Int
     , text: String
+    , direction: MoveDirection
+    , speed: Speed
     }
 
 type alias Bird = 
     { pos: Pos
-    , collisionPos: List Pos 
     , anim: AnimState
     , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
     }
--- for jump jumpdir time
--- for walk walkdir pos
-
-type AIMsg = 
-    AIWalk MoveDirection Bool
-    | AICharge Jump Bool
-
-type alias SpeedAIAnim = 
-    { time: Float
-    , msg: AIMsg}
 
 type alias SpeedAI =
     {  pos: Pos 
@@ -132,81 +157,24 @@ type alias SpeedAI =
     , direction: MoveDirection
     , jumpdir: Jump
     , speed: Speed
-    , speedAIAnimList : List SpeedAIAnim
-    , chargetime : Float
-    , hp : Int
+    , speedAIAnimList: List SpeedAIAnim
+    , chargetime: Float
+    , hp: Int
+    , fallcount: Int
     }
 
-initSpeedAIAnimList = 
-    [ { msg = AIWalk Right True, time = 1564 }
-    , { msg = AIWalk Right False, time = 1782 }
-    , { msg = AICharge Up True, time = 2131 }
-    , { msg = AICharge L False, time = 3248 }
-    , { msg = AIWalk Left True, time = 4280 }
-    , { msg = AIWalk Left False, time = 4731 }
-    , { msg = AICharge Up True, time = 5064 }
-    , { msg = AICharge L False, time = 6997 }
-    , { msg = AICharge Up True, time = 8164 }
-    , { msg = AICharge R False, time = 10130 }
-    , { msg = AICharge Up True, time = 11630 }
-    , { msg = AICharge L False, time = 13413 }
-    , { msg = AIWalk Right True, time = 14747 }
-    , { msg = AIWalk Right False, time = 15731 }
-    , { msg = AICharge Up True, time = 15863 }
-    , { msg = AICharge L False, time = 17997 }
-    , { msg = AICharge Up True, time = 19631 }
-    , { msg = AICharge R False, time = 21397 }
-    , { msg = AIWalk Right True, time = 22297 }
-    , { msg = AIWalk Right False, time = 23830 }
-    , { msg = AICharge Up True, time = 23913 }
-    , { msg = AICharge L False, time = 25981 }
-    , { msg = AIWalk Left True, time = 27230 }
-    , { msg = AIWalk Left False, time = 27713 }
-    , { msg = AICharge Up True, time = 27780 }
-    , { msg = AICharge L False, time = 29913 }
-    , { msg = AIWalk Right True, time = 31280 }
-    , { msg = AIWalk Right False, time = 31897 }
-    , { msg = AICharge Up True, time = 32148 }
-    , { msg = AICharge R False, time = 34030 }
-    , { msg = AIWalk Right True, time = 35080 }
-    , { msg = AIWalk Right False, time = 37140 }
-    , { msg = AICharge Up True, time = 37230 }
-    , { msg = AICharge L False, time = 38580 }
-    , { msg = AICharge Up True, time = 39646 }
-    , { msg = AICharge L False, time = 41563 }
-    , { msg = AIWalk Left True, time = 42897 }
-    , { msg = AIWalk Left False, time = 43140 }
-    , { msg = AICharge Up True, time = 43330 }
-    , { msg = AICharge L False, time = 45363 }
-    , { msg = AIWalk Left True, time = 46547 }
-    , { msg = AIWalk Left False, time = 46774 }
-    , { msg = AICharge Up True, time = 47080 }
-    , { msg = AICharge L False, time = 49133 }
-    , { msg = AIWalk Right True, time = 50346 }
-    , { msg = AIWalk Right False, time = 51183 }
-    , { msg = AICharge Up True, time = 51230 }
-    , { msg = AICharge L False, time = 53500 }
-    , { msg = AIWalk Left True, time = 54246 }
-    , { msg = AIWalk Left False, time = 57415 }
-    , { msg = AICharge Up True, time = 57512 }
-    , { msg = AICharge R False, time = 59696 }
-    , { msg = AIWalk Right True, time = 60496 }
-    , { msg = AIWalk Right False, time = 61946 }
-    , { msg = AICharge Up True, time = 62097 }
-    , { msg = AICharge L False, time = 63500 }
-    ]
-
 initSpeedAI = 
-    { pos = speedAIPos3
-    , collisionPos = standcollisionPos speedAIPos3
+    { pos = speedAIPos2
+    , collisionPos = standcollisionPos speedAIPos2
     , anim = Stand
     , frame = 0
     , direction = Left
     , jumpdir = Up
     , speed = Vector 0 0
-    , speedAIAnimList = initSpeedAIAnimList
+    , speedAIAnimList = AISettings.initSpeedAIAnimList
     , chargetime = 0
     , hp = 10
+    , fallcount = 0
     }
 
 type alias Model =
@@ -218,6 +186,7 @@ type alias Model =
     , attrs: CustomAttribute
     , time: Float
     , story: Story
+    , cgtime: Float
     , loadPack: List String
     , speedAI: SpeedAI
     , record: List SpeedAIAnim
@@ -233,23 +202,24 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,state = Loading
+      ,state = LOGO
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
       ,time = 0
       ,story = initstory
+      ,cgtime = 5000
       ,loadPack = initLoadPack
       ,speedAI = initSpeedAI
       ,record = []
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
+
 initstory =
     { text = ""
     , storyframe = 0
     }
-
 
 
 initPlayer1 =
@@ -260,87 +230,78 @@ initPlayer1 =
     , anim = Crouch
     , mood = Normal
     , frame = 0
-    , textframe = 0
-    , direction = Left
+    , textframe = -1000
+    , direction = Right
     , jumpdir = Up
     , speed = Vector 0 0
     , hp = 10
     , chargetime = 0
     , ragetime = 0
-    
+    , ragecount = 0
+    , inrage = False
+    , fallcount = 0
+    , effecttimeOne = 0
+    , effecttimeTwo = 200
+    , effecttimeThree = 400
+    , effecttimeFour = 600
+    , effecttimeFive = 800
     }
 
 
-initPlayerDiscoverI =
-    { text = "What's going on?"
-    , teachtextstate = -1
-    , pos = MapSetting.playerPos4
-    , collisionPos = standcollisionPos MapSetting.playerPos4
+initPlayerDiscoverI player=
+    { player |
+      text = "What's going on?"
+    , pos = MapSetting.playerPosDiscoverI
+    , collisionPos = standcollisionPos MapSetting.playerPosDiscoverI
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
     , direction = Left
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
+    , fallcount = 0
     }
 
-initPlayer2 =
-    { text = "I am Song Yuanhuai."
-    , teachtextstate = -1
-    , pos = speedAIPos2 --MapSetting.playerPos2
-    , collisionPos = standcollisionPos speedAIPos2--MapSetting.playerPos2
+initPlayer2 player =
+    { player |
+      text = "I am Song Yuanhuai."
+    , pos = MapSetting.playerPos2
+    , collisionPos = standcollisionPos MapSetting.playerPos2 
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
-    , direction = Left
+    , direction = Right
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
+    , fallcount = 0
     }
 
-initPlayerDiscoverII =
-    { text = "Life is a series of choices, and you don't know about the consequences."
-    , teachtextstate = -1
-    , pos = MapSetting.playerPos5
-    , collisionPos = standcollisionPos MapSetting.playerPos5
+initPlayerDiscoverII player =
+    { player |
+      text = "Life is a series of choices, and you don't know about the consequences."
+    , pos = MapSetting.playerPosDiscoverII
+    , collisionPos = standcollisionPos MapSetting.playerPosDiscoverII
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
-    , direction = Left
+    , direction = Right
     , jumpdir = Up
-    , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , speed = Vector 0 0 
+    , fallcount = 0
     }
 
-initPlayer3 =
-    { text = "I am back... FOR REVENGE!"
-    , teachtextstate = -1
+initPlayer3 player=
+    { player |
+      text = "I am back... FOR REVENGE!"
     , pos = MapSetting.playerPos3
     , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch
-    , mood = Normal
     , frame = 0
     , textframe = 0
-    , direction = Left
+    , direction = Right
     , jumpdir = Up
     , speed = Vector 0 0
-    , hp = 10
-    , chargetime = 0
-    , ragetime = 0
-    
+    , fallcount = 0
     }
 
 
@@ -360,41 +321,160 @@ initCharacters posList=
                 , jumpdir = Up
                 , speed = Vector -0.05 0
                 , hp = 1
-                , chargetime=0
+                , chargetime = 0
+                , effecttime = 0
                 }) posList
+
 
 initBricks posList = posList
     |> List.map (\pos-> {pos = pos, speed = Vector 0 0})
 
 initMap1 =
-        { bricks = initBricks brickPosList1 
+        { bricks = initBricks brickPosList1
+        , wallbricks = initBricks brickWallList1
         , characters = initCharacters characterPosList1 
         , exit = exitPos1
-        --exit = Pos 3000 10000 2000 3900
+        , npcs = initNpcs1 npcPosList1
+        , birds = initBirds1 birdPosList1
         }
+        
+initMapDiscoverI =
+        { bricks = initBricks brickPosListDiscoverI
+        , wallbricks = initBricks brickWallListDiscoverI
+        , characters = initCharacters characterPosListDiscoverI
+        , exit = exitPosDiscoverI
+        , npcs = initNpcsDiscoverI npcPosListDiscoverI
+        , birds = initBirdsDiscoverI birdPosListDiscoverI
+        }
+
 initMap2 =
         { bricks = initBricks brickPosList2
-        ,characters = initCharacters characterPosList2
-        ,exit = exitPos2
+        , wallbricks = initBricks brickWallList2
+        , characters = initCharacters characterPosList2
+        , exit = exitPos2
+        , npcs = initNpcs2 npcPosList2
+        , birds = initBirds2 birdPosList2
+        }
+
+initMapDiscoverII =
+        { bricks = initBricks brickPosListDiscoverII
+        , wallbricks = initBricks brickWallListDiscoverII
+        , characters = initCharacters characterPosListDiscoverII
+        , exit = exitPosDiscoverII
+        , npcs = initNpcsDiscoverII npcPosListDiscoverII
+        , birds = initBirdsDiscoverII birdPosListDiscoverII
         }
 
 initMap3 =
         { bricks = initBricks brickPosList3
-        ,characters = initCharacters characterPosList3
-        ,exit = exitPos3
-        }
-initMapDiscoverI =
-        { bricks = initBricks brickPosList4
-        , characters = initCharacters characterPosList4
-        , exit = exitPos4
-        }
+        , wallbricks = initBricks brickWallList3
+        , characters = initCharacters characterPosList3
+        , exit = exitPos3
+        , npcs = initNpcs3 npcPosList3
+        , birds = initBirds3 birdPosList3
+        }        
 
-initMapDiscoverII =
-        { bricks = initBricks brickPosList5
-        , characters = initCharacters characterPosList5
-        , exit = exitPos5
-        }
-    
+initNpcs1 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Go UP!!! ESCAPE!!! By the way, nice to see you!"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+        }) posList
 
+initNpcsDiscoverI posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = -500
+                , count = 0
+                , text = "Be careful, your power is very strong now..."
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+        }) posList
 
+initNpcs2 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Go HIGH, Go FAST! Don't let XUAN takeover your body!!!"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+        }) posList
 
+initNpcsDiscoverII posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "Hey, where are you going?"
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+        }) posList
+
+initNpcs3 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , count = 0
+                , text = "REVENGE?? Interesting..."
+                , direction = Left
+                , speed = Vector 0 0
+                , textframe = 0
+        }) posList
+
+initBirds1 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+
+initBirdsDiscoverI posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+
+initBirds2 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+
+initBirdsDiscoverII posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList
+        
+initBirds3 posList=
+    List.map
+        (\pos-> { pos = pos
+                , anim = Stand
+                , frame = 0
+                , direction = Right
+                , speed = Vector 0 0
+        }) posList

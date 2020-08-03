@@ -24,36 +24,58 @@ view model =
     let
         renderSvg = svg
                         (gameUIAttribute model.size)
-                        (if model.state == StoryOne then
+                        (if model.state == Story1_1 || model.state == Story1_2 || model.state == Story1_3 || 
+                            model.state == Story1_4 || model.state == Story2_1 || model.state == Story2_2 ||
+                            model.state == Story3_1 || model.state == Story4_1 || model.state == Story5_1 || 
+                            model.state == Story5_2 || model.state == Story6_1 then
                             [renderStory model.story]
+                        else if model.state == CG1_1 || model.state == CG1_2 || model.state == CG1_3 || 
+                                model.state == CG1_4 || model.state == CG2_1 || model.state == CG2_2 ||
+                                model.state == CG3_1 || model.state == CG5_1 || model.state == CG5_2 || 
+                                model.state == CG6_1 || model.state == CG6_2 then 
+                            [renderCG model]
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
+                        else if model.state == LOGO then
+                            [renderLOGO model, renderBackground model]
                         else
-                        ([ renderBackground 
-                        , renderPlayer model.player]
+                        ([ renderBackground model
+                        , renderPlayer model.state model.player
+                        ]
                         ++ renderCharacters model.player model.map.characters
+                        
                         --++ debugCollision model.map.characters model.player
                         --++ debugAttack model.map.characters model.player
+                        ++ renderNPCs model.player model.map.npcs 
                         ++ ( if model.state == Two then
                                 renderSpeedAI model.player model.speedAI
                            else
                                 []
                         )
-                        ++ renderbricks (List.map .pos model.map.bricks) model.player
                         ++ [renderPlayerText model.player]
-                        ))
-                    
-        renderHtml = if model.state == Loading then
+                        ++ renderNPCsText model.player model.map.npcs
+                        ++ renderBlood model.player
+                        ))                    
+        renderLoad = if model.state == Loading then
                         List.map loadImg initLoadPack
-                    else []
+                    else 
+                        []
+        renderHtml = if model.state == One || model.state == DiscoverI || model.state == Two ||
+                        model.state == DiscoverII || model.state == Three then
+                        renderbricks (List.map .pos model.map.bricks) model
+                    else
+                        []
+    in  
+    div[]
+        [         
+            div
+                [ Html.Attributes.style "height" "0px"]
+                [ renderSvg
+                , span[Html.Attributes.style "opacity" "0"] renderLoad
+                ]    
+        , div []renderHtml
 
-
-    in        
-        div
-            [ Html.Attributes.style "height" "0px"]
-            [ renderSvg
-            , span[Html.Attributes.style "opacity" "0"]renderHtml
-            ]    
+        ]
 
 renderSpeedAI player speedAI= 
     let
@@ -63,7 +85,38 @@ renderSpeedAI player speedAI=
     in
         [renderImage url viewpos attr]
 
+renderBlood player = 
+    if player.mood == Normal then
+        if player.hp >= 7 && player.hp <10 then
+            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeOne)/2000))]
+            ]
+        else if player.hp >= 5 && player.hp < 7 then
+            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1750))]
+            , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeOne)/1750))]           
+            ]
+        else if player.hp >= 3 && player.hp < 5 then
+            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1500))]
+            , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1500))] 
+            , renderImage "img/Effect/bloodFrame_3.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1500))]
+            ] 
+        else if player.hp > 0 && player.hp < 3 then
+            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
+            , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1250))] 
+            , renderImage "img/Effect/bloodFrame_3.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1250))]
+            , renderImage "img/Effect/bloodFrame_4.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
+            ]  
+        else
+            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 0 0 0) [opacity "0"]
+            ]
+    else 
+        [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
+        , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1000))] 
+        , renderImage "img/Effect/bloodFrame_3.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1000))]
+        , renderImage "img/Effect/bloodFrame_4.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
+        , renderImage "img/Effect/bloodFrame_5.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
+        ]
 
+        
 
 offset player pos =
     let
@@ -72,9 +125,33 @@ offset player pos =
     in
         Pos (pos.x1-dx) (pos.x2-dx) (pos.y1-dy) (pos.y2-dy)
 
-renderbricks posList player=
-    List.map (renderbrick player) posList
+renderbricks posList model=
+    List.map (renderbrick1 model) posList
 
+renderbrick1 model pos=
+    let
+        viewpos = pos |> offset model.player
+                    |> cutBrickView
+                    |> clearOutsideImage
+        text = if model.state == One then
+                    "img/Stone/map_1/stone_1.png"
+                else if model.state == DiscoverI then
+                    "img/Stone/map_2/stone_1.png"
+                else if model.state == Two then
+                    "img/Stone/map_3/stone_1.png"
+                else if model.state == DiscoverII then
+                    "img/Stone/map_4/stone_1.png"
+                else if model.state == Three then
+                    "img/Stone/map_5/stone_1.png"
+                else
+                    "img/Stone/map_1/stone_1.png"
+    in
+        renderHtmlImg model.size text viewpos
+        --renderImage text viewpos []
+
+    
+
+    
 renderbrick player pos=
     let
         viewpos = pos |> offset player
@@ -114,8 +191,27 @@ cutBrickView viewpos =
 
 
 
-renderBackground =
-    renderImage "img/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+renderBackground model=
+    if model.state == LOGO then
+       renderImage "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
+    else if model.state == One then
+        if model.player.pos.y1 >= 3200 || (model.player.pos.y1 <= 1600 && model.player.pos.x1 >= 3200 )then
+            renderImage "img/background/background1_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+        else 
+            renderImage "img/background/background1_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+    else if model.state == DiscoverI then
+        if model.player.pos.y1 >= 3200 then
+            renderImage "img/background/background2_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        else
+           renderImage "img/background/background2_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else if model.state == Two then
+        renderImage "img/background/background3_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else if model.state == DiscoverII then
+        renderImage "img/background/background4_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else if model.state == Three then
+        renderImage "img/background/background5_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+    else
+       renderImage "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
@@ -133,7 +229,7 @@ renderCharacter player character =
 
 clearOutsideImage viewpos=
     if viewpos.x2<0 || viewpos.x1>viewAttrs.size.x || viewpos.y2<0 || viewpos.y1>viewAttrs.size.y then
-        Pos 0 0 0 0
+        Pos -1600 -1600 0 0
     else
         viewpos
 
@@ -144,7 +240,8 @@ connectName namePrefix anim id=
 --Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
+        prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
@@ -181,7 +278,7 @@ getAnimUrl anim frame player namePrefix=
                     connectName namePrefix "charge" 2
 
             Grovel ->
-                    connectName namePrefix "charge" 2
+                    connectName namePrefix "grovel" 0
 
             Attacked ->
                 if ( player.speed.x < 0 && player.direction == Left)
@@ -189,6 +286,8 @@ getAnimUrl anim frame player namePrefix=
                     namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
                 else
                     namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
+            Fly ->
+                    connectName namePrefix "jump" 0
             DebugMode ->
                     connectName namePrefix "walk" 0
     in
@@ -208,14 +307,32 @@ getPlayerViewPos player =
     |> offset player 
     |> resizePlayer
 
-renderPlayer player= 
+renderPlayer state player=
     let
         url = getAnimUrl player.anim player.frame player ""
-        attr = getDirectionAttr player.direction
+        attr = if state == Two then
+                    getDirectionAttr player.direction ++ [opacity "0.5"]
+               else
+                    getDirectionAttr player.direction
         pos = getPlayerViewPos player
     in
-        renderImage url pos attr
+        if player.anim == Grovel then
+            renderImage url (Pos (pos.x1+85) (pos.x2-85) (pos.y1+30) (pos.y2+30)) attr
+        else
+            renderImage url pos attr
 
+
+renderNPC player npc=
+    let
+        url = getAnimUrl npc.anim npc.frame npc "NPC_"
+        attr = getDirectionAttr npc.direction
+        pos = npc.pos |> offset player |> clearOutsideImage
+
+    in    
+    renderImage url (Pos pos.x1 pos.x2 (pos.y1+10) (pos.y2+10)) attr
+
+renderNPCs player npcs =
+    List.map (renderNPC player) npcs
 
 debugCollision characters player=
     let
@@ -312,6 +429,27 @@ renderButton msg url size pos=
         , height ((String.fromFloat size.y)++"px") 
         , width ((String.fromFloat size.x)++"px")][] ]
 
+renderHtmlImg size url svgpos=
+    let
+        pos = svgpos|>toHtmlPos size
+    in
+        Html.img [src url
+            , height ((String.fromFloat (pos.y2-pos.y1))++"px") 
+            , width ((String.fromFloat (pos.x2-pos.x1))++"px")
+            , Html.Attributes.style "position" "absolute"
+            , Html.Attributes.style "left" ((String.fromFloat pos.x1)++"px")
+            , Html.Attributes.style "top" ((String.fromFloat pos.y1)++"px")][]
+            
+toHtmlPos size pos =
+    let
+        dy = size.y/2 - size.x/2/2
+        x1 = pos.x1 /1600 * size.x
+        x2 = pos.x2 /1600 * size.x
+        y1 = pos.y1 /1600 * size.x + dy
+        y2 = pos.y2 /1600 * size.x+dy
+    in
+        Pos x1 x2 y1 y2
+
 
 
 renderImage url pos attr=
@@ -359,10 +497,22 @@ renderPlayerText player =
         size = 18
         pos = getPlayerViewPos player
         w = 180
-        lines = (floor(toFloat(String.length(player.text))/20)+2)
+        lines = (floor(toFloat(String.length(player.text))/20)+3)
         text = player.text
     in
         renderT size pos w lines text
+
+renderNPCsText player npcs = 
+    List.map (renderNPCText player) npcs
+
+renderNPCText player npc = 
+    let
+        size = 18
+        pos = (Pos (npc.pos.x1-150) (npc.pos.x2-150) (npc.pos.y1+10) (npc.pos.y2+10)) |> offset player |> clearOutsideImage
+        w = 180
+        lines = (floor(toFloat(String.length(npc.text))/20)+2) 
+    in
+        renderT size pos w lines npc.text
 
 renderS size w lines text =
     foreignObject [ x "200"
@@ -383,3 +533,8 @@ renderStory story =
     in
         renderS size w lines text
 
+renderCG model = 
+    renderImage ("img/CG/" ++ (Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+
+renderLOGO model = 
+    renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 

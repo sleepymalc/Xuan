@@ -6,7 +6,7 @@ import AnimState exposing(..)
 import Collision exposing (..)
 import Text exposing (..)
 import Animate exposing (..)
-import MapSetting exposing (..)
+import AISettings exposing (..)
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -25,7 +25,7 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = StoryOne
+                            | state = LOGO
                     }
                     , Cmd.none
                     )
@@ -42,7 +42,7 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = StoryOne
+                            | state = LOGO
                     }
                     , Cmd.none
                     )

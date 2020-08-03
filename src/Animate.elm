@@ -6,24 +6,25 @@ import Collision exposing (..)
 import Text exposing (..)
 import Message exposing (..)
 import MapSetting exposing (..)
-import Model exposing (Stage(..))
+import AISettings exposing (..)
+import Html exposing (th)
+import ChangeState exposing (..)
 
 
 animate time model =
     let
         speedAI = if model.state == Two then
                 model.speedAI 
-                
                 |> moveSpeedAI model.time
-                |> changeChargeTime time
-                |> changeAnim model.map.bricks time
-                |> changeSpeed time model.map.bricks
-                |> touchDown time model.map.bricks
-                |> changePos time
-                |> changeFrame time
-
+                |> changeChargeTime 17
+                |> changeAnim (model.map.bricks++model.map.wallbricks) 17
+                |> changeSpeed 17 (model.map.bricks++model.map.wallbricks)
+                |> touchDown 17 (model.map.bricks++ model.map.wallbricks)
+                |> changePos 17
+                |> changeFrame 17
             else
                 model.speedAI
+
         player = 
             if model.player.anim == DebugMode then
                 model.player
@@ -31,12 +32,14 @@ animate time model =
             else
                 model.player
                 |> rage 
+                |> health
+                |> chargeEffectTime time
                 |> changeRageTime time
                 |> attackedByCharacters model.map.characters
                 |> changeChargeTime time
-                |> changeAnim model.map.bricks time
-                |> changeSpeed time model.map.bricks
-                |> touchDown time model.map.bricks
+                |> changeAnim (model.map.bricks++ model.map.wallbricks) time
+                |> changeSpeed time (model.map.bricks++ model.map.wallbricks)
+                |> touchDown time (model.map.bricks++ model.map.wallbricks)
                 |> changeTextframe time
                 |> changeText model.state model.speedAI
                 |> cleartext
@@ -46,21 +49,28 @@ animate time model =
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |> List.map (\character-> character
             |> attackPlayer model.player
-            |> changeAnim model.map.bricks time
+            |> changeAnim (model.map.bricks++ model.map.wallbricks) time
             |> tour time
             |> changePos time
             |> changeFrame time)
 
+        npcs=model.map.npcs
+            |> List.map (\npc-> npc
+            |> count model.player
+            |> changeTextframe time
+            |> changeNPCText model)
+
         map = model.map
-            |> changeCharacters characters
+            |> changeCharactersAndNpcs characters npcs
 
         story = model.story
-            |> changeStoryframe time
             |> changeStory model.state
+
     in
         { model | map = map, player = player, story = story, speedAI = speedAI}
+            |> chargeModeltime
             |> changeState
-            |> storyEnd time
+            |> changeCGandStory time
 
 moveSpeedAI time speedAI =
     case List.head speedAI.speedAIAnimList of
@@ -87,42 +97,14 @@ moveSpeedAI time speedAI =
         Nothing ->
             speedAI
 
-changeState model =
-    if arriveExit model then 
-        case model.state of
-            One -> 
-                { model | map = initMapDiscoverI, state = DiscoverI, player = initPlayerDiscoverI, time = 0}
-            DiscoverI ->
-                { model | map = initMap3, state = Two, player = initPlayer3, time = 0}
-            Two ->
-                { model | map = initMapDiscoverII, state = DiscoverII, player = initPlayerDiscoverII, time = 0}
-            DiscoverII ->
-                { model | map = initMap2, state = Three, player = initPlayer2, time = 0}
-            Three ->
-                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
-            _ ->
-                model
-    else
-        model
-    
-storyOneTime = 2000
+chargeModeltime model =
+    let
+        newtime = model.time + 17
+    in
+    { model | time = newtime}
 
-storyEnd time model= 
-    case model.state of
-        StoryOne ->
-            if model.time > storyOneTime then
-                { model | map = initMap1, state = One, player = initPlayer1, time = 0}
-            else { model | time = model.time + time }
-        _ -> { model | time = model.time + time }
-
-
-changeCharacters characters map =
-    {map |characters = characters}
-
-
-arriveExit model =
-    model.player.pos.x2 >= model.map.exit.x1 && model.player.pos.x1 <= model.map.exit.x2
- && model.player.pos.y1 <= model.map.exit.y2 && model.player.pos.y2 >= model.map.exit.y1
+changeCharactersAndNpcs characters npcs map =
+    { map |characters = characters, npcs = npcs}
 
 attackedByPlayer player character =
     let
@@ -215,6 +197,35 @@ changeChargeTime time player =
     else    
         {player | chargetime=0}    
 
+chargeEffectTime time player = 
+    let
+        newEffectTimeOne = if player.effecttimeOne <=1000 then 
+                                player.effecttimeOne + time
+                            else 
+                                -(player.effecttimeOne + time)
+        newEffectTimeTwo = if player.effecttimeTwo <=1000 then
+                                player.effecttimeTwo+ 1.25*time
+                            else 
+                                -(player.effecttimeTwo + 1.25*time)
+        newEffectTimeThree = if player.effecttimeThree <= 1000 then 
+                                player.effecttimeThree+ 1.5*time
+                            else 
+                                -(player.effecttimeThree + 1.5*time)
+        newEffectTimeFour = if player.effecttimeFour <= 1000 then
+                                player.effecttimeFour+ 1.75*time
+                            else    
+                                -(player.effecttimeFour + 1.75*time)
+        newEffectTimeFive = if player.effecttimeFive <=1000 then 
+                                player.effecttimeFive+ 2*time
+                            else
+                                -(player.effecttimeFive + 2*time)
+    in
+    { player | 
+        effecttimeOne = newEffectTimeOne,effecttimeTwo = newEffectTimeTwo,     
+        effecttimeThree = newEffectTimeThree, effecttimeFour = newEffectTimeFour, 
+        effecttimeFive = newEffectTimeFive} 
+        
+
 changeAnim bricks time player=
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
@@ -235,15 +246,36 @@ changeAnim bricks time player=
             { newplayer | anim = Jump}
         else newplayer
 
+count player npc = 
+    let
+        newNPCCount = npc.count+1
+    in
+    if player.anim == Grovel && abs(player.pos.y1-npc.pos.y1) <400 && npc.count+1 == player.fallcount then
+        { npc | count=newNPCCount}
+    else
+        npc
+
 loseBlood damage player = 
     let 
         hp = player.hp - damage
     in
     { player | hp = hp }
 
+health player = 
+    let
+        hp=if player.hp>=10 then
+            10
+            else
+            player.hp+0.0013        
+    in
+    { player | hp=hp }
+
 rage player = 
-    if player.hp <= 0 then
-        { player | mood=Rage }
+    let 
+        ragecount = player.ragecount + 1
+    in
+    if player.hp <= 0 && player.mood /= Rage then
+        { player | mood=Rage, ragecount = ragecount }
     else
         player
 
@@ -251,11 +283,15 @@ changeRageTime time player =
     let
         newragetime = player.ragetime + time
         newplayer = normal player
+        punishtime = if player.inrage then
+                        7500 * player.ragecount 
+                    else
+                        5000 * player.ragecount
     in
-    if player.ragetime <= 25000 && player.mood== Rage then
+    if player.ragetime < punishtime && player.mood == Rage then
         { player | ragetime = newragetime }
-    else if player.ragetime >= 25000 then
-        { newplayer | ragetime = 0, hp = 10}
+    else if player.ragetime > punishtime then
+        { newplayer | ragetime = 0, hp = 10 - 1 * player.ragecount}
     else 
         player
 
@@ -264,18 +300,18 @@ changeSpeed time bricks player =
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dx = if List.any (rightImpact player.speed time posList) playerPos 
-                || List.any (leftImpact player.speed time posList) playerPos then
+        dx = if List.any (rightImpact player.speed time posList) playerPos ||
+                List.any (leftImpact player.speed time posList) playerPos then
                 if player.anim == Walk || player.anim == Attacked then
                     -player.speed.x
-                else -1.8 * player.speed.x
+                else
+                     -1.8 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) playerPos then
                 -1.8* player.speed.y
             else 
                 0.03
-
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
         {player | speed = speed}
@@ -296,11 +332,12 @@ touchDownBrick brickSpeed time brickPos player =
             speed = Vector player.speed.x 0
             pos = Pos player.pos.x1 player.pos.x2 (player.pos.y1 + dy) (player.pos.y2 + dy)
             collisionPos = standcollisionPos pos
+            fallcount = player.fallcount+1
             newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                if player.speed.y >= 2 then
-                    { newplayer | pos = pos , collisionPos = collisionPos} |> grovel
+                if player.speed.y >= 1.8 then
+                    { newplayer | pos = pos , collisionPos = collisionPos, fallcount = fallcount} |> grovel
                 else 
                     { player | pos = pos, collisionPos = collisionPos} |> stand
             else
@@ -308,29 +345,22 @@ touchDownBrick brickSpeed time brickPos player =
     else
         player
 
-        
-
 changePos time player =
     let
         pos = nextPos player.speed time player.pos
         collisionPos = List.map (nextPos player.speed time) player.collisionPos
     in
-        {player | pos = pos
-                , collisionPos = collisionPos}
+        {player | pos = pos , collisionPos = collisionPos}
 
 nextPos speed time pos=
     let
         dx = speed.x * time
         dy = speed.y * time 
     in
-        Pos (pos.x1 + dx) (pos.x2 + dx)
-            (pos.y1 + dy) (pos.y2 + dy)
+        Pos (pos.x1 + dx) (pos.x2 + dx) (pos.y1 + dy) (pos.y2 + dy)
 
 changeFrame time player =
     {player | frame = player.frame + 1}
 
 changeTextframe time player =
     { player | textframe = player.textframe + 1 }
-
-changeStoryframe time story =
-    { story | storyframe = story.storyframe + 1 }

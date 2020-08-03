@@ -52,11 +52,14 @@ keyNormal on keycode =
         --Space
         32 ->
             AnimCharge on
+        --B
+        66 ->
+            AnimCharge on
         --J
         74 ->
             AnimAttack on
         --Left
- {-       
+
         37 ->
             DebugLeft on
         --Up
@@ -71,7 +74,7 @@ keyNormal on keycode =
         --Enter
         13 ->
             ExitDebugMode 
--}
+
         _ ->
             Noop
 
@@ -86,6 +89,9 @@ keyRage on keycode =
             AnimWalk Right on
         --Space
         32 ->
+            AnimCharge on
+        --B
+        66 ->
             AnimCharge on
         --J
         74 ->
