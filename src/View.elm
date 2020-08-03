@@ -24,24 +24,20 @@ view model =
     let
         renderSvg = svg
                         (gameUIAttribute model.size)
-                        (if model.state == Story1_1 || model.state == Story1_2 || 
-                            model.state == Story1_3 || model.state == Story1_4 ||
-                            model.state == Story2_1 || model.state == Story2_2 ||
-                            model.state == Story3_1 || model.state == Story4_1 ||
-                            model.state == Story5_1 || model.state == Story5_2 || 
-                            model.state == Story6_1 then
+                        (if model.state == Story1_1 || model.state == Story1_2 || model.state == Story1_3 || 
+                            model.state == Story1_4 || model.state == Story2_1 || model.state == Story2_2 ||
+                            model.state == Story3_1 || model.state == Story4_1 || model.state == Story5_1 || 
+                            model.state == Story5_2 || model.state == Story6_1 then
                             [renderStory model.story]
-                        else if model.state == CG1_1 || model.state == CG1_2 ||
-                                model.state == CG1_3 || model.state == CG1_4 ||
-                                model.state == CG2_1 || model.state == CG2_2 ||
-                                model.state == CG3_1 || model.state == CG5_1 ||
-                                model.state == CG5_2 || model.state == CG6_1 ||
-                                model.state == CG6_2 then 
+                        else if model.state == CG1_1 || model.state == CG1_2 || model.state == CG1_3 || 
+                                model.state == CG1_4 || model.state == CG2_1 || model.state == CG2_2 ||
+                                model.state == CG3_1 || model.state == CG5_1 || model.state == CG5_2 || 
+                                model.state == CG6_1 || model.state == CG6_2 then 
                             [renderCG model]
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
                         else if model.state == LOGO then
-                            [renderCG model, renderBackground model]
+                            [renderLOGO model, renderBackground model]
                         else
                         ([ renderBackground model
                         , renderPlayer model.state model.player
@@ -63,9 +59,13 @@ view model =
         renderLoad = if model.state == Loading then
                         List.map loadImg initLoadPack
                     else []
-        renderHtml = renderbricks (List.map .pos model.map.bricks) model
-
-    in  div[]
+        renderHtml = if model.state == One || model.state == DiscoverI || model.state == Two ||
+                        model.state == DiscoverII || model.state == Three then
+                        renderbricks (List.map .pos model.map.bricks) model
+                    else
+                        []
+    in  
+    div[]
         [         
             div
                 [ Html.Attributes.style "height" "0px"]
@@ -199,7 +199,10 @@ renderBackground model=
         else 
             renderImage "img/background/background1_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else if model.state == DiscoverI then
-        renderImage "img/background/background2_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        if model.player.pos.y1 >= 3200 then
+            renderImage "img/background/background2_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        else
+           renderImage "img/background/background2_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Two then
         renderImage "img/background/background3_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == DiscoverII then
@@ -530,17 +533,7 @@ renderStory story =
         renderS size w lines text
 
 renderCG model = 
-    case model.state of 
-        CG1_1 ->
-            renderImage "img/CG/CG1/CG1_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        CG1_2 ->
-            renderImage "img/CG/CG1/CG1_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        CG1_3 ->
-            renderImage "img/CG/CG1/CG1_3.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        CG1_4 ->
-            renderImage "img/CG/CG1/CG1_4.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        LOGO ->
-            renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        _ ->
-            renderImage "img/background.png" (Pos 0 0 0 0) []
+    renderImage ("img/CG/" ++ (Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
 
+renderLOGO model = 
+    renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
