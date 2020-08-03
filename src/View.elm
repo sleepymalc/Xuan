@@ -86,34 +86,37 @@ renderSpeedAI player speedAI=
         [renderImage url viewpos attr]
 
 renderBlood player = 
+    let
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+    in
     if player.mood == Normal then
         if player.hp >= 7 && player.hp <10 then
-            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeOne)/2000))]
+            [ renderImage (prefix++"img/Effect/bloodFrame_1.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeOne)/2000))]
             ]
         else if player.hp >= 5 && player.hp < 7 then
-            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1750))]
-            , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeOne)/1750))]           
+            [ renderImage (prefix++"img/Effect/bloodFrame_1.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1750))]
+            , renderImage (prefix++"img/Effect/bloodFrame_2.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeOne)/1750))]           
             ]
         else if player.hp >= 3 && player.hp < 5 then
-            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1500))]
-            , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1500))] 
-            , renderImage "img/Effect/bloodFrame_3.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1500))]
+            [ renderImage (prefix++"img/Effect/bloodFrame_1.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1500))]
+            , renderImage (prefix++"img/Effect/bloodFrame_2.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1500))] 
+            , renderImage (prefix++"img/Effect/bloodFrame_3.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1500))]
             ] 
         else if player.hp > 0 && player.hp < 3 then
-            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
-            , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1250))] 
-            , renderImage "img/Effect/bloodFrame_3.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1250))]
-            , renderImage "img/Effect/bloodFrame_4.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
+            [ renderImage (prefix++"img/Effect/bloodFrame_1.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
+            , renderImage (prefix++"img/Effect/bloodFrame_2.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeTwo)/1250))] 
+            , renderImage (prefix++"img/Effect/bloodFrame_3.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1250))]
+            , renderImage (prefix++"img/Effect/bloodFrame_4.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
             ]  
         else
-            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 0 0 0) [opacity "0"]
+            [ renderImage (prefix++"img/Effect/bloodFrame_1.png") (Pos 0 0 0 0) [opacity "0"]
             ]
     else 
-        [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
-        , renderImage "img/Effect/bloodFrame_2.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1000))] 
-        , renderImage "img/Effect/bloodFrame_3.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1000))]
-        , renderImage "img/Effect/bloodFrame_4.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
-        , renderImage "img/Effect/bloodFrame_5.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
+        [ renderImage (prefix++"img/Effect/bloodFrame_1.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
+        , renderImage (prefix++"img/Effect/bloodFrame_2.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeThree)/1000))] 
+        , renderImage (prefix++"img/Effect/bloodFrame_3.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1000))]
+        , renderImage (prefix++"img/Effect/bloodFrame_4.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
+        , renderImage (prefix++"img/Effect/bloodFrame_5.png") (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
         ]
 
         
@@ -130,21 +133,22 @@ renderbricks posList model=
 
 renderbrick1 model pos=
     let
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" 
         viewpos = pos |> offset model.player
                     |> cutBrickView
                     |> clearOutsideImage
         text = if model.state == One then
-                    "img/Stone/map_1/stone_1.png"
+                    prefix++"img/Stone/map_1/stone_1.png"
                 else if model.state == DiscoverI then
-                    "img/Stone/map_2/stone_1.png"
+                    prefix++"img/Stone/map_2/stone_1.png"
                 else if model.state == Two then
-                    "img/Stone/map_3/stone_1.png"
+                    prefix++"img/Stone/map_3/stone_1.png"
                 else if model.state == DiscoverII then
-                    "img/Stone/map_4/stone_1.png"
+                    prefix++"img/Stone/map_4/stone_1.png"
                 else if model.state == Three then
-                    "img/Stone/map_5/stone_1.png"
+                    prefix++"img/Stone/map_5/stone_1.png"
                 else
-                    "img/Stone/map_1/stone_1.png"
+                    prefix++"img/Stone/map_1/stone_1.png"
     in
         renderHtmlImg model.size text viewpos
         --renderImage text viewpos []
@@ -192,26 +196,29 @@ cutBrickView viewpos =
 
 
 renderBackground model=
+    let
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+    in
     if model.state == LOGO then
-       renderImage "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
+       renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
     else if model.state == One then
         if model.player.pos.y1 >= 3200 || (model.player.pos.y1 <= 1600 && model.player.pos.x1 >= 3200 )then
-            renderImage "img/background/background1_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+            renderImage (prefix++"img/background/background1_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
         else 
-            renderImage "img/background/background1_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+            renderImage (prefix++"img/background/background1_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else if model.state == DiscoverI then
         if model.player.pos.y1 >= 3200 then
-            renderImage "img/background/background2_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+            renderImage (prefix++"img/background/background2_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
         else
-           renderImage "img/background/background2_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+           renderImage (prefix++"img/background/background2_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Two then
-        renderImage "img/background/background3_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage (prefix++"img/background/background3_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == DiscoverII then
-        renderImage "img/background/background4_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage (prefix++"img/background/background4_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Three then
-        renderImage "img/background/background5_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage (prefix++"img/background/background5_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else
-       renderImage "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
+       renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
@@ -240,8 +247,8 @@ connectName namePrefix anim id=
 --Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
-        prefix = "img/character/color/"
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
+        --prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 
@@ -532,9 +539,8 @@ renderStory story =
         text = story.text
     in
         renderS size w lines text
-
 renderCG model = 
-    renderImage ("img/CG/" ++ (Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+    renderImage ("http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/" ++ (Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
 
 renderLOGO model = 
     renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 

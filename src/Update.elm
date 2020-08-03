@@ -25,7 +25,7 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = LOGO
+                            | state = Story1_1
                     }
                     , Cmd.none
                     )
@@ -42,7 +42,7 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = LOGO
+                            | state = Story1_1
                     }
                     , Cmd.none
                     )

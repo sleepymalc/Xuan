@@ -45,7 +45,7 @@ changeCGandStory time model =
         -- LOGO
             LOGO ->
                 if model.player.teachtextstate == 0 then
-                    { model | state = Story1_1, cgtime = 500}
+                    { model | state = Loading, cgtime = 500}
                 else
                     { model | state = End, cgtime = 500}
         -- One
