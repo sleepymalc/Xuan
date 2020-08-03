@@ -68,6 +68,7 @@ animate time model =
 
     in
         { model | map = map, player = player, story = story, speedAI = speedAI}
+            |> chargeModeltime
             |> changeState
             |> changeCGandStory time
 
@@ -95,6 +96,12 @@ moveSpeedAI time speedAI =
                                 { newSpeedAI| jumpdir = jumpdir}|> jump          
         Nothing ->
             speedAI
+
+chargeModeltime model =
+    let
+        newtime = model.time + 17
+    in
+    { model | time = newtime}
 
 changeCharactersAndNpcs characters npcs map =
     { map |characters = characters, npcs = npcs}
