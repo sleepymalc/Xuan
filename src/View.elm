@@ -105,7 +105,7 @@ renderBlood player =
             , renderImage "img/Effect/bloodFrame_4.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFour)/1250))]
             ]  
         else
-            [ renderImage "img/Effect/blood_1.png" (Pos 0 0 0 0) [opacity "1"]
+            [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 0 0 0) [opacity "0"]
             ]
     else 
         [ renderImage "img/Effect/bloodFrame_1.png" (Pos 0 1600 0 800) [opacity (String.fromFloat (abs(player.effecttimeFive)/1000))]
