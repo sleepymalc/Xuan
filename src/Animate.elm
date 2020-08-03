@@ -293,18 +293,18 @@ changeSpeed time bricks player =
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dx = if List.any (rightImpact player.speed time posList) playerPos 
-                || List.any (leftImpact player.speed time posList) playerPos then
+        dx = if List.any (rightImpact player.speed time posList) playerPos ||
+                List.any (leftImpact player.speed time posList) playerPos then
                 if player.anim == Walk || player.anim == Attacked then
                     -player.speed.x
-                else -1.8 * player.speed.x
+                else
+                     -1.8 * player.speed.x
             else
                 0
         dy = if List.any (upImpact player.speed time posList) playerPos then
                 -1.8* player.speed.y
             else 
                 0.03
-
         speed = Vector (player.speed.x + dx) ( player.speed.y + dy) 
     in
         {player | speed = speed}
@@ -343,16 +343,14 @@ changePos time player =
         pos = nextPos player.speed time player.pos
         collisionPos = List.map (nextPos player.speed time) player.collisionPos
     in
-        {player | pos = pos
-                , collisionPos = collisionPos}
+        {player | pos = pos , collisionPos = collisionPos}
 
 nextPos speed time pos=
     let
         dx = speed.x * time
         dy = speed.y * time 
     in
-        Pos (pos.x1 + dx) (pos.x2 + dx)
-            (pos.y1 + dy) (pos.y2 + dy)
+        Pos (pos.x1 + dx) (pos.x2 + dx) (pos.y1 + dy) (pos.y2 + dy)
 
 changeFrame time player =
     {player | frame = player.frame + 1}

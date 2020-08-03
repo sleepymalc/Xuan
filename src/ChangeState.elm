@@ -67,36 +67,36 @@ changeCGandStory time model =
                 { model | state = One, cgtime = 500 }
         --DiscoverI
             Story2_1 ->
-                { model | state = CG2_1, cgtime = 5000 }        
+                { model | state = CG2_1, cgtime = 500 }        
             CG2_1 ->
-                { model | state = Story2_2, cgtime = 5000 }
+                { model | state = Story2_2, cgtime = 500 }
             Story2_2 ->
-                { model | state = CG2_2, cgtime = 5000 }
+                { model | state = CG2_2, cgtime = 500 }
             CG2_2 ->
-                { model | state = DiscoverI, cgtime = 5000 }
+                { model | state = DiscoverI, cgtime = 500 }
         --Two    
             Story3_1 ->
-                { model | state = CG3_1, cgtime = 5000 }
+                { model | state = CG3_1, cgtime = 500 }
             CG3_1 ->
-                { model | state = Two, cgtime = 5000 }
+                { model | state = Two, cgtime = 500, speedAI = initSpeedAI, time = 0 }
         --DiscoverII        
             Story4_1 ->
-                { model | state = DiscoverII, cgtime = 5000 }
+                { model | state = DiscoverII, cgtime = 500 }
         --Three
             Story5_1 ->
-                { model | state = CG5_1, cgtime = 5000 }
+                { model | state = CG5_1, cgtime = 500 }
             CG5_1 ->
-                { model | state = Story5_2, cgtime = 5000 }
+                { model | state = Story5_2, cgtime = 500 }
             Story5_2 ->
-                { model | state = CG5_2, cgtime = 5000 }
+                { model | state = CG5_2, cgtime = 500 }
             CG5_2 ->
-                { model | state = Three, cgtime = 5000 }
+                { model | state = Three, cgtime = 500 }
         --Ending
             Story6_1 ->
-                { model | state = CG6_1, cgtime = 5000 }
+                { model | state = CG6_1, cgtime = 500 }
             CG6_1 ->
-                { model | state = CG6_2, cgtime = 5000 }
+                { model | state = CG6_2, cgtime = 500 }
             CG6_2 ->
-                { model | state = LOGO, cgtime = 5000 }
+                { model | state = LOGO, cgtime = 500 }
             _ ->
                 model

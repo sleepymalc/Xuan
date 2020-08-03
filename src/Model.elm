@@ -149,8 +149,6 @@ type alias Bird =
     , speed: Speed
     }
 
-
-
 type alias SpeedAI =
     {  pos: Pos 
     , collisionPos: List Pos 
@@ -166,8 +164,8 @@ type alias SpeedAI =
     }
 
 initSpeedAI = 
-    { pos = speedAIPos3
-    , collisionPos = standcollisionPos speedAIPos3
+    { pos = speedAIPos2
+    , collisionPos = standcollisionPos speedAIPos2
     , anim = Stand
     , frame = 0
     , direction = Left
@@ -233,7 +231,7 @@ initPlayer1 =
     , mood = Normal
     , frame = 0
     , textframe = -1000
-    , direction = Left
+    , direction = Right
     , jumpdir = Up
     , speed = Vector 0 0
     , hp = 10
@@ -253,8 +251,8 @@ initPlayer1 =
 initPlayerDiscoverI player=
     { player |
       text = "What's going on?"
-    , pos = MapSetting.playerPos4
-    , collisionPos = standcollisionPos MapSetting.playerPos4
+    , pos = MapSetting.playerPosDiscoverI
+    , collisionPos = standcollisionPos MapSetting.playerPosDiscoverI
     , anim = Crouch
     , frame = 0
     , textframe = 0
@@ -281,8 +279,8 @@ initPlayer2 player =
 initPlayerDiscoverII player =
     { player |
       text = "Life is a series of choices, and you don't know about the consequences."
-    , pos = MapSetting.playerPos5
-    , collisionPos = standcollisionPos MapSetting.playerPos5
+    , pos = MapSetting.playerPosDiscoverII
+    , collisionPos = standcollisionPos MapSetting.playerPosDiscoverII
     , anim = Crouch
     , frame = 0
     , textframe = 0
@@ -339,6 +337,16 @@ initMap1 =
         , npcs = initNpcs1 npcPosList1
         , birds = initBirds1 birdPosList1
         }
+        
+initMapDiscoverI =
+        { bricks = initBricks brickPosListDiscoverI
+        , wallbricks = initBricks brickWallListDiscoverI
+        , characters = initCharacters characterPosListDiscoverI
+        , exit = exitPosDiscoverI
+        , npcs = initNpcsDiscoverI npcPosListDiscoverI
+        , birds = initBirdsDiscoverI birdPosListDiscoverI
+        }
+
 initMap2 =
         { bricks = initBricks brickPosList2
         , wallbricks = initBricks brickWallList2
@@ -348,6 +356,15 @@ initMap2 =
         , birds = initBirds2 birdPosList2
         }
 
+initMapDiscoverII =
+        { bricks = initBricks brickPosListDiscoverII
+        , wallbricks = initBricks brickWallListDiscoverII
+        , characters = initCharacters characterPosListDiscoverII
+        , exit = exitPosDiscoverII
+        , npcs = initNpcsDiscoverII npcPosListDiscoverII
+        , birds = initBirdsDiscoverII birdPosListDiscoverII
+        }
+
 initMap3 =
         { bricks = initBricks brickPosList3
         , wallbricks = initBricks brickWallList3
@@ -355,26 +372,7 @@ initMap3 =
         , exit = exitPos3
         , npcs = initNpcs3 npcPosList3
         , birds = initBirds3 birdPosList3
-        }
-initMapDiscoverI =
-        { bricks = initBricks brickPosList4
-        , wallbricks = initBricks brickWallList4
-        , characters = initCharacters characterPosList4
-        , exit = exitPos4
-        , npcs = initNpcsDiscoverI npcPosList4
-        , birds = initBirdsDiscoverI birdPosList4
-        }
-
-initMapDiscoverII =
-        { bricks = initBricks brickPosList5
-        , wallbricks = initBricks brickWallList5
-        , characters = initCharacters characterPosList5
-        , exit = exitPos5
-        , npcs = initNpcsDiscoverII npcPosList5
-        , birds = initBirdsDiscoverII birdPosList5
-        }
-        
-
+        }        
 
 initNpcs1 posList=
     List.map
@@ -388,7 +386,6 @@ initNpcs1 posList=
                 , textframe = 0
         }) posList
 
-
 initNpcsDiscoverI posList=
     List.map
         (\pos-> { pos = pos
@@ -400,7 +397,6 @@ initNpcsDiscoverI posList=
                 , speed = Vector 0 0
                 , textframe = 0
         }) posList
-
 
 initNpcs2 posList=
     List.map
