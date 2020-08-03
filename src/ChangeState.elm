@@ -36,67 +36,67 @@ changeState model =
 
 changeCGandStory time model =
     let 
-        cgtime = model.cgtime + time
+        cgtime = model.cgtime - time
     in
-    if model.cgtime <= 5000 then
+    if model.cgtime >= 0 then
         { model | cgtime = cgtime}
     else 
         case model.state of
         -- LOGO
             LOGO ->
                 if model.player.teachtextstate == 0 then
-                    { model | state = Story1_1, cgtime = 0}
+                    { model | state = Story1_1, cgtime = 500}
                 else
-                    { model | state = End, cgtime = 0}
+                    { model | state = End, cgtime = 500}
         -- One
             Story1_1 ->
-                { model | state = CG1_1, cgtime = 0 }
+                { model | state = CG1_1, cgtime = 500 }
             CG1_1 ->
-                { model | state = Story1_2, cgtime = 0 }
+                { model | state = Story1_2, cgtime = 500 }
             Story1_2 ->
-                { model | state = CG1_2, cgtime = 0 }
+                { model | state = CG1_2, cgtime = 500 }
             CG1_2 ->
-                { model | state = Story1_3, cgtime = 0 }
+                { model | state = Story1_3, cgtime = 500 }
             Story1_3 -> 
-                { model | state = CG1_3, cgtime = 0 }
+                { model | state = CG1_3, cgtime = 500 }
             CG1_3 ->
-                { model | state = Story1_4, cgtime = 0 }
+                { model | state = Story1_4, cgtime = 500 }
             Story1_4 ->
-                { model | state = CG1_4, cgtime = 0 }
+                { model | state = CG1_4, cgtime = 500 }
             CG1_4 ->
-                { model | state = One, cgtime = 0 }
+                { model | state = One, cgtime = 500 }
         --DiscoverI
             Story2_1 ->
-                { model | state = CG2_1, cgtime = 0 }        
+                { model | state = CG2_1, cgtime = 5000 }        
             CG2_1 ->
-                { model | state = Story2_2, cgtime = 0 }
+                { model | state = Story2_2, cgtime = 5000 }
             Story2_2 ->
-                { model | state = CG2_2, cgtime = 0 }
+                { model | state = CG2_2, cgtime = 5000 }
             CG2_2 ->
-                { model | state = DiscoverI, cgtime = 0 }
+                { model | state = DiscoverI, cgtime = 5000 }
         --Two    
             Story3_1 ->
-                { model | state = CG3_1, cgtime = 0 }
+                { model | state = CG3_1, cgtime = 5000 }
             CG3_1 ->
-                { model | state = Two, cgtime = 0 }
+                { model | state = Two, cgtime = 5000 }
         --DiscoverII        
             Story4_1 ->
-                { model | state = DiscoverII, cgtime = 0 }
+                { model | state = DiscoverII, cgtime = 5000 }
         --Three
             Story5_1 ->
-                { model | state = CG5_1, cgtime = 0 }
+                { model | state = CG5_1, cgtime = 5000 }
             CG5_1 ->
-                { model | state = Story5_2, cgtime = 0 }
+                { model | state = Story5_2, cgtime = 5000 }
             Story5_2 ->
-                { model | state = CG5_2, cgtime = 0 }
+                { model | state = CG5_2, cgtime = 5000 }
             CG5_2 ->
-                { model | state = Three, cgtime = 0 }
+                { model | state = Three, cgtime = 5000 }
         --Ending
             Story6_1 ->
-                { model | state = CG6_1, cgtime = 0 }
+                { model | state = CG6_1, cgtime = 5000 }
             CG6_1 ->
-                { model | state = CG6_2, cgtime = 0 }
+                { model | state = CG6_2, cgtime = 5000 }
             CG6_2 ->
-                { model | state = LOGO, cgtime = 0 }
+                { model | state = LOGO, cgtime = 5000 }
             _ ->
                 model

@@ -184,15 +184,18 @@ cutBrickView viewpos =
 
 renderBackground model=
     if model.state == One then
-        renderImage "img/background/background1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+        if model.player.pos.y1 >= 3200 || (model.player.pos.y1 <= 1600 && model.player.pos.x1 >= 3200 )then
+            renderImage "img/background/background1_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+        else 
+            renderImage "img/background/background1_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else if model.state == DiscoverI then
-        renderImage "img/background/background2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage "img/background/background2_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Two then
-        renderImage "img/background/background3.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage "img/background/background3_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == DiscoverII then
-        renderImage "img/background/background4.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage "img/background/background4_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Three then
-        renderImage "img/background/background5.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage "img/background/background5_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else
        renderImage "img/background/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
 
@@ -526,9 +529,7 @@ renderCG model =
             renderImage "img/CG/CG1/CG1_3.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
         CG1_4 ->
             renderImage "img/CG/CG1/CG1_4.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        LOGOII ->
-            renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
-        LOGOI ->
+        LOGO ->
             renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
         _ ->
             renderImage "img/background.png" (Pos 0 0 0 0) []
