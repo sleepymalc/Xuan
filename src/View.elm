@@ -25,15 +25,23 @@ view model =
         renderSvg = svg
                         (gameUIAttribute model.size)
                         (if model.state == Story1_1 || model.state == Story1_2 || 
-                            model.state == Story1_3 || model.state == Story1_4  then
+                            model.state == Story1_3 || model.state == Story1_4 ||
+                            model.state == Story2_1 || model.state == Story2_2 ||
+                            model.state == Story3_1 || model.state == Story4_1 ||
+                            model.state == Story5_1 || model.state == Story5_2 || 
+                            model.state == Story6_1 then
                             [renderStory model.story]
                         else if model.state == CG1_1 || model.state == CG1_2 ||
-                                model.state == CG1_3 || model.state == CG1_4    then 
+                                model.state == CG1_3 || model.state == CG1_4 ||
+                                model.state == CG2_1 || model.state == CG2_2 ||
+                                model.state == CG3_1 || model.state == CG5_1 ||
+                                model.state == CG5_2 || model.state == CG6_1 ||
+                                model.state == CG6_2 then 
                             [renderCG model]
                         else if model.state == Loading then
                             [renderS 20 100 1 "Loading..."]
                         else if model.state == LOGO then
-                            [renderCG model]
+                            [renderCG model, renderBackground model]
                         else
                         ([ renderBackground model
                         , renderPlayer model.state model.player
@@ -183,7 +191,9 @@ cutBrickView viewpos =
 
 
 renderBackground model=
-    if model.state == One then
+    if model.state == LOGO then
+       renderImage "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
+    else if model.state == One then
         if model.player.pos.y1 >= 3200 || (model.player.pos.y1 <= 1600 && model.player.pos.x1 >= 3200 )then
             renderImage "img/background/background1_2.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
         else 
@@ -197,7 +207,7 @@ renderBackground model=
     else if model.state == Three then
         renderImage "img/background/background5_1.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else
-       renderImage "img/background/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+       renderImage "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
 
 renderCharacters player characters=
     List.map (renderCharacter player)characters 
