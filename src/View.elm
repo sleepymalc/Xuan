@@ -87,7 +87,8 @@ renderSpeedAI player speedAI=
 
 renderBlood player = 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+        prefix = ""
     in
     if player.mood == Normal then
         if player.hp >= 7 && player.hp <10 then
@@ -133,7 +134,8 @@ renderbricks posList model=
 
 renderbrick1 model pos=
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" 
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/" 
+        prefix = ""
         viewpos = pos |> offset model.player
                     |> cutBrickView
                     |> clearOutsideImage
@@ -197,15 +199,21 @@ cutBrickView viewpos =
 
 renderBackground model=
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+       -- prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+        prefix = ""
     in
     if model.state == LOGO then
        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
     else if model.state == One then
-        if model.player.pos.y1 >= 3200 || (model.player.pos.y1 <= 1600 && model.player.pos.x1 >= 3200 )then
-            renderImage (prefix++"img/background/background1_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+        if model.player.pos.y1 >= 3200 || (model.player.pos.y2 <= 800 && model.player.pos.x1 >= 3200) then
+            if model.player.pos.x1 <= 1600  then
+                renderImage (prefix++"img/background/background1_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+            else if model.player.pos.y2 <= 800 && model.player.pos.x1 >= 3200 then
+                renderImage (prefix++"img/background/background1_4.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+            else
+                renderImage (prefix++"img/background/background1_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
         else 
-            renderImage (prefix++"img/background/background1_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
+            renderImage (prefix++"img/background/background1_3.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else if model.state == DiscoverI then
         if model.player.pos.y1 >= 3200 then
             renderImage (prefix++"img/background/background2_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
@@ -247,8 +255,8 @@ connectName namePrefix anim id=
 --Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
-        --prefix = "img/character/color/"
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
+        prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
             Stand -> 

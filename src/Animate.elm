@@ -266,7 +266,7 @@ health player =
         hp=if player.hp>=10 then
             10
             else
-            player.hp+0.0013        
+            player.hp+0.002        
     in
     { player | hp=hp }
 
@@ -336,7 +336,7 @@ touchDownBrick brickSpeed time brickPos player =
             newplayer = loseBlood 1 player
         in
             if player.anim == Jump then
-                if player.speed.y >= 1.8 then
+                if player.speed.y >= 2 then
                     { newplayer | pos = pos , collisionPos = collisionPos, fallcount = fallcount} |> grovel
                 else 
                     { player | pos = pos, collisionPos = collisionPos} |> stand

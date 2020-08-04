@@ -100,19 +100,19 @@ update msg model =
 
         DebugRight on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0.2 0) on
+                        player=model.player |> changeDebugSpeed (Vector 1 0) on
                     }, Cmd.none )
         DebugLeft on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector -0.2 0) on
+                        player=model.player |> changeDebugSpeed (Vector -1 0) on
                     }, Cmd.none )
         DebugUp on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0 -0.2) on
+                        player=model.player |> changeDebugSpeed (Vector 0 -1) on
                     }, Cmd.none )
         DebugDown on ->
                 ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0 0.2) on
+                        player=model.player |> changeDebugSpeed (Vector 0 1) on
                     }, Cmd.none )
         ExitDebugMode ->
             ( {model |
