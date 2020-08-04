@@ -100,7 +100,7 @@ changeCGandStory time model =
             CG6_2 ->
                 { model | state = Story6_1, cgtime = 500 }
             Story6_1 ->
-                { model | state = Break, cgtime = 500}
+                { model | state = End, cgtime = 500}
             
             _ ->
                 model

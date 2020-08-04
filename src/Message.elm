@@ -25,5 +25,10 @@ type Msg
     | DebugDown Bool
     | DebugLeft Bool
     | DebugRight Bool
+    | Jump1
+    | JumpDiscoverI
+    | Jump2
+    | JumpDiscoverII
+    | Jump3
     | ExitDebugMode
     

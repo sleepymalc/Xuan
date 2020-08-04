@@ -74,7 +74,16 @@ keyNormal on keycode =
         --Enter
         13 ->
             ExitDebugMode 
-
+        49 ->
+            Jump1
+        50 ->
+            JumpDiscoverI
+        51 ->
+            Jump2
+        52 ->
+            JumpDiscoverII
+        53 ->
+            Jump3
         _ ->
             Noop
 

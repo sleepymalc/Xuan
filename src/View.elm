@@ -38,12 +38,10 @@ view model =
                                 model.state == CG6_1 || model.state == CG6_2 then 
                             [renderCG model]
                         else if model.state == Loading then
-                            [ renderS 20 100 1 "Loading..."]
+                            [ renderBackground model]
                         else if model.state == LOGO then
                             [ renderLOGO model, renderBackground model]
                         else if model.state == Model.Start then
-                            [ renderBackground model ]
-                        else if model.state == Break then
                             [ renderBackground model ]
                         else if model.state == End then
                             [ renderBackground model ]
@@ -78,11 +76,8 @@ view model =
                     else if model.state == Model.Start then 
                         [ renderButton Message.Start (prefix++"img/Button/StartBut.png") (Vector 200 100 ) (Vector 700 200)
                         , renderButton Message.About (prefix++"img/Button/AboutBut.png") (Vector 200 100 ) (Vector 700 400) ] 
-                    else if model.state == Break then 
-                        [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200)
-                        ]
                     else if  model.state == End then
-                        [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200) ]
+                        [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 400) ]
                     else if model.state == Model.About then
                         [ renderButton Back (prefix++"img/Button/BackBut.png") (Vector 200 100 ) (Vector 700 400) ] 
                     else
@@ -239,15 +234,15 @@ renderBackground model=
         prefix = ""
     in
     if model.state == LOGO then
-        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
+        renderImage (prefix++"img/Page/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
     else if model.state == Model.Start then 
-        renderImage (prefix++"img/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"]
-    else if model.state == Break then
-        renderImage (prefix++"img/Break.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
+        renderImage (prefix++"img/Page/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
     else if model.state == End then
-        renderImage (prefix++"img/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
+        renderImage (prefix++"img/Page/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
     else if model.state == Model.About then
-        renderImage (prefix++"img/About.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"]
+        renderImage (prefix++"img/Page/About.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"]
+    else if model.state == Loading then
+        renderImage (prefix++"img/Page/Load_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
         
     else if model.state == One then
         if model.player.pos.y1 >= 3200 || (model.player.pos.y2 <= 800 && model.player.pos.x1 >= 3200) then
@@ -613,4 +608,4 @@ renderStoryBackground model =
         renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"]  
 
 renderLOGO model = 
-    renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
+    renderImage "img/Page/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 

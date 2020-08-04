@@ -54,7 +54,6 @@ type Stage
     | LOGO
     | Start
     | About
-    | Break
     | End
     | Loading
     | Story1_1
