@@ -78,13 +78,12 @@ brickPosListDiscoverI =
     , Pos 1000 1250 950 1100
     , Pos 1400 1500 750 900   --[0,1600]*[800,1600]
     , Pos 1150 1300 600 700   --[0,1600]*[0,800]
-    , Pos 2500 2550 300 850   --[1600,3200]*[0,800]
-    , Pos 2650 2950 400 850   --[1600,3200]*[0,800]
+    , Pos 1500 1800 750 850
+    , Pos 2650 2950 400 450   --[1600,3200]*[0,800]
     ]
 brickWallListDiscoverI = 
     [ Pos 0 100 0 4000
-    , Pos 1500 1600 750 4000
-    , Pos 1600 1800 750 850
+    , Pos 1500 1600 850 4000
     , Pos 100 3200 0 100
     , Pos 100 1500 3935 4000
     ]
@@ -92,7 +91,7 @@ brickWallListDiscoverI =
 characterPosListDiscoverI = []
 
 npcPosListDiscoverI = 
-    [ 
+    [ Pos 1500 1600 3830 3930 
 
 
     ]
@@ -148,9 +147,7 @@ characterPosList2 =
     ]
 
 npcPosList2 = 
-    [ 
-
-
+    [
     ]
 
 birdPosList2 = 
@@ -197,7 +194,7 @@ brickWallListDiscoverII =
 characterPosListDiscoverII = []
 
 npcPosListDiscoverII = 
-    [ 
+    [ Pos 1400 1500 2690 2790
 
 
     ]
@@ -295,7 +292,7 @@ characterPosList3 =
     ]
 
 npcPosList3 = 
-    [ 
+    [ Pos 1300 1400 4630 4730
 
 
     ]

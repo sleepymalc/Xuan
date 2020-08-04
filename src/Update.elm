@@ -147,7 +147,7 @@ update msg model =
                     player = initPlayerDiscoverI initPlayer1, map = initMapDiscoverI, state = DiscoverI}, Cmd.none)
         Jump2 ->
             ( {model |
-                    player = initPlayer2 initPlayer1, map = initMap2, state = Two}, Cmd.none)
+                    player = initPlayer2 initPlayer1, map = initMap2, state = Two, speedAI = initSpeedAI, time = 0}, Cmd.none)
 
         JumpDiscoverII ->
             ( {model |
