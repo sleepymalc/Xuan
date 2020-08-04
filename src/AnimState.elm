@@ -71,3 +71,10 @@ normal player =
 
 dead player =
     { player| anim = Dead,  frame = 0, speed = Vector 0 0}
+
+jumpStart player=
+    { player| anim = JumpStart,  frame = 0, speed = Vector 0.01 -0.01}
+
+jumpLoop
+    player=
+    { player| anim = JumpLoop,  frame = 0 }

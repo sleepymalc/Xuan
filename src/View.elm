@@ -81,7 +81,7 @@ view model =
                         , renderButton Message.About (prefix++"img/Button/AboutBut.png") (Vector 200 100 ) (Vector 700 400) ] 
                     else if model.state == Break then 
                         [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200)
-                        ]
+                        , renderButton Back (prefix++"img/Button/BackBut.png") (Vector 200 100 ) (Vector 700 400) ]
                     else if  model.state == End then
                         [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200) ]
                     else if model.state == Model.About then
@@ -397,6 +397,28 @@ getAnimUrl anim frame player namePrefix=
             DebugMode ->
                     connectName namePrefix "walk" 0
 
+            JumpStart ->
+                let
+                    id = Basics.min 13 (floor ((toFloat frame)/4))
+                in
+                    connectName namePrefix "jumpstart" id
+            JumpEnd ->
+                let
+                    id = if frame <= 35 then
+                            0
+                        else Basics.min 7 (floor ((toFloat (frame-35))/2))
+                in
+                    connectName namePrefix "jumpend" id
+            JumpLoop ->
+                let
+                    id = modBy 20 frame
+                in
+                    connectName namePrefix "jumploop" id
+            Getup ->
+                let
+                    id = Basics.min 81 (Basics.max 0 (floor ((toFloat (frame-80))/2)))
+                in
+                    connectName namePrefix "getup" id
     in
         prefix ++ name ++ surfix
 
@@ -467,6 +489,8 @@ debugAttack characters player boss=
         attackPos = ((playerAttackRange player)
             :: bossForwardAttackRange boss
             :: bossBackwardAttackRange boss
+            :: jumpPos1
+            :: exitPos1
             :: (characters 
             |> List.map attackRange))
             |> List.map (offset player) 

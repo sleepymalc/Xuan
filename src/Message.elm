@@ -25,5 +25,6 @@ type Msg
     | DebugDown Bool
     | DebugLeft Bool
     | DebugRight Bool
+    | DebugPos
     | ExitDebugMode
     

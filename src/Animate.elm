@@ -47,6 +47,7 @@ animate time model =
                 |> cleartext
                 |> changePos time
                 |> changeFrame time
+                |> stageAnim time
 
         boss = if model.state == Three then
                 model.boss
@@ -86,6 +87,20 @@ animate time model =
             |> chargeModeltime
             |> changeState
             |> changeCGandStory time
+
+stageAnim time player= 
+    let
+        playerPos = nextPos player.speed time player.pos
+
+    in
+        if (player.anim/= JumpStart)&&(rightImpact player.speed time [jumpPos1] playerPos) then
+            player |> jumpStart
+        else if (rightImpact player.speed time [collidePos2] playerPos) then
+            player |> jumpLoop
+        else if (player.anim == JumpStart) && (player.frame >= 14*5) then 
+            player |> jumpLoop
+        else 
+            player
 
 debugBoss boss= 
     if boss.anim == Attacked then
@@ -331,6 +346,8 @@ changeAnim bricks time player=
             newplayer |> jump
         else if (player.anim == Attack && player.frame >= 30)
             || (player.anim == Crouch && player.frame >= 60)
+            || (player.anim == JumpEnd && player.frame >= 7*7)
+            || (player.anim == Getup && player.frame >= 280)
             || (player.anim == Attacked && player.frame >= 60) then
             player |> stand 
         else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
@@ -391,7 +408,12 @@ changeSpeed time bricks player =
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dx = if List.any (rightImpact player.speed time posList) playerPos ||
+        dx = if player.anim == JumpStart then
+                0.001
+            else if player.anim == JumpLoop 
+            && (projectionOverlap .y1 .y2 player.pos deceleratePos) then
+                -0.5* player.speed.x
+            else if List.any (rightImpact player.speed time posList) playerPos ||
                 List.any (leftImpact player.speed time posList) playerPos then
                 if player.anim == Walk || player.anim == Attacked then
                     -player.speed.x
@@ -399,7 +421,14 @@ changeSpeed time bricks player =
                      -1.8 * player.speed.x
             else
                 0
-        dy = if List.any (upImpact player.speed time posList) playerPos then
+        dy = if player.anim == JumpStart then
+                -0.001
+            else if player.anim == JumpLoop 
+            && (projectionOverlap .y1 .y2 player.pos deceleratePos) then
+                -0.05* player.speed.y---0.014* player.speed.y
+            else if player.anim == JumpLoop then
+                0.01
+            else if List.any (upImpact player.speed time posList) playerPos then
                 -1.8* player.speed.y
             else 
                 0.03

@@ -140,6 +140,11 @@ update msg model =
             ( {model |
                     state = Model.About
                     }, Cmd.none)
+        DebugPos ->
+            let
+                pos = Debug.log "Pos" model.player.pos
+            in
+            ( model, Cmd.none )
         _ ->
             ( model, Cmd.none )
 

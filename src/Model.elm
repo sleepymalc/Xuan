@@ -32,6 +32,10 @@ type AnimState =
     | Fly
     | Dead
     | DebugMode
+    | JumpStart
+    | JumpEnd
+    | JumpLoop
+    | Getup
 
 type Mood = 
     Normal
@@ -228,9 +232,9 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayer1
-      ,map = initMap1
-      ,state = Loading
+    ({ player = initPlayerDiscoverI initPlayer1
+      ,map = initMapDiscoverI
+      ,state = DiscoverI
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
@@ -282,10 +286,10 @@ initPlayerDiscoverI player=
       text = "What's going on?"
     , pos = MapSetting.playerPosDiscoverI
     , collisionPos = standcollisionPos MapSetting.playerPosDiscoverI
-    , anim = Crouch
+    , anim = JumpEnd
     , frame = 0
     , textframe = 0
-    , direction = Left
+    , direction = Right
     , jumpdir = Up
     , speed = Vector 0 0 
     , fallcount = 0
@@ -296,7 +300,7 @@ initPlayer2 player =
       text = "I am Song Yuanhuai."
     , pos = MapSetting.playerPos2
     , collisionPos = standcollisionPos MapSetting.playerPos2 
-    , anim = Crouch
+    , anim = Getup
     , frame = 0
     , textframe = 0
     , direction = Right
