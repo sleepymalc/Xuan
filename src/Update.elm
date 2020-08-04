@@ -25,7 +25,7 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = Story1_1
+                            | state = LOGO
                     }
                     , Cmd.none
                     )
@@ -42,7 +42,7 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = Story1_1
+                            | state = LOGO
                     }
                     , Cmd.none
                     )
@@ -118,7 +118,32 @@ update msg model =
             ( {model |
                     player=model.player |> stand
                     }, Cmd.none )
-
+        Message.Start ->
+            ( {model |
+                    state = Story1_1, cgtime = 500 
+                    }, Cmd.none)
+        Next ->
+            case model.prestate of 
+                One ->
+                    ( { model | state = Story2_1 }, Cmd.none )
+                DiscoverI ->
+                    ( { model | state = Story3_1 }, Cmd.none )
+                Two ->
+                    ( { model | state = Story4_1 }, Cmd.none )
+                DiscoverII ->
+                    ( { model | state = Story5_1 }, Cmd.none )
+                Three ->
+                    ( { model | state = Story6_1}, Cmd.none )
+                _ ->
+                    ( model, Cmd.none )
+        Back ->
+            ( {model |
+                    state = Model.Start
+                    }, Cmd.none  )
+        Message.About ->
+            ( {model |
+                    state = Model.About
+                    }, Cmd.none)
         _ ->
             ( model, Cmd.none )
 

@@ -52,6 +52,9 @@ type Stage
     | DiscoverI
     | DiscoverII
     | LOGO
+    | Start
+    | About
+    | Break
     | End
     | Loading
     | Story1_1
@@ -180,6 +183,7 @@ initSpeedAI =
 type alias Model =
     { player: Player
     , map: Map
+    , prestate: Stage
     , state: Stage
     , size: Vector Float
     , audioList: List String
@@ -200,9 +204,10 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayer2 initPlayer1
-      ,map = initMap2
-      ,state = Two
+    ({ player = initPlayer1
+      ,map = initMap1
+      ,prestate = Loading
+      ,state = Loading
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}

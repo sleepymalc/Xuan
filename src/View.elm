@@ -22,6 +22,9 @@ textStoryOne = "story one"
 view : Model -> Html Msg
 view model =
     let
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+        prefix = ""
+
         renderSvg = svg
                         (gameUIAttribute model.size)
                         (if model.state == Story1_1 || model.state == Story1_2 || model.state == Story1_3 || 
@@ -35,9 +38,15 @@ view model =
                                 model.state == CG6_1 || model.state == CG6_2 then 
                             [renderCG model]
                         else if model.state == Loading then
-                            [renderS 20 100 1 "Loading..."]
+                            [ renderS 20 100 1 "Loading..."]
                         else if model.state == LOGO then
-                            [renderLOGO model, renderBackground model]
+                            [ renderLOGO model, renderBackground model]
+                        else if model.state == Model.Start then
+                            [ renderBackground model ]
+                        else if model.state == Break then
+                            [ renderBackground model ]
+                        else if model.state == End then
+                            [ renderBackground model ]
                         else
                         ([ renderBackground model
                         , renderPlayer model.state model.player
@@ -63,6 +72,16 @@ view model =
         renderHtml = if model.state == One || model.state == DiscoverI || model.state == Two ||
                         model.state == DiscoverII || model.state == Three then
                         renderbricks (List.map .pos model.map.bricks) model
+                    else if model.state == Model.Start then 
+                        [ renderButton Message.Start (prefix++"img/Button/StartBut.png") (Vector 200 100 ) (Vector 700 200)
+                        , renderButton Message.About (prefix++"img/Button/AboutBut.png") (Vector 200 100 ) (Vector 700 400) ] 
+                    else if model.state == Break then 
+                        [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200)
+                        , renderButton Back (prefix++"img/Button/BackBut.png") (Vector 200 100 ) (Vector 700 400) ]
+                    else if  model.state == End then
+                        [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200) ]
+                    else if model.state == Model.About then
+                        [ renderButton Back (prefix++"img/Button/BackBut.png") (Vector 200 100 ) (Vector 700 400) ] 
                     else
                         []
     in  
@@ -143,26 +162,26 @@ renderbrick1 model pos=
                     prefix++"img/Stone/map_1/stone_1.png"
                 else if model.state == DiscoverI then
                     if pos.x2-pos.x1 >= pos.y2-pos.y1 then
-                        prefix++"img/Stone/map_2/stone_1.png" --橫
+                        prefix++"img/Stone/map_2/stone_1.png"
                     else
-                       prefix++"img/Stone/map_2/stone_2.png" --豎
+                       prefix++"img/Stone/map_2/stone_2.png"
                 else if model.state == Two then
                     if pos.x2-pos.x1 >= pos.y2-pos.y1 then
-                        prefix++"img/Stone/map_3/stone_1.png" --橫
+                        prefix++"img/Stone/map_3/stone_1.png"
                     else if pos.y2-pos.y1 >= 1000 then
                         prefix++"img/Stone/map_3/stone_3.png"
                     else
-                       prefix++"img/Stone/map_3/stone_2.png" --豎
+                       prefix++"img/Stone/map_3/stone_2.png"
                 else if model.state == DiscoverII then
                     if pos.x2-pos.x1 >= pos.y2-pos.y1 then
-                        prefix++"img/Stone/map_4/stone_1.png" --橫
+                        prefix++"img/Stone/map_4/stone_1.png"
                     else
-                       prefix++"img/Stone/map_4/stone_2.png" --豎
+                       prefix++"img/Stone/map_4/stone_2.png"
                 else if model.state == Three then
                     if pos.x2-pos.x1 >= pos.y2-pos.y1 then
-                        prefix++"img/Stone/map_5/stone_1.png" --橫
+                        prefix++"img/Stone/map_5/stone_1.png"
                     else
-                       prefix++"img/Stone/map_5/stone_2.png" --豎
+                       prefix++"img/Stone/map_5/stone_2.png"
                 else
                     prefix++"img/Stone/map_1/stone_1.png"
     in
@@ -217,7 +236,13 @@ renderBackground model=
         prefix = ""
     in
     if model.state == LOGO then
-       renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
+        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
+    else if model.state == Model.Start then 
+        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.5"]
+    else if model.state == Break then
+        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.5"] 
+    else if model.state == End then
+        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.5"] 
     else if model.state == One then
         if model.player.pos.y1 >= 3200 || (model.player.pos.y2 <= 800 && model.player.pos.x1 >= 3200) then
             if model.player.pos.x1 <= 1600  then
@@ -440,7 +465,7 @@ renderAudio url =
    
 renderButton msg url size pos= 
     button
-        [  Html.Attributes.style "border" "0"
+        [ Html.Attributes.style "border" "0"
         , Html.Attributes.style "bottom" "30px"
         , Html.Attributes.style "cursor" "pointer"
         , Html.Attributes.style "display" "block"
