@@ -291,7 +291,7 @@ characterPosList3 =
     , Pos 400 500 1100 1200
     , Pos 425 525 200 300
     , Pos 1075 1175 200 300
-    , Pos 750 850 100 300
+    --, Pos 750 850 100 300
     , Pos -500 -400 3700 3800 -- secret room
     , Pos -300 -200 3700 3800
     ]
@@ -308,8 +308,11 @@ birdPosList3 =
         
     ]
 
-playerPos3 = Pos 200 300 4630 4730
+playerPos3 = Pos 200 300 500 600--Pos 200 300 4630 4730
 
 speedAIPos3 = Pos 1300 1400 4630 4730
 
+bossPos3 = Pos 750 850 200 300
+
 exitPos3 = Pos 2000 2100 0 100
+

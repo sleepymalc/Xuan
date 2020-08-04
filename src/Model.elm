@@ -30,6 +30,7 @@ type AnimState =
     | Attacked
     | Grovel
     | Fly
+    | Dead
     | DebugMode
 
 type Mood = 
@@ -162,6 +163,17 @@ type alias SpeedAI =
     , hp: Int
     , fallcount: Int
     }
+type alias Boss = 
+    { pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
+    , range: Vector Float
+    , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
+    , hp: Int
+    }
+
 
 initSpeedAI = 
     { pos = speedAIPos2
@@ -177,6 +189,18 @@ initSpeedAI =
     , fallcount = 0
     }
 
+initBoss = 
+    { pos = bossPos3 
+    , collisionPos = standcollisionPos bossPos3
+    , anim = Walk
+    , range = bossRange
+    , frame = 0
+    , direction = Left
+    , speed = Vector -0.05 0
+    , hp = 3
+    }
+bossRange = Vector 650 950
+
 type alias Model =
     { player: Player
     , map: Map
@@ -190,6 +214,7 @@ type alias Model =
     , loadPack: List String
     , speedAI: SpeedAI
     , record: List SpeedAIAnim
+    , boss: Boss
     }
 
 type alias CustomAttribute ={ }
@@ -201,8 +226,8 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
-      ,map = initMap1
-      ,state = LOGO
+      ,map = initMap3
+      ,state = Three
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
@@ -212,6 +237,7 @@ init _=
       ,loadPack = initLoadPack
       ,speedAI = initSpeedAI
       ,record = []
+      ,boss = initBoss
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
@@ -225,8 +251,8 @@ initstory =
 initPlayer1 =
     { text = "I need to get outta here."
     , teachtextstate = 0
-    , pos = MapSetting.playerPos1
-    , collisionPos = standcollisionPos MapSetting.playerPos1
+    , pos = MapSetting.playerPos3
+    , collisionPos = standcollisionPos MapSetting.playerPos3
     , anim = Crouch
     , mood = Normal
     , frame = 0

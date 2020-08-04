@@ -3,7 +3,8 @@ import Model exposing (..)
 import Message exposing (..)
 import Model exposing (AnimState(..))
 
-
+-- boss Attacked Stand
+-- jumpdir
 crouch player =
     { player| anim = Crouch, frame = 0  }
 
@@ -21,7 +22,10 @@ jumpdirection moveDirection player =
             { player| jumpdir = R}
 
 stand player = 
-    { player| anim = Stand, frame = 0, speed = Vector 0 0, jumpdir = Up }
+    { player| anim = Stand, frame = 0, speed = Vector 0 0}
+
+releaseJumpdir player =
+    { player| jumpdir = Up }
 
 jump player =
     let
@@ -64,3 +68,6 @@ rage player =
 
 normal player = 
     { player | mood = Normal, frame = 0, speed = Vector 0 0}
+
+dead player =
+    { player| anim = Dead,  frame = 0, speed = Vector 0 0}

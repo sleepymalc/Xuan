@@ -45,10 +45,16 @@ view model =
                         ++ renderCharacters model.player model.map.characters
                         
                         --++ debugCollision model.map.characters model.player
-                        --++ debugAttack model.map.characters model.player
+                        ++ debugAttack model.map.characters model.player model.boss
+
                         ++ renderNPCs model.player model.map.npcs 
                         ++ ( if model.state == Two then
                                 renderSpeedAI model.player model.speedAI
+                           else
+                                []
+                        )
+                        ++ ( if model.state == Three then
+                                renderBoss model.player model.boss
                            else
                                 []
                         )
@@ -84,6 +90,16 @@ renderSpeedAI player speedAI=
         viewpos = speedAI.pos |> offset player |> resizePlayer|> clearOutsideImage
     in
         [renderImage url viewpos attr]
+
+renderBoss player boss =
+    let
+        url = getAnimUrl boss.anim boss.frame boss "boss_"
+        attr = getDirectionAttr boss.direction
+        viewpos = boss.pos |> offset player |> resizePlayer|> clearOutsideImage
+    in
+        [renderImage url viewpos attr]
+
+
 
 renderBlood player = 
     let
@@ -247,7 +263,7 @@ connectName namePrefix anim id=
 --Todo: add whole rage picture(blood or something else)
 getAnimUrl anim frame player namePrefix= 
     let
-        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/"
+        prefix = "img/character/color/"
         --prefix = "img/character/color/"
         surfix = ".png"
         name = case anim of
@@ -288,15 +304,29 @@ getAnimUrl anim frame player namePrefix=
                     connectName namePrefix "grovel" 0
 
             Attacked ->
-                if ( player.speed.x < 0 && player.direction == Left)
-                || ( player.speed.x > 0 && player.direction == Right) then
-                    namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
+                if (namePrefix == "") then
+                    if ( player.speed.x < 0 && player.direction == Left)
+                    || ( player.speed.x > 0 && player.direction == Right) then
+                        namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
+                    else
+                        namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
                 else
-                    namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
+                    let
+                        id = modBy 350 frame
+                    in
+                        connectName namePrefix "attacked" id
             Fly ->
                     connectName namePrefix "jump" 0
+
+            Dead ->
+                let
+                    id = Basics.min 239 frame
+                in
+                    connectName namePrefix "dead" id
+            
             DebugMode ->
                     connectName namePrefix "walk" 0
+
     in
         prefix ++ name ++ surfix
 
@@ -362,9 +392,11 @@ debugCollision characters player=
                         ]
                         []) collisionPos 
 
-debugAttack characters player=
+debugAttack characters player boss=
     let
         attackPos = ((playerAttackRange player)
+            :: bossForwardAttackRange boss
+            :: bossBackwardAttackRange boss
             :: (characters 
             |> List.map attackRange))
             |> List.map (offset player) 
