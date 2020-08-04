@@ -305,6 +305,10 @@ changeChargeTime time player =
 
 chargeEffectTime time player = 
     let
+        newEffectTimeHalf = if player.effecttimeOne <=1000 then 
+                                player.effecttimeOne + 0.2*time
+                            else 
+                                -(player.effecttimeOne + 0.2*time) 
         newEffectTimeOne = if player.effecttimeOne <=1000 then 
                                 player.effecttimeOne + time
                             else 
@@ -327,9 +331,8 @@ chargeEffectTime time player =
                                 -(player.effecttimeFive + 2*time)
     in
     { player | 
-        effecttimeOne = newEffectTimeOne,effecttimeTwo = newEffectTimeTwo,     
-        effecttimeThree = newEffectTimeThree, effecttimeFour = newEffectTimeFour, 
-        effecttimeFive = newEffectTimeFive} 
+        effecttimeHalf = newEffectTimeHalf, effecttimeOne = newEffectTimeOne,effecttimeTwo = newEffectTimeTwo,     
+        effecttimeThree = newEffectTimeThree, effecttimeFour = newEffectTimeFour, effecttimeFive = newEffectTimeFive} 
         
 
 changeAnim bricks time player=
