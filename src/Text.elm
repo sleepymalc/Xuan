@@ -137,7 +137,7 @@ cleartext player =
     else
         { player | text = player.text }
 
-changeStory state story =
+changeStory state inrage story =
     case state of
         Story1_1 ->
             { story | text =  "Song Yuanhuai was a kid in the martial art world, who once lived a happy life."
@@ -180,11 +180,18 @@ changeStory state story =
 
             }
         Story4_1 ->
-            { story | text = "Story4_1"
+            if inrage == True then
+                { story | text = "You Win!"
 
-            , storyframe = 0  
+                , storyframe = 0
 
-            }
+                }
+            else
+                { story | text = "You Win!"
+
+                , storyframe = 0
+
+                }
         Story5_1 ->
             { story | text = "Song continues to explore in order to find the culprit of his suffering."
 
