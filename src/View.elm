@@ -149,6 +149,8 @@ renderbrick1 model pos=
                 else if model.state == Two then
                     if pos.x2-pos.x1 >= pos.y2-pos.y1 then
                         prefix++"img/Stone/map_3/stone_1.png" --橫
+                    else if pos.y2-pos.y1 >= 1000 then
+                        prefix++"img/Stone/map_3/stone_3.png"
                     else
                        prefix++"img/Stone/map_3/stone_2.png" --豎
                 else if model.state == DiscoverII then
@@ -228,13 +230,16 @@ renderBackground model=
             renderImage (prefix++"img/background/background1_3.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else if model.state == DiscoverI then
         if model.player.pos.y1 >= 3200 then
-            renderImage (prefix++"img/background/background2_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+            renderImage (prefix++"img/background/background2_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
         else
-           renderImage (prefix++"img/background/background2_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+           renderImage (prefix++"img/background/background2_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Two then
         renderImage (prefix++"img/background/background3_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == DiscoverII then
-        renderImage (prefix++"img/background/background4_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        if model.player.pos.y1 >=3200 then
+            renderImage (prefix++"img/background/background4_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        else 
+            renderImage (prefix++"img/background/background4_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Three then
         renderImage (prefix++"img/background/background5_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else

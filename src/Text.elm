@@ -65,7 +65,7 @@ changeText state speedAI player=
                 { player | text = player.text }
 
         DiscoverII ->
-            if player.pos.y2 <= 500 then
+            if player.pos.y2 <= 500 && player.anim == Stand then
                 { player | text = "It's been 10 years... Now I'm back.", textframe = 0 }
             else
                 { player | text = player.text }
