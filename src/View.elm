@@ -52,6 +52,7 @@ view model =
                             , renderPlayer model.state model.player
                             ]
                             ++ renderCharacters model.player model.map.characters
+                            ++ renderBricksShader (List.map .pos model.map.bricks) model 
                                 --++ debugCollision model.map.characters model.player
                                 --++ debugAttack model.map.characters model.player
                             ++ renderNPCs model.player model.map.npcs 
@@ -84,13 +85,14 @@ view model =
                         []
     in  
     div[]
-        [         
-            div
+        [    
+             div []renderHtml     
+            , div
                 [ Html.Attributes.style "height" "0px"]
                 [ renderSvg
                 , span[Html.Attributes.style "opacity" "0"] renderLoad
                 ]    
-        , div []renderHtml
+        
 
         ]
 
@@ -148,6 +150,9 @@ offset player pos =
 
 renderbricks posList model=
     List.map (renderbrick1 model) posList
+    
+renderBricksShader posList model = 
+    List.map (renderbrick model model.player) posList
 
 renderbrick1 model pos=
     let
@@ -189,19 +194,34 @@ renderbrick1 model pos=
     
 
     
-renderbrick player pos=
+renderbrick model player pos=
     let
         viewpos = pos |> offset player
                     |> cutBrickView
                     |> clearOutsideImage
-        
+        rgb = case model.state of
+            One ->
+                "#413447"
+            DiscoverI ->
+                "#596E47"--
+            Two ->
+                "#6075AB"
+            DiscoverII ->
+                "#67AF6D"
+            Three ->
+                "#7C341E"
+            _ ->
+                "#000000"
+
     in
     rect
-        [ x (String.fromFloat viewpos.x1)
+        [ rx "10"
+        , ry "10"
+        , x (String.fromFloat viewpos.x1)
         , y (String.fromFloat viewpos.y1)
         , width (String.fromFloat (viewpos.x2-viewpos.x1))
         , height (String.fromFloat (viewpos.y2-viewpos.y1))
-        , fill "#000000"
+        , fill rgb
         ]
         []
 
@@ -496,7 +516,7 @@ renderHtmlImg size url svgpos=
             , width ((String.fromFloat (pos.x2-pos.x1))++"px")
             , Html.Attributes.style "position" "absolute"
             , Html.Attributes.style "left" ((String.fromFloat pos.x1)++"px")
-            , Html.Attributes.style "top" ((String.fromFloat pos.y1)++"px")][]
+            , Html.Attributes.style "top" ((String.fromFloat (pos.y1))++"px")][]
             
 toHtmlPos size pos =
     let

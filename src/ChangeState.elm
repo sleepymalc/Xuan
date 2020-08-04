@@ -63,7 +63,7 @@ changeCGandStory time model =
             CG1_4 ->
                 { model | state = Story1_4, cgtime = 500 }
             Story1_4 ->
-                { model | state = One, cgtime = 500, time = 0}
+                { model | state = One, player = initPlayer1 , cgtime = 500, time = 0}
             
         --DiscoverI
             CG2_1 ->
@@ -73,17 +73,17 @@ changeCGandStory time model =
             CG2_2 ->
                 { model | state = Story2_2, cgtime = 500 }
             Story2_2 ->
-                { model | state = DiscoverI, cgtime = 500, time = 0 }
+                { model | state = DiscoverI, player = initPlayerDiscoverI model.player, cgtime = 500, time = 0 }
             
         --Two    
             CG3_1 ->
                 { model | state = Story3_1, cgtime = 500}
             Story3_1 ->
-                { model | state = Two, cgtime = 500, speedAI = initSpeedAI, time = 0 }
+                { model | state = Two, player = initPlayer2 model.player, cgtime = 500, speedAI = initSpeedAI, time = 0 }
             
         --DiscoverII        
             Story4_1 ->
-                { model | state = DiscoverII, cgtime = 500, time = 0 }
+                { model | state = DiscoverII, player = initPlayerDiscoverII model.player, cgtime = 500, time = 0 }
         --Three
             CG5_1 ->
                 { model | state = Story5_1, cgtime = 500 }
@@ -92,7 +92,7 @@ changeCGandStory time model =
             CG5_2 ->
                 { model | state = Story5_2, cgtime = 500 }
             Story5_2 ->
-                { model | state = Three, cgtime = 500, time = 0 }
+                { model | state = Three, player = initPlayer3 model.player, cgtime = 500, time = 0 }
             
         --Ending
             CG6_1 ->
