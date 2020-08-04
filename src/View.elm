@@ -77,7 +77,7 @@ view model =
                         , renderButton Message.About (prefix++"img/Button/AboutBut.png") (Vector 200 100 ) (Vector 700 400) ] 
                     else if model.state == Break then 
                         [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200)
-                        , renderButton Back (prefix++"img/Button/BackBut.png") (Vector 200 100 ) (Vector 700 400) ]
+                        ]
                     else if  model.state == End then
                         [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 200) ]
                     else if model.state == Model.About then
@@ -590,7 +590,11 @@ renderStory story =
     in
         renderS size w lines text
 renderCG model = 
-    renderImage ("http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/" ++ (Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+    let
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/"
+        prefix = "img/CG/" 
+    in
+    renderImage ( (prefix ++ Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
 
 renderLOGO model = 
     renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 

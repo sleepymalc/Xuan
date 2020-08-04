@@ -120,20 +120,16 @@ update msg model =
                     }, Cmd.none )
         Message.Start ->
             ( {model |
-                    state = Story1_1, cgtime = 500 
+                    state = CG1_1, cgtime = 500 
                     }, Cmd.none)
         Next ->
             case model.prestate of 
-                One ->
-                    ( { model | state = Story2_1 }, Cmd.none )
-                DiscoverI ->
-                    ( { model | state = Story3_1 }, Cmd.none )
-                Two ->
-                    ( { model | state = Story4_1 }, Cmd.none )
-                DiscoverII ->
-                    ( { model | state = Story5_1 }, Cmd.none )
-                Three ->
-                    ( { model | state = Story6_1}, Cmd.none )
+                Break ->
+                    ( { model | state = End }, Cmd.none )
+                End ->
+                    ( { model | state = LOGO
+                              , player =  initPlayer1
+                             }, Cmd.none)
                 _ ->
                     ( model, Cmd.none )
         Back ->
