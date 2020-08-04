@@ -232,9 +232,9 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayerDiscoverI initPlayer1
-      ,map = initMapDiscoverI
-      ,state = DiscoverI
+    ({ player = initPlayer3 initPlayer1
+      ,map = initMap3
+      ,state = Three
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}

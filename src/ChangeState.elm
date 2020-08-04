@@ -19,10 +19,10 @@ changeState model =
                     { model | map = initMapDiscoverII, state = Story4_1, time = 0, cgtime = 500}
             DiscoverII ->
                 { model | map = initMap3, state = CG5_1, time = 0, cgtime = 500}
-            Three ->
-                { model | map = initMap1, state = CG6_1, time = 0, cgtime = 500}
             _ ->
                 model
+    else if model.state == Three && model.boss.anim == Dead && model.boss.frame >=500 then
+        { model | map = initMap1, state = CG6_1, time = 0, cgtime = 500}
     else
         model
 
