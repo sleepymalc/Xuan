@@ -19,7 +19,7 @@ animate time model =
                 |> moveSpeedAI model.time
                 |> changeChargeTime 17
                 |> changeAnim (model.map.bricks++model.map.wallbricks) 17
-                |> changeSpeed 17 (model.map.bricks++model.map.wallbricks)
+                |> changeSpeed 17 model (model.map.bricks++model.map.wallbricks)
                 |> touchDown 17 (model.map.bricks++ model.map.wallbricks)
                 |> changePos 17
                 |> changeFrame 17
@@ -40,14 +40,14 @@ animate time model =
                 |> attackedByCharacter boss
                 |> changeChargeTime time
                 |> changeAnim (model.map.bricks++ model.map.wallbricks) time
-                |> changeSpeed time (model.map.bricks++ model.map.wallbricks)
+                |> changeSpeed time model (model.map.bricks++ model.map.wallbricks)
                 |> touchDown time (model.map.bricks++ model.map.wallbricks)
                 |> changeTextframe time
                 |> changeText model.state model.speedAI
                 |> cleartext
                 |> changePos time
                 |> changeFrame time
-                |> stageAnim time
+                |> stageAnim time model
 
         boss = if model.state == Three then
                 model.boss
@@ -88,14 +88,14 @@ animate time model =
             |> changeState
             |> changeCGandStory time
 
-stageAnim time player= 
+stageAnim time model player= 
     let
         playerPos = nextPos player.speed time player.pos
 
     in
-        if (player.anim/= JumpStart)&&(rightImpact player.speed time [jumpPos1] playerPos) then
+        if (model.state == One) && (player.anim/= JumpStart)&&(rightImpact player.speed time [jumpPos1] playerPos) then
             player |> jumpStart
-        else if (rightImpact player.speed time [collidePos2] playerPos) then
+        else if (model.state == Two) && (rightImpact player.speed time [collidePos2] playerPos) then
             player |> jumpLoop
         else if (player.anim == JumpStart) && (player.frame >= 14*5) then 
             player |> jumpLoop
@@ -407,7 +407,7 @@ changeRageTime time player =
         player
 
 
-changeSpeed time bricks player =
+changeSpeed time model bricks player =
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
@@ -428,7 +428,9 @@ changeSpeed time bricks player =
                 -0.001
             else if player.anim == JumpLoop 
             && (projectionOverlap .y1 .y2 player.pos deceleratePos) then
-                -0.05* player.speed.y---0.014* player.speed.y
+                if model.state == One then
+                    -0.014* player.speed.y
+                else -0.06* player.speed.y
             else if player.anim == JumpLoop then
                 0.01
             else if List.any (upImpact player.speed time posList) playerPos then

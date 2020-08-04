@@ -62,7 +62,7 @@ aceleratePos = Pos 3200 4800 1150 1600
 
 collidePos2 = Pos 2650 2950 400 3200
 
-playerPos1 = Pos 2600 2700 690 790
+playerPos1 = Pos 300 400 3830 3930--playerPos1 = Pos 2600 2700 690 790
 
 exitPos1 = Pos 3200 10000 1550 3900
 
@@ -114,7 +114,8 @@ birdPosListDiscoverI =
         
     ]
 
-playerPosDiscoverI = Pos 1664 1764 550 650--Pos 200 300 3630 3730
+playerPosDiscoverI = Pos 200 300 3630 3730
+--Pos 1664 1764 550 650--
 
 
 exitPosDiscoverI = Pos 1600 10000 2400 3000

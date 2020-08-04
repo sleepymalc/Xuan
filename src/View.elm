@@ -81,12 +81,12 @@ view model =
                         model.state == DiscoverII || model.state == Three then
                         renderbricks (List.map .pos model.map.bricks) model
                     else if model.state == Model.Start then 
-                        [ renderButton Message.Start (prefix++"img/Button/StartBut.png") (Vector 200 100 ) (Vector 700 200)
-                        , renderButton Message.About (prefix++"img/Button/AboutBut.png") (Vector 200 100 ) (Vector 700 400) ] 
+                        [ renderButton Message.Start (prefix++"img/Button/StartBut.png") model.size (Pos 700 1300 200 350)
+                        , renderButton Message.About (prefix++"img/Button/AboutBut.png") model.size (Pos 700 1300 400 550) ] 
                     else if  model.state == End then
-                        [ renderButton Next (prefix++"img/Button/NextBut.png") (Vector 200 100 ) (Vector 700 400) ]
+                        [ renderButton Next (prefix++"img/Button/NextBut.png") model.size (Pos 700 1300 400 500) ]
                     else if model.state == Model.About then
-                        [ renderButton Back (prefix++"img/Button/BackBut.png") (Vector 200 100 ) (Vector 700 400) ] 
+                        [ renderButton Back (prefix++"img/Button/BackBut.png") model.size (Pos 700 1300 400 500) ] 
                     else
                         []
     in  
@@ -269,9 +269,7 @@ renderBackground model=
        -- prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
         prefix = ""
     in
-    if model.state == LOGO then
-        renderImage (prefix++"img/Page/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
-    else if model.state == Model.Start then 
+    if model.state == Model.Start then 
         renderImage (prefix++"img/Page/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0.7+(abs(model.player.effecttimeHalf)/2000)))] 
     else if model.state == End then
         renderImage (prefix++"img/Page/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
@@ -305,7 +303,7 @@ renderBackground model=
     else if model.state == Three then
         renderImage (prefix++"img/background/background5_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else
-       renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
+        Svg.image [][]
 
 renderCharacters player characters =
         List.map (renderCharacter player)characters 
@@ -540,28 +538,31 @@ renderAudio url =
 
 
    
-renderButton msg url size pos= 
-    button
-        [ Html.Attributes.style "border" "0"
-        , Html.Attributes.style "bottom" "30px"
-        , Html.Attributes.style "cursor" "pointer"
-        , Html.Attributes.style "display" "block"
-        , Html.Attributes.style "height" "0px"
-        , Html.Attributes.style "left" "0px"
-        , Html.Attributes.style "line-height" "60px"
-        , Html.Attributes.style "outline" "none"
-        , Html.Attributes.style "padding" "0"
-        -- Display at center
-        , Html.Attributes.style "position" "absolute"
-        , Html.Attributes.style "left" ((String.fromFloat pos.x)++"px")
-        , Html.Attributes.style "top" ((String.fromFloat pos.y)++"px")
-        -- 
-        , Html.Attributes.style "width" "120px"
-        , onClick msg
-        ]
-        [ Html.img [src url
-        , height ((String.fromFloat size.y)++"px") 
-        , width ((String.fromFloat size.x)++"px")][] ]
+renderButton msg url size svgpos= 
+    let
+        pos = svgpos|>toHtmlPos size
+    in
+        button
+            [ Html.Attributes.style "border" "0"
+            , Html.Attributes.style "bottom" "30px"
+            , Html.Attributes.style "cursor" "pointer"
+            , Html.Attributes.style "display" "block"
+            , Html.Attributes.style "height" "0px"
+            , Html.Attributes.style "left" "0px"
+            , Html.Attributes.style "line-height" "60px"
+            , Html.Attributes.style "outline" "none"
+            , Html.Attributes.style "padding" "0"
+            -- Display at center
+            , Html.Attributes.style "position" "absolute"
+            , Html.Attributes.style "left" ((String.fromFloat pos.x1)++"px")
+            , Html.Attributes.style "top" ((String.fromFloat pos.y1)++"px")
+            -- 
+            , Html.Attributes.style "width" "120px"
+            , onClick msg
+            ]
+            [ Html.img [src url
+            , height ((String.fromFloat (pos.y2-pos.y1))++"px") 
+            , width ((String.fromFloat (pos.x2-pos.x1))++"px")][] ]
 
 renderHtmlImg size url svgpos=
     let
@@ -681,7 +682,7 @@ renderStoryBackground model =
     if model.state /= Story4_1 then
         renderImage ( (prefix ++ "CG" ++(String.right 3 (Debug.toString model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
     else
-        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"]  
+        Svg.image [][]
 
 renderLOGO model = 
     renderImage "img/Page/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
