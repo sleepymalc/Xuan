@@ -54,7 +54,7 @@ view model =
                             ++ renderCharacters model.player model.map.characters
                             ++ renderBricksShader (List.map .pos model.map.bricks) model 
                                 --++ debugCollision model.map.characters model.player
-                                --++ debugAttack model.map.characters model.player
+                            --++ debugAttack model.map.characters model.player
                             ++ renderNPCs model.player model.map.npcs 
                             ++ 
                             ( 
@@ -63,7 +63,13 @@ view model =
                                else
                                     []
                              )
-                              ++ [renderPlayerText model.player]
+                            ++ 
+                            ( if model.state == Three then
+                                renderBoss model.player model.boss
+                           else
+                                []
+                            )
+                             ++ [renderPlayerText model.player]
                              ++ renderNPCsText model.player model.map.npcs
                              ++ renderBlood model.player
                         ))                    
@@ -103,6 +109,16 @@ renderSpeedAI player speedAI=
         viewpos = speedAI.pos |> offset player |> resizePlayer|> clearOutsideImage
     in
         [renderImage url viewpos attr]
+
+renderBoss player boss =
+    let
+        url = getAnimUrl boss.anim boss.frame boss "boss_"
+        attr = getDirectionAttr boss.direction
+        viewpos = boss.pos |> offset player |> resizePlayer|> clearOutsideImage
+    in
+        [renderImage url viewpos attr]
+
+
 
 renderBlood player = 
     let
@@ -359,15 +375,51 @@ getAnimUrl anim frame player namePrefix=
                     connectName namePrefix "grovel" 0
 
             Attacked ->
-                if ( player.speed.x < 0 && player.direction == Left)
-                || ( player.speed.x > 0 && player.direction == Right) then
-                    namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
+                if (namePrefix == "") then
+                    if ( player.speed.x < 0 && player.direction == Left)
+                    || ( player.speed.x > 0 && player.direction == Right) then
+                        namePrefix++"attacked/"++namePrefix++"attackedBack_0000"
+                    else
+                        namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
                 else
-                    namePrefix++"attacked/"++namePrefix++"attackedFront_0000"
+                    let
+                        id = modBy 350 frame
+                    in
+                        connectName namePrefix "attacked" id
             Fly ->
                     connectName namePrefix "jump" 0
+
+            Dead ->
+                let
+                    id = Basics.min 239 frame
+                in
+                    connectName namePrefix "dead" id
+            
             DebugMode ->
                     connectName namePrefix "walk" 0
+
+            JumpStart ->
+                let
+                    id = Basics.min 13 (floor ((toFloat frame)/4))
+                in
+                    connectName namePrefix "jumpstart" id
+            JumpEnd ->
+                let
+                    id = if frame <= 35 then
+                            0
+                        else Basics.min 7 (floor ((toFloat (frame-35))/2))
+                in
+                    connectName namePrefix "jumpend" id
+            JumpLoop ->
+                let
+                    id = modBy 20 frame
+                in
+                    connectName namePrefix "jumploop" id
+            Getup ->
+                let
+                    id = Basics.min 81 (Basics.max 0 (floor ((toFloat (frame-80))/2)))
+                in
+                    connectName namePrefix "getup" id
     in
         prefix ++ name ++ surfix
 
@@ -433,9 +485,13 @@ debugCollision characters player=
                         ]
                         []) collisionPos 
 
-debugAttack characters player=
+debugAttack characters player boss=
     let
         attackPos = ((playerAttackRange player)
+            :: bossForwardAttackRange boss
+            :: bossBackwardAttackRange boss
+            :: jumpPos1
+            :: exitPos1
             :: (characters 
             |> List.map attackRange))
             |> List.map (offset player) 

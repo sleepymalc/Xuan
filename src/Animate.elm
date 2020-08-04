@@ -11,6 +11,7 @@ import Html exposing (th)
 import ChangeState exposing (..)
 
 
+
 animate time model =
     let
         speedAI = if model.state == Two then
@@ -24,7 +25,7 @@ animate time model =
                 |> changeFrame 17
             else
                 model.speedAI
-
+    
         player = 
             if model.player.anim == DebugMode then
                 model.player
@@ -36,6 +37,7 @@ animate time model =
                 |> chargeEffectTime time
                 |> changeRageTime time
                 |> attackedByCharacters model.map.characters
+                |> attackedByCharacter boss
                 |> changeChargeTime time
                 |> changeAnim (model.map.bricks++ model.map.wallbricks) time
                 |> changeSpeed time (model.map.bricks++ model.map.wallbricks)
@@ -45,6 +47,20 @@ animate time model =
                 |> cleartext
                 |> changePos time
                 |> changeFrame time
+                |> stageAnim time
+
+        boss = if model.state == Three then
+                model.boss
+                -- |> towardsPlayer model.player
+                |> bossAttackPlayer model.player
+                |> bossChangeAnim
+                |> bossAttackedByPlayer model.player
+                |> tour time
+                |> changePos time
+                |> changeFrame time
+                |> debugBoss 
+                else 
+                    model.boss
 
         characters = List.filter (\character->attackedByPlayer player character == False) model.map.characters
             |> List.map (\character-> character
@@ -67,10 +83,49 @@ animate time model =
             |> changeStory model.state model.player.inrage
 
     in
-        { model | map = map, player = player, story = story, speedAI = speedAI}
+        { model | map = map, player = player, story = story, speedAI = speedAI, boss = boss}
             |> chargeModeltime
             |> changeState
             |> changeCGandStory time
+
+stageAnim time player= 
+    let
+        playerPos = nextPos player.speed time player.pos
+
+    in
+        if (player.anim/= JumpStart)&&(rightImpact player.speed time [jumpPos1] playerPos) then
+            player |> jumpStart
+        else if (rightImpact player.speed time [collidePos2] playerPos) then
+            player |> jumpLoop
+        else if (player.anim == JumpStart) && (player.frame >= 14*5) then 
+            player |> jumpLoop
+        else 
+            player
+
+debugBoss boss= 
+    if boss.anim == Attacked then
+        Debug.log "boss" boss
+    else
+        boss
+
+bossChangeAnim boss =
+    if ((boss.anim == Attack) && (boss.frame >=120) )
+        || ((boss.anim == Attacked) && (boss.frame >=350)) then
+        Debug.log "turn" (boss |> turn)
+    else if (boss.anim /= Dead) && (boss.hp <=0) then
+        boss |> dead
+    else 
+        boss
+
+bossAttackedByPlayer player boss = 
+    if boss.anim == Attacked then
+        boss
+    else 
+        if (attackedByPlayer player boss) then
+            Debug.log "attacked" (boss |> attacked (Vector 0 0))
+            |> loseBlood 1
+        else
+            boss
 
 moveSpeedAI time speedAI =
     case List.head speedAI.speedAIAnimList of
@@ -87,7 +142,7 @@ moveSpeedAI time speedAI =
                         if on then
                             newSpeedAI |> walk moveDirection
                         else 
-                            newSpeedAI |> stand
+                            newSpeedAI |> stand 
                         
                     AICharge jumpdir on->
                             if on then
@@ -105,6 +160,9 @@ chargeModeltime model =
 
 changeCharactersAndNpcs characters npcs map =
     { map |characters = characters, npcs = npcs}
+
+
+
 
 attackedByPlayer player character =
     let
@@ -162,6 +220,54 @@ attackPlayer player character =
                 character |> attack
         else
             character
+
+
+bossForwardAttackRange boss =
+    let
+        pos = boss.pos
+        dx = if boss.direction == Left then
+                -0.05 * 3000
+            else
+                0.05 * 3000
+        y1 = (pos.y1+pos.y2)/2
+    in
+        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx, y1 = y1}
+
+bossBackwardAttackRange boss =
+    let
+        pos = boss.pos
+        dx = if boss.direction == Left then
+                0.05 * 3000
+            else
+                -0.05 * 3000
+        y1 = (pos.y1+pos.y2)/2
+    in
+        {pos| x1 = pos.x1 + dx, x2 = pos.x2 + dx, y1 = y1}
+
+bossAttackPlayer player boss = 
+    let
+        attackPos = bossForwardAttackRange boss 
+    in 
+        if (player.anim /= Attacked) && ( boss.anim /= Attack )
+        && (List.any 
+                    (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
+                    player.collisionPos) then
+            boss |> attack
+        else
+            boss |> bossBackAttackPlayer player
+
+bossBackAttackPlayer player boss = 
+    let
+        attackPos = bossBackwardAttackRange boss
+    in 
+        if ( boss.anim /= Attacked ) && ( boss.anim /= Attack )
+            && (List.any 
+                    (\pos->projectionOverlap .x1 .x2 attackPos pos&& projectionOverlap .y1 .y2 attackPos pos) 
+                    player.collisionPos) then
+                boss |> turn |> attack
+        else
+            boss
+
 
 attackedByCharacters characters player=
     List.foldl attackedByCharacter player characters
@@ -240,8 +346,10 @@ changeAnim bricks time player=
             newplayer |> jump
         else if (player.anim == Attack && player.frame >= 30)
             || (player.anim == Crouch && player.frame >= 60)
+            || (player.anim == JumpEnd && player.frame >= 7*7)
+            || (player.anim == Getup && player.frame >= 280)
             || (player.anim == Attacked && player.frame >= 60) then
-            player |> stand
+            player |> stand 
         else if player.anim == Walk && player.speed.y /=0 && List.any (downImpact player.speed time posList) player.collisionPos == False then
             { newplayer | anim = Jump}
         else newplayer
@@ -300,7 +408,12 @@ changeSpeed time bricks player =
     let
         playerPos = List.map (nextPos player.speed time) player.collisionPos 
         posList = List.map .pos bricks
-        dx = if List.any (rightImpact player.speed time posList) playerPos ||
+        dx = if player.anim == JumpStart then
+                0.001
+            else if player.anim == JumpLoop 
+            && (projectionOverlap .y1 .y2 player.pos deceleratePos) then
+                -0.5* player.speed.x
+            else if List.any (rightImpact player.speed time posList) playerPos ||
                 List.any (leftImpact player.speed time posList) playerPos then
                 if player.anim == Walk || player.anim == Attacked then
                     -player.speed.x
@@ -308,7 +421,14 @@ changeSpeed time bricks player =
                      -1.8 * player.speed.x
             else
                 0
-        dy = if List.any (upImpact player.speed time posList) playerPos then
+        dy = if player.anim == JumpStart then
+                -0.001
+            else if player.anim == JumpLoop 
+            && (projectionOverlap .y1 .y2 player.pos deceleratePos) then
+                -0.05* player.speed.y---0.014* player.speed.y
+            else if player.anim == JumpLoop then
+                0.01
+            else if List.any (upImpact player.speed time posList) playerPos then
                 -1.8* player.speed.y
             else 
                 0.03
@@ -339,7 +459,7 @@ touchDownBrick brickSpeed time brickPos player =
                 if player.speed.y >= 1.8 then
                     { newplayer | pos = pos , collisionPos = collisionPos, fallcount = fallcount} |> grovel
                 else 
-                    { player | pos = pos, collisionPos = collisionPos} |> stand
+                    { player | pos = pos, collisionPos = collisionPos} |> stand |> releaseJumpdir
             else
                 {player | speed = speed, pos =pos , collisionPos = collisionPos}
     else

@@ -30,7 +30,12 @@ type AnimState =
     | Attacked
     | Grovel
     | Fly
+    | Dead
     | DebugMode
+    | JumpStart
+    | JumpEnd
+    | JumpLoop
+    | Getup
 
 type Mood = 
     Normal
@@ -164,6 +169,17 @@ type alias SpeedAI =
     , hp: Int
     , fallcount: Int
     }
+type alias Boss = 
+    { pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
+    , range: Vector Float
+    , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
+    , hp: Int
+    }
+
 
 initSpeedAI = 
     { pos = speedAIPos2
@@ -179,6 +195,18 @@ initSpeedAI =
     , fallcount = 0
     }
 
+initBoss = 
+    { pos = bossPos3 
+    , collisionPos = standcollisionPos bossPos3
+    , anim = Walk
+    , range = bossRange
+    , frame = 0
+    , direction = Left
+    , speed = Vector -0.05 0
+    , hp = 3
+    }
+bossRange = Vector 650 950
+
 type alias Model =
     { player: Player
     , map: Map
@@ -192,6 +220,7 @@ type alias Model =
     , loadPack: List String
     , speedAI: SpeedAI
     , record: List SpeedAIAnim
+    , boss: Boss
     }
 
 type alias CustomAttribute ={ }
@@ -202,9 +231,9 @@ attribute =
 
 init : () -> (Model, Cmd Msg)
 init _= 
-    ({ player = initPlayer1
-      ,map = initMap1
-      ,state = Loading
+    ({ player = initPlayerDiscoverI initPlayer1
+      ,map = initMapDiscoverI
+      ,state = DiscoverI
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
@@ -214,6 +243,7 @@ init _=
       ,loadPack = initLoadPack
       ,speedAI = initSpeedAI
       ,record = []
+      ,boss = initBoss
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
@@ -255,7 +285,7 @@ initPlayerDiscoverI player=
       text = "What's going on?"
     , pos = MapSetting.playerPosDiscoverI
     , collisionPos = standcollisionPos MapSetting.playerPosDiscoverI
-    , anim = Crouch
+    , anim = JumpEnd
     , frame = 0
     , textframe = 0
     , direction = Right
@@ -269,7 +299,7 @@ initPlayer2 player =
       text = "I am Song Yuanhuai."
     , pos = MapSetting.playerPos2
     , collisionPos = standcollisionPos MapSetting.playerPos2 
-    , anim = Crouch
+    , anim = Getup
     , frame = 0
     , textframe = 0
     , direction = Right
