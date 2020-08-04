@@ -53,6 +53,9 @@ type Stage
     | DiscoverI
     | DiscoverII
     | LOGO
+    | Start
+    | About
+    | Break
     | End
     | Loading
     | Story1_1
@@ -226,8 +229,8 @@ attribute =
 init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
-      ,map = initMap3
-      ,state = Three
+      ,map = initMap1
+      ,state = Loading
       ,size = Vector 0 0
       ,audioList = []
       ,attrs = {}
@@ -251,8 +254,8 @@ initstory =
 initPlayer1 =
     { text = "I need to get outta here."
     , teachtextstate = 0
-    , pos = MapSetting.playerPos3
-    , collisionPos = standcollisionPos MapSetting.playerPos3
+    , pos = MapSetting.playerPos1
+    , collisionPos = standcollisionPos MapSetting.playerPos1
     , anim = Crouch
     , mood = Normal
     , frame = 0

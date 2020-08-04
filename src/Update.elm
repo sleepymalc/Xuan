@@ -25,7 +25,8 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = Story1_1
+                            | state = LOGO
+                            , cgtime = 5000
                     }
                     , Cmd.none
                     )
@@ -42,7 +43,8 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = Story1_1
+                            | state = LOGO
+                            , cgtime = 5000
                     }
                     , Cmd.none
                     )
@@ -100,25 +102,44 @@ update msg model =
 
         DebugRight on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0.2 0) on
+                        player=model.player |> changeDebugSpeed (Vector 1 0) on
                     }, Cmd.none )
         DebugLeft on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector -0.2 0) on
+                        player=model.player |> changeDebugSpeed (Vector -1 0) on
                     }, Cmd.none )
         DebugUp on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0 -0.2) on
+                        player=model.player |> changeDebugSpeed (Vector 0 -1) on
                     }, Cmd.none )
         DebugDown on ->
                 ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0 0.2) on
+                        player=model.player |> changeDebugSpeed (Vector 0 1) on
                     }, Cmd.none )
         ExitDebugMode ->
             ( {model |
                     player=model.player |> stand
                     }, Cmd.none )
-
+        Message.Start ->
+            ( {model |
+                    state = CG1_1, cgtime = 500 
+                    }, Cmd.none)
+        Next ->
+            case model.state of 
+                Break ->
+                    ( { model | state = End }, Cmd.none )
+                End ->
+                    Model.init ()
+                _ ->
+                    ( model, Cmd.none )
+        Back ->
+            ( {model |
+                    state = Model.Start
+                    }, Cmd.none  )
+        Message.About ->
+            ( {model |
+                    state = Model.About
+                    }, Cmd.none)
         _ ->
             ( model, Cmd.none )
 

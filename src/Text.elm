@@ -65,7 +65,7 @@ changeText state speedAI player=
                 { player | text = player.text }
 
         DiscoverII ->
-            if player.pos.y2 <= 500 then
+            if player.pos.y2 <= 500 && player.anim == Stand then
                 { player | text = "It's been 10 years... Now I'm back.", textframe = 0 }
             else
                 { player | text = player.text }
@@ -137,70 +137,74 @@ cleartext player =
     else
         { player | text = player.text }
 
-changeStory state story =
+changeStory state inrage story =
     case state of
         Story1_1 ->
-            { story | text =  "Old man：\"Poor kid, to improve the status of your family, your father and I decide to send you to attend the experiments in our sect. For the rest of your life, you will need to practice all kinds"
-                             ++"of internal skills and receive all kinds of stimulations. Don’t feel unfair. This is the brutality of the sects. Without sacrifice, there will be no strong sects.\""
-                             ++"A mysterious voice: \"Bullshit! How can anyone believe this old bastard? Sending your apprentice to be a testimony and feel sorry for him? You are one of a kind!\""
-                             ++"Song：\"Who are you? What’s that voice in my head? What’s going on with me?\""
-                             ++"A mysterious voice:\"You’re wondering who I am? My name is XUAN, and I can set you free.\""
+            { story | text =  "Song Yuanhuai was a kid in the martial art world, who once lived a happy life."
+
             , storyframe = 0
             }
         Story1_2 ->
-            { story | text = "Story1_2"
+            { story | text = "However, at one night he was secretly sold to be a testimony by his parents to improve the social status of their family in the tribe."
 
             , storyframe = 0    
             }
         Story1_3 ->
-            { story | text = "Story1_3"
+            { story | text = "He was imprisoned in a cave for a few days."
 
             , storyframe = 0  
 
             }
         Story1_4 ->
-            { story | text = "Story1_4"
+            { story | text = "When he was on the verge of despair, a mysterious man called XUAN helped him get rid of the chains."
 
             , storyframe = 0  
 
             }
         Story2_1 ->
-            { story | text = "Story1_4"
+            { story | text = "After Song escaped from the cave, he got in to a place covered with vegetation."
 
             , storyframe = 0  
 
             }
         Story2_2 ->
-            { story | text = "Story1_4"
+            { story | text = "Song lowered his head and hid himself in the bushes."
 
             , storyframe = 0  
 
             }            
         Story3_1 ->
-            { story | text = "Story1_4"
+            { story | text = "After getting all the way to the top, Song arrived at a cliff. However, he accidentally fell off and was knocked unconscious."
 
             , storyframe = 0  
 
             }
         Story4_1 ->
-            { story | text = "Story1_4"
+            if inrage == True then
+                { story | text = "You Win!"
 
-            , storyframe = 0  
+                , storyframe = 0
 
-            }
+                }
+            else
+                { story | text = "You Win!"
+
+                , storyframe = 0
+
+                }
         Story5_1 ->
-            { story | text = "Story1_4"
+            { story | text = "Song continues to explore in order to find the culprit of his suffering."
 
             , storyframe = 0  
 
             }
         Story5_2 ->
-            { story | text = "Story1_4"
+            { story | text = "Finally, he finds the palace hall, kills the guards and enters."
 
             , storyframe = 0  
             }
         Story6_1 ->
-            { story | text = "Story1_4"
+            { story | text = "In the end, he overcomes all the sufferings and henceforth lives a new life in the guidance of XUAN."
 
             , storyframe = 0  
 

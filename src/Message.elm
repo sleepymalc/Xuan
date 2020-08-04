@@ -17,6 +17,10 @@ type Msg
     | GetViewport Viewport
     | ImageError String
     | ImageLoaded String
+    | Start
+    | Back
+    | Next
+    | About
     | DebugUp Bool
     | DebugDown Bool
     | DebugLeft Bool
