@@ -111,6 +111,7 @@ type alias Player =
     , ragecount: Float
     , inrage: Bool
     , fallcount: Int
+    , effecttimeHalf: Float
     , effecttimeOne: Float
     , effecttimeTwo: Float
     , effecttimeThree: Float
@@ -247,6 +248,7 @@ initPlayer1 =
     , effecttimeThree = 400
     , effecttimeFour = 600
     , effecttimeFive = 800
+    , effecttimeHalf = 0
     }
 
 

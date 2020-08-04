@@ -256,7 +256,7 @@ renderBackground model=
     if model.state == LOGO then
         renderImage (prefix++"img/Page/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
     else if model.state == Model.Start then 
-        renderImage (prefix++"img/Page/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
+        renderImage (prefix++"img/Page/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0.7+(abs(model.player.effecttimeHalf)/2000)))] 
     else if model.state == End then
         renderImage (prefix++"img/Page/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
     else if model.state == Model.About then
