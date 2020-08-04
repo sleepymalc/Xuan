@@ -142,13 +142,25 @@ renderbrick1 model pos=
         text = if model.state == One then
                     prefix++"img/Stone/map_1/stone_1.png"
                 else if model.state == DiscoverI then
-                    prefix++"img/Stone/map_2/stone_1.png"
+                    if pos.x2-pos.x1 >= pos.y2-pos.y1 then
+                        prefix++"img/Stone/map_2/stone_1.png" --橫
+                    else
+                       prefix++"img/Stone/map_2/stone_2.png" --豎
                 else if model.state == Two then
-                    prefix++"img/Stone/map_3/stone_1.png"
+                    if pos.x2-pos.x1 >= pos.y2-pos.y1 then
+                        prefix++"img/Stone/map_3/stone_1.png" --橫
+                    else
+                       prefix++"img/Stone/map_3/stone_2.png" --豎
                 else if model.state == DiscoverII then
-                    prefix++"img/Stone/map_4/stone_1.png"
+                    if pos.x2-pos.x1 >= pos.y2-pos.y1 then
+                        prefix++"img/Stone/map_4/stone_1.png" --橫
+                    else
+                       prefix++"img/Stone/map_4/stone_2.png" --豎
                 else if model.state == Three then
-                    prefix++"img/Stone/map_5/stone_1.png"
+                    if pos.x2-pos.x1 >= pos.y2-pos.y1 then
+                        prefix++"img/Stone/map_5/stone_1.png" --橫
+                    else
+                       prefix++"img/Stone/map_5/stone_2.png" --豎
                 else
                     prefix++"img/Stone/map_1/stone_1.png"
     in
