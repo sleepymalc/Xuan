@@ -26,6 +26,7 @@ update msg model =
                 if List.isEmpty loadPack then
                     ( { model
                             | state = LOGO
+                            , cgtime = 5000
                     }
                     , Cmd.none
                     )
@@ -43,6 +44,7 @@ update msg model =
                 if List.isEmpty loadPack then
                     ( { model
                             | state = LOGO
+                            , cgtime = 5000
                     }
                     , Cmd.none
                     )
@@ -123,13 +125,11 @@ update msg model =
                     state = CG1_1, cgtime = 500 
                     }, Cmd.none)
         Next ->
-            case model.prestate of 
+            case model.state of 
                 Break ->
                     ( { model | state = End }, Cmd.none )
                 End ->
-                    ( { model | state = LOGO
-                              , player =  initPlayer1
-                             }, Cmd.none)
+                    Model.init ()
                 _ ->
                     ( model, Cmd.none )
         Back ->

@@ -17,18 +17,18 @@ changeState model =
     if arriveExit model model.player then 
         case model.state of
             One -> 
-                { model | map = initMapDiscoverI, state = CG2_1, player = playerDiscoverI, time = 0}
+                { model | map = initMapDiscoverI, state = CG2_1, player = playerDiscoverI, time = 0, cgtime = 500}
             DiscoverI ->
-                { model | map = initMap2, state = CG3_1, player = player2, time = 0}
+                { model | map = initMap2, state = CG3_1, player = player2, time = 0, cgtime = 500}
             Two ->
                 if arriveExit model model.speedAI then
-                    { model | map = initMapDiscoverII, state = Story4_1, player = playerDiscoverIILose, time = 0}
+                    { model | map = initMapDiscoverII, state = Story4_1, player = playerDiscoverIILose, time = 0, cgtime = 500}
                 else
-                    { model | map = initMapDiscoverII, state = Story4_1, player = playerDiscoverIIWin, time = 0}
+                    { model | map = initMapDiscoverII, state = Story4_1, player = playerDiscoverIIWin, time = 0, cgtime = 500}
             DiscoverII ->
-                { model | map = initMap3, state = CG5_1, player = player3, time = 0}
+                { model | map = initMap3, state = CG5_1, player = player3, time = 0, cgtime = 500}
             Three ->
-                { model | map = initMap1, state = CG6_1, player = initPlayer1, time = 0}
+                { model | map = initMap1, state = CG6_1, player = initPlayer1, time = 0, cgtime = 500}
             _ ->
                 model
     else

@@ -31,7 +31,7 @@ view model =
                             model.state == Story1_4 || model.state == Story2_1 || model.state == Story2_2 ||
                             model.state == Story3_1 || model.state == Story4_1 || model.state == Story5_1 || 
                             model.state == Story5_2 || model.state == Story6_1 then
-                            [renderStory model.story]
+                            [renderStory model.story, renderStoryBackground model]
                         else if model.state == CG1_1 || model.state == CG1_2 || model.state == CG1_3 || 
                                 model.state == CG1_4 || model.state == CG2_1 || model.state == CG2_2 ||
                                 model.state == CG3_1 || model.state == CG5_1 || model.state == CG5_2 || 
@@ -47,23 +47,26 @@ view model =
                             [ renderBackground model ]
                         else if model.state == End then
                             [ renderBackground model ]
+                        else if model.state == Model.About then
+                            [ renderBackground model]
                         else
-                        ([ renderBackground model
-                        , renderPlayer model.state model.player
-                        ]
-                        ++ renderCharacters model.player model.map.characters
-                        
-                        --++ debugCollision model.map.characters model.player
-                        --++ debugAttack model.map.characters model.player
-                        ++ renderNPCs model.player model.map.npcs 
-                        ++ ( if model.state == Two then
-                                renderSpeedAI model.player model.speedAI
-                           else
-                                []
-                        )
-                        ++ [renderPlayerText model.player]
-                        ++ renderNPCsText model.player model.map.npcs
-                        ++ renderBlood model.player
+                            ([ renderBackground model
+                            , renderPlayer model.state model.player
+                            ]
+                            ++ renderCharacters model.player model.map.characters
+                                --++ debugCollision model.map.characters model.player
+                                --++ debugAttack model.map.characters model.player
+                            ++ renderNPCs model.player model.map.npcs 
+                            ++ 
+                            ( 
+                               if model.state == Two then
+                                    renderSpeedAI model.player model.speedAI
+                               else
+                                    []
+                             )
+                              ++ [renderPlayerText model.player]
+                             ++ renderNPCsText model.player model.map.npcs
+                             ++ renderBlood model.player
                         ))                    
         renderLoad = if model.state == Loading then
                         List.map loadImg initLoadPack
@@ -238,11 +241,14 @@ renderBackground model=
     if model.state == LOGO then
         renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
     else if model.state == Model.Start then 
-        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.5"]
+        renderImage (prefix++"img/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"]
     else if model.state == Break then
-        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.5"] 
+        renderImage (prefix++"img/Break.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
     else if model.state == End then
-        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.5"] 
+        renderImage (prefix++"img/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
+    else if model.state == Model.About then
+        renderImage (prefix++"img/About.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"]
+        
     else if model.state == One then
         if model.player.pos.y1 >= 3200 || (model.player.pos.y2 <= 800 && model.player.pos.x1 >= 3200) then
             if model.player.pos.x1 <= 1600  then
@@ -266,12 +272,12 @@ renderBackground model=
         else 
             renderImage (prefix++"img/background/background4_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
     else if model.state == Three then
-        renderImage (prefix++"img/background/background5_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [] 
+        renderImage (prefix++"img/background/background5_1.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) []
     else
        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
 
-renderCharacters player characters=
-    List.map (renderCharacter player)characters 
+renderCharacters player characters =
+        List.map (renderCharacter player)characters 
 
 renderCharacter player character =
     let
@@ -595,6 +601,16 @@ renderCG model =
         prefix = "img/CG/" 
     in
     renderImage ( (prefix ++ Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+
+renderStoryBackground model = 
+    let
+        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/"
+        prefix = "img/CG/" 
+    in
+    if model.state /= Story4_1 then
+        renderImage ( (prefix ++ "CG" ++(String.right 3 (Debug.toString model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
+    else
+        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"]  
 
 renderLOGO model = 
     renderImage "img/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 

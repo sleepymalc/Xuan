@@ -183,7 +183,6 @@ initSpeedAI =
 type alias Model =
     { player: Player
     , map: Map
-    , prestate: Stage
     , state: Stage
     , size: Vector Float
     , audioList: List String
@@ -206,7 +205,6 @@ init : () -> (Model, Cmd Msg)
 init _= 
     ({ player = initPlayer1
       ,map = initMap1
-      ,prestate = Loading
       ,state = Loading
       ,size = Vector 0 0
       ,audioList = []
