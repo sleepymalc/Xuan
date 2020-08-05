@@ -59,11 +59,14 @@ type Stage
     | Story1_1
     | Story1_2
     | Story1_3
-    | Story1_4    
+    | Story1_4 
+    | Story1_5   
     | Story2_1
     | Story2_2    
     | Story3_1
-    | Story4_1
+    | Story4_Win
+    | Story4_Lose
+    | Story5_0
     | Story5_1
     | Story5_2
     | Story6_1

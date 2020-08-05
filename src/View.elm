@@ -28,10 +28,12 @@ view model =
         renderSvg = svg
                         (gameUIAttribute model.size)
                         (if model.state == Story1_1 || model.state == Story1_2 || model.state == Story1_3 || 
-                            model.state == Story1_4 || model.state == Story2_1 || model.state == Story2_2 ||
-                            model.state == Story3_1 || model.state == Story4_1 || model.state == Story5_1 || 
-                            model.state == Story5_2 || model.state == Story6_1 then
-                            [renderStory model.story, renderStoryBackground model]
+                            model.state == Story1_4 || model.state == Story1_5 || model.state == Story2_1 || 
+                            model.state == Story2_2 || model.state == Story3_1 || 
+                            model.state == Story4_Lose || model.state == Story4_Win || 
+                            model.state == Story5_1 || model.state == Story5_0 || model.state == Story5_2 ||
+                            model.state == Story6_1 then
+                            [renderStory model.story] ++  renderStoryBackground model
                         else if model.state == CG1_1 || model.state == CG1_2 || model.state == CG1_3 || 
                                 model.state == CG1_4 || model.state == CG2_1 || model.state == CG2_2 ||
                                 model.state == CG3_1 || model.state == CG5_1 || model.state == CG5_2 || 
@@ -254,11 +256,11 @@ renderBackground model=
         prefix = ""
     in
     if model.state == LOGO then
-        renderImage (prefix++"img/Page/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
+        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0))] 
     else if model.state == Model.Start then 
         renderImage (prefix++"img/Page/Start.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0.7+(abs(model.player.effecttimeHalf)/2000)))] 
     else if model.state == End then
-        renderImage (prefix++"img/Page/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"] 
+        renderImage (prefix++"img/Page/Exit.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (0.7+(abs(model.player.effecttimeHalf)/2000)))] 
     else if model.state == Model.About then
         renderImage (prefix++"img/Page/About.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "1"]
     else if model.state == Loading then
@@ -622,10 +624,19 @@ renderStoryBackground model =
         --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/"
         prefix = "img/CG/" 
     in
-    if model.state /= Story4_1 then
-        renderImage ( (prefix ++ "CG" ++(String.right 3 (Debug.toString model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
+    if  model.state == Story1_5 then
+        [ renderImage  (prefix ++ "CG1_4.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
+        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+    else if model.state == Story5_0 then
+        [ renderImage  "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
+        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
+    else if model.state == Story5_2 || model.state == Story5_1 then
+       [ renderImage  (prefix ++ "CG5_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
+        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
+    else if model.state == Story4_Lose || model.state == Story4_Win then
+        [ renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
     else
-        renderImage (prefix++"img/background.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"]  
-
+        [ renderImage ( (prefix ++ "CG" ++(String.right 3 (Debug.toString model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
+        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
 renderLOGO model = 
     renderImage "img/Page/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
