@@ -32,6 +32,24 @@ initLoadPack =
             |> List.map (connectName "character_" "attack"))
             ++ (List.range 0 2
             |> List.map (connectName "" "charge"))
+            ++ (List.range 0 119
+            |> List.map (connectName "boss_" "attack"))
+            ++ (List.range 0 239
+            |> List.map (connectName "boss_" "dead"))
+            ++ (List.range 0 162
+            |> List.map (connectName "boss_" "getup"))
+            ++ (List.range 0 59
+            |> List.map (connectName "boss_" "walk"))
+            ++ (List.range 0 349
+            |> List.map (connectName "boss_" "attacked"))
+            ++ (List.range 0 7
+            |> List.map (connectName "" "jumpend"))
+            ++ (List.range 0 81
+            |> List.map (connectName "" "getup"))
+            ++ (List.range 0 7
+            |> List.map (connectName "" "jumploop"))
+            ++ (List.range 0 13
+            |> List.map (connectName "" "jumpstart"))
             ++
             [ connectName "" "jump" 0
             , "attacked/attackedBack_0000"

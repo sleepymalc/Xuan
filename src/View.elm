@@ -185,7 +185,7 @@ renderbrick1 model pos=
                     else
                        prefix++"img/Stone/map_2/stone_2.png"
                 else if model.state == Two then
-                    if pos.x2-pos.x1 >= pos.y2-pos.y1 then
+                    if pos.x2-pos.x1 >= pos.y2-pos.y1 then 
                         prefix++"img/Stone/map_3/stone_1.png"
                     else if pos.y2-pos.y1 >= 1000 then
                         prefix++"img/Stone/map_3/stone_3.png"
