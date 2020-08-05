@@ -21,15 +21,6 @@ type Msg
     | Back
     | Next
     | About
-    | DebugUp Bool
-    | DebugDown Bool
-    | DebugLeft Bool
-    | DebugRight Bool
-    | Jump1
-    | JumpDiscoverI
-    | Jump2
-    | JumpDiscoverII
-    | Jump3
     | DebugPos
     | ExitDebugMode
     

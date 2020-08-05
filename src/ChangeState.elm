@@ -17,7 +17,7 @@ changeState model =
     if arriveExit model model.player then 
         case model.state of
             One -> 
-                { model | map = initMapDiscoverI, state = CG2_1,player = player2, time = 0, cgtime = 5000}
+                { model | map = initMapDiscoverI, state = CG2_1, player = player2, time = 0, cgtime = 5000}
             DiscoverI ->
                 { model | map = initMap2, state = CG3_1, player = playerDiscoverI,time = 0, cgtime = 5000}
             Two ->
