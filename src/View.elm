@@ -90,7 +90,7 @@ view model =
                     else if model.state == Model.About then
                         [ renderButton Back (prefix++"img/Button/BackBut.png") model.size (Pos 1100 1300 400 500) ] 
                     else
-                        []
+                        [ renderAudio  "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/bgm/kttbgm.mp3"]
     in  
     div[]
         [    
@@ -535,7 +535,8 @@ gameUIAttribute size=
 
 renderAudio url =
     audio
-        [src url, autoplay True]
+        [src url, autoplay True, loop True]
+
         [Html.text "Your browser does not support the audio"]
 
 
