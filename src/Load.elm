@@ -83,6 +83,20 @@ initLoadPack =
                    ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/map_4/stone_1.png"
                    ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/map_5/stone_1.png"
                    ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/map_5/stone_2.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background1_1.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background1_2.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background1_3.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background1_4.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background2_1.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background2_2.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background3_1.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background4_1.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background4_2.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background/background5_1.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/AboutBut.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/BackBut.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/NextBut.png"
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/StartBut.png"
 
 
 
