@@ -83,12 +83,12 @@ view model =
                         model.state == DiscoverII || model.state == Three then
                         renderbricks (List.map .pos model.map.bricks) model
                     else if model.state == Model.Start then 
-                        [ renderButton Message.Start (prefix++"img/Button/StartBut.png") model.size (Pos 700 1300 200 350)
-                        , renderButton Message.About (prefix++"img/Button/AboutBut.png") model.size (Pos 700 1300 400 550) ] 
+                        [ renderButton Message.Start (prefix++"img/Button/StartBut.png") model.size (Pos 1100 1300 200 350)
+                        , renderButton Message.About (prefix++"img/Button/AboutBut.png") model.size (Pos 1100 1300 400 550) ] 
                     else if  model.state == End then
-                        [ renderButton Next (prefix++"img/Button/NextBut.png") model.size (Pos 700 1300 400 500) ]
+                        [ renderButton Next (prefix++"img/Button/NextBut.png") model.size (Pos 1100 1300 400 500) ]
                     else if model.state == Model.About then
-                        [ renderButton Back (prefix++"img/Button/BackBut.png") model.size (Pos 700 1300 400 500) ] 
+                        [ renderButton Back (prefix++"img/Button/BackBut.png") model.size (Pos 1100 1300 400 500) ] 
                     else
                         []
     in  
