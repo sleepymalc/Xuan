@@ -60,8 +60,8 @@ keyNormal on model keycode =
             AnimAttack on
         --Left
 
-       -- 37 ->
-       --     DebugLeft on
+        {-37 ->
+            DebugLeft on
         --Up
         --38 ->
         --    DebugUp on
@@ -75,18 +75,18 @@ keyNormal on model keycode =
        -- 80 ->
          --   DebugPos
         --Enter
-        --13 ->
-        --    ExitDebugMode 
-        --49 ->
-        --    Jump1
-        --50 ->
-        --    JumpDiscoverI
-        --51 ->
-        --    Jump2
-        --52 ->
-        --    JumpDiscoverII
-        --53 ->
-        --    Jump3
+        13 ->
+            ExitDebugMode -}
+        49 ->
+            Jump1
+        50 ->
+            JumpDiscoverI
+        51 ->
+            Jump2
+        52 ->
+            JumpDiscoverII
+        53 ->
+            Jump3
         _ ->
             Noop 
 

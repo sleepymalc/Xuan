@@ -23,4 +23,9 @@ type Msg
     | About
     | DebugPos
     | ExitDebugMode
+    | Jump1
+    | JumpDiscoverI
+    | Jump2
+    | JumpDiscoverII
+    | Jump3
     
