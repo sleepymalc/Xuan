@@ -30,5 +30,6 @@ type Msg
     | Jump2
     | JumpDiscoverII
     | Jump3
+    | DebugPos
     | ExitDebugMode
     

@@ -54,17 +54,26 @@ birdPosList1 =
     [ Pos 300 400 3830 3930
     ]
 
-playerPos1 = Pos 300 400 3830 3930
+jumpPos1 = Pos 3950 4050 650 750
 
-exitPos1 = Pos 3200 10000 2000 3900
+deceleratePos = Pos 3200 4800 830 1150
+
+aceleratePos = Pos 3200 4800 1150 1600
+
+collidePos2 = Pos 2650 2950 400 3200
+
+playerPos1 = Pos 300 400 3830 3930--playerPos1 = Pos 2600 2700 690 790
+
+exitPos1 = Pos 3200 10000 1550 3900
 
 --DiscoverI
-brickPosListDiscoverI = 
-    [  Pos 400 600 3700 3765   --[0,1600]*[3200,4000]
+brickPosListDiscoverI =
+    [  Pos 1600 1800 750 850
+    , Pos 400 600 3700 3765   --[0,1600]*[3200,4000]
     , Pos 800 1000 3475 3540
     , Pos 1200 1500 3175 3275
-    , Pos 100 200 3195 3395   --[0,1600]*[3200,4000]
-    , Pos 1325 1375 2975 3175 --[0,1600]*[2400,3200]
+    , Pos 100 200 3125 3325   --[0,1600]*[3200,4000]
+    , Pos 1325 1375 2925 3125 --[0,1600]*[2400,3200]
     , Pos 650 950 2900 3000
     , Pos 775 825 2700 2900
     , Pos 100 400 2675 2775
@@ -78,8 +87,8 @@ brickPosListDiscoverI =
     , Pos 1000 1250 950 1100
     , Pos 1400 1500 750 900   --[0,1600]*[800,1600]
     , Pos 1150 1300 600 700   --[0,1600]*[0,800]
-    , Pos 1500 1800 750 850
-    , Pos 2650 2950 400 450   --[1600,3200]*[0,800]
+    , Pos 2500 2550 300 850   --[1600,3200]*[0,800]
+    , Pos 2650 2950 400 850   --[1600,3200]*[0,800]
     ]
 brickWallListDiscoverI = 
     [ Pos 0 100 0 4000
@@ -87,6 +96,8 @@ brickWallListDiscoverI =
     , Pos 100 3200 0 100
     , Pos 100 1500 3935 4000
     ]
+
+
 
 characterPosListDiscoverI = []
 
@@ -102,7 +113,9 @@ birdPosListDiscoverI =
         
     ]
 
-playerPosDiscoverI = Pos 200 300 3830 3930
+playerPosDiscoverI = Pos 200 300 3630 3730
+--Pos 1664 1764 550 650--
+
 
 exitPosDiscoverI = Pos 1600 10000 2400 3000
 
@@ -163,7 +176,7 @@ speedAIPos2 = Pos 1200 1300 4630 4730
 exitPos2 = Pos 750 850 150 250
 
 --DiscoverII
-brickPosListDiscoverII = 
+brickPosListDiscoverII =
     [ Pos 1100 1300 3600 3650 --[0,1600]*[3200,4000]
     , Pos 900 1300 3195 3245
     , Pos 400 600 3150 3200   --[0,1600]*[3200,4000]
@@ -174,7 +187,7 @@ brickPosListDiscoverII =
     , Pos 500 800 2900 2950
     , Pos 1250 1500 2790 2840 --[0,1600]*[2400,3200]
     , Pos 750 850  1900 1950  --[0,1600]*[1600,2400]
-    , Pos 750 850 2300 2350   
+    , Pos 750 850 2300 2350
     , Pos 1300 1400 2050 2100 --[0,1600]*[1600,2400]
     , Pos 200 300 1550 1600   --[0,1600]*[800,1600]
     , Pos 500 700 1350 1400
@@ -286,7 +299,7 @@ characterPosList3 =
     , Pos 400 500 1100 1200
     , Pos 425 525 200 300
     , Pos 1075 1175 200 300
-    , Pos 750 850 100 300
+    --, Pos 750 850 100 300
     , Pos -500 -400 3700 3800 -- secret room
     , Pos -300 -200 3700 3800
     ]
@@ -303,8 +316,11 @@ birdPosList3 =
         
     ]
 
-playerPos3 = Pos 200 300 4630 4730
+playerPos3 = Pos 200 300 500 600--Pos 200 300 4630 4730
 
 speedAIPos3 = Pos 1300 1400 4630 4730
 
+bossPos3 = Pos 750 850 200 300
+
 exitPos3 = Pos 2000 2100 0 100
+

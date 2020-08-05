@@ -157,6 +157,11 @@ update msg model =
             ( {model |
                     player = initPlayer3 initPlayer1, map = initMap3, state = Three}, Cmd.none)
 
+        DebugPos ->
+            let
+                pos = Debug.log "Pos" model.player.pos
+            in
+            ( model, Cmd.none )
         _ ->
             ( model, Cmd.none )
 

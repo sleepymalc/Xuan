@@ -37,7 +37,7 @@ initLoadPack =
             , "attacked/attackedBack_0000"
             , "attacked/attackedFront_0000"]
         urls =  List.map (\name-> prefix ++ name ++ surfix) names
-                ++ ["http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background.png"]
+                
     in
         urls
         
