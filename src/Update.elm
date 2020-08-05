@@ -122,7 +122,7 @@ update msg model =
                     }, Cmd.none )
         Message.Start ->
             ( {model |
-                    state = CG1_1, cgtime = 500 
+                    state = CG1_1, cgtime = 5000 
                     }, Cmd.none)
         Next ->
             case model.state of 

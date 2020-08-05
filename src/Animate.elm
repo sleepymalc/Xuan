@@ -79,11 +79,8 @@ animate time model =
         map = model.map
             |> changeCharactersAndNpcs characters npcs
 
-        story = model.story
-            |> changeStory model.state model.player.inrage
-
     in
-        { model | map = map, player = player, story = story, speedAI = speedAI, boss = boss}
+        { model | map = map, player = player,  speedAI = speedAI, boss = boss}
             |> chargeModeltime
             |> changeState
             |> changeCGandStory time
