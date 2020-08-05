@@ -65,7 +65,7 @@ changeText state speedAI player=
                 { player | text = player.text }
 
         DiscoverII ->
-            if player.pos.y2 <= 500 then
+            if player.pos.y2 <= 500 && player.anim == Stand then
                 { player | text = "It's been 10 years... Now I'm back.", textframe = 0 }
             else
                 { player | text = player.text }
@@ -137,73 +137,3 @@ cleartext player =
     else
         { player | text = player.text }
 
-changeStory state story =
-    case state of
-        Story1_1 ->
-            { story | text =  "Old man：\"Poor kid, to improve the status of your family, your father and I decide to send you to attend the experiments in our sect. For the rest of your life, you will need to practice all kinds"
-                             ++"of internal skills and receive all kinds of stimulations. Don’t feel unfair. This is the brutality of the sects. Without sacrifice, there will be no strong sects.\""
-                             ++"A mysterious voice: \"Bullshit! How can anyone believe this old bastard? Sending your apprentice to be a testimony and feel sorry for him? You are one of a kind!\""
-                             ++"Song：\"Who are you? What’s that voice in my head? What’s going on with me?\""
-                             ++"A mysterious voice:\"You’re wondering who I am? My name is XUAN, and I can set you free.\""
-            , storyframe = 0
-            }
-        Story1_2 ->
-            { story | text = "Story1_2"
-
-            , storyframe = 0    
-            }
-        Story1_3 ->
-            { story | text = "Story1_3"
-
-            , storyframe = 0  
-
-            }
-        Story1_4 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }
-        Story2_1 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }
-        Story2_2 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }            
-        Story3_1 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }
-        Story4_1 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }
-        Story5_1 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }
-        Story5_2 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-            }
-        Story6_1 ->
-            { story | text = "Story1_4"
-
-            , storyframe = 0  
-
-            }
-        _ ->
-            { story | text = story.text }

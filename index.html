@@ -5205,6 +5205,34 @@ var $author$project$Model$Vector = F2(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewport);
+var $author$project$Message$Left = {$: 'Left'};
+var $author$project$Model$Walk = {$: 'Walk'};
+var $author$project$MapSetting$Pos = F4(
+	function (x1, x2, y1, y2) {
+		return {x1: x1, x2: x2, y1: y1, y2: y2};
+	});
+var $author$project$MapSetting$bossPos3 = A4($author$project$MapSetting$Pos, 750, 850, 200, 300);
+var $author$project$Model$bossRange = A2($author$project$Model$Vector, 650, 950);
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $author$project$Model$standcollisionPos = function (pos) {
+	return _List_fromArray(
+		[
+			A4($author$project$MapSetting$Pos, pos.x1 + 35, pos.x2 - 35, pos.y1 + 4, pos.y1 + 35),
+			A4($author$project$MapSetting$Pos, pos.x1 + 15, pos.x2 - 15, pos.y1 + 35, pos.y2)
+		]);
+};
+var $author$project$Model$initBoss = {
+	anim: $author$project$Model$Walk,
+	collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$bossPos3),
+	direction: $author$project$Message$Left,
+	frame: 0,
+	hp: 3,
+	pos: $author$project$MapSetting$bossPos3,
+	range: $author$project$Model$bossRange,
+	speed: A2($author$project$Model$Vector, -0.05, 0)
+};
 var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
 	return A2($elm$core$String$cons, _char, '');
@@ -5284,13 +5312,9 @@ var $author$project$Load$initLoadPack = function () {
 			},
 			names),
 		_List_fromArray(
-			['http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background1.png']));
+			['http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/background.png']));
 	return urls;
 }();
-var $author$project$MapSetting$Pos = F4(
-	function (x1, x2, y1, y2) {
-		return {x1: x1, x2: x2, y1: y1, y2: y2};
-	});
 var $author$project$MapSetting$birdPosList1 = _List_fromArray(
 	[
 		A4($author$project$MapSetting$Pos, 300, 400, 3830, 3930)
@@ -5298,18 +5322,17 @@ var $author$project$MapSetting$birdPosList1 = _List_fromArray(
 var $author$project$MapSetting$brickPosList1 = _List_fromArray(
 	[
 		A4($author$project$MapSetting$Pos, 3200, 10000, 3900, 4000),
-		A4($author$project$MapSetting$Pos, 2900, 3200, 3800, 3935),
 		A4($author$project$MapSetting$Pos, 2350, 2650, 3635, 3700),
 		A4($author$project$MapSetting$Pos, 1800, 2100, 3470, 3535),
 		A4($author$project$MapSetting$Pos, 2800, 3100, 3300, 3365),
-		A4($author$project$MapSetting$Pos, 2250, 2500, 3175, 3240),
+		A4($author$project$MapSetting$Pos, 2250, 2500, 3175, 3200),
 		A4($author$project$MapSetting$Pos, 1700, 2000, 3035, 3100),
 		A4($author$project$MapSetting$Pos, 2700, 3000, 2900, 3000),
 		A4($author$project$MapSetting$Pos, 2175, 2475, 2700, 2800),
 		A4($author$project$MapSetting$Pos, 1700, 2000, 2350, 2485),
-		A4($author$project$MapSetting$Pos, 2250, 2450, 2150, 2250),
+		A4($author$project$MapSetting$Pos, 2250, 2450, 2150, 2200),
 		A4($author$project$MapSetting$Pos, 2600, 3050, 1950, 2050),
-		A4($author$project$MapSetting$Pos, 2000, 2500, 1450, 1700),
+		A4($author$project$MapSetting$Pos, 2000, 2500, 1450, 1550),
 		A4($author$project$MapSetting$Pos, 2500, 2750, 1750, 1800),
 		A4($author$project$MapSetting$Pos, 1900, 2300, 1160, 1215),
 		A4($author$project$MapSetting$Pos, 2500, 2900, 1160, 1215),
@@ -5324,18 +5347,19 @@ var $author$project$MapSetting$brickWallList1 = _List_fromArray(
 		A4($author$project$MapSetting$Pos, 0, 3135, 3935, 4000),
 		A4($author$project$MapSetting$Pos, 1600, 1700, 0, 3200),
 		A4($author$project$MapSetting$Pos, 3170, 3200, 775, 4000),
-		A4($author$project$MapSetting$Pos, 3200, 3900, 750, 875)
+		A4($author$project$MapSetting$Pos, 3200, 3900, 750, 875),
+		A4($author$project$MapSetting$Pos, 2900, 3200, 3800, 3935)
 	]);
 var $author$project$MapSetting$characterPosList1 = _List_fromArray(
 	[
 		A4($author$project$MapSetting$Pos, 2900, 3000, 3205, 3305),
 		A4($author$project$MapSetting$Pos, 1800, 1900, 2935, 3035),
 		A4($author$project$MapSetting$Pos, 1800, 1900, 2250, 2350),
-		A4($author$project$MapSetting$Pos, 2000, 2100, 1075, 1175),
-		A4($author$project$MapSetting$Pos, 2700, 2800, 1075, 1175),
+		A4($author$project$MapSetting$Pos, 2000, 2100, 1060, 1160),
+		A4($author$project$MapSetting$Pos, 2700, 2800, 1060, 1160),
 		A4($author$project$MapSetting$Pos, 2430, 2530, 3540, 3640)
 	]);
-var $author$project$MapSetting$exitPos1 = A4($author$project$MapSetting$Pos, 3200, 10000, 2000, 3900);
+var $author$project$MapSetting$exitPos1 = A4($author$project$MapSetting$Pos, 3200, 10000, 1550, 3900);
 var $author$project$Message$Right = {$: 'Right'};
 var $author$project$Model$Stand = {$: 'Stand'};
 var $author$project$Model$initBirds1 = function (posList) {
@@ -5363,12 +5387,7 @@ var $author$project$Model$initBricks = function (posList) {
 		},
 		posList);
 };
-var $author$project$Message$Left = {$: 'Left'};
 var $author$project$Message$Up = {$: 'Up'};
-var $author$project$Model$Walk = {$: 'Walk'};
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
 var $author$project$Model$initCharacters = function (posList) {
 	return A2(
 		$elm$core$List$map,
@@ -5422,13 +5441,6 @@ var $author$project$Model$initMap1 = {
 var $author$project$Model$Crouch = {$: 'Crouch'};
 var $author$project$Model$Normal = {$: 'Normal'};
 var $author$project$MapSetting$playerPos1 = A4($author$project$MapSetting$Pos, 300, 400, 3830, 3930);
-var $author$project$Model$standcollisionPos = function (pos) {
-	return _List_fromArray(
-		[
-			A4($author$project$MapSetting$Pos, pos.x1 + 35, pos.x2 - 35, pos.y1 + 4, pos.y1 + 35),
-			A4($author$project$MapSetting$Pos, pos.x1 + 15, pos.x2 - 15, pos.y1 + 35, pos.y2)
-		]);
-};
 var $author$project$Model$initPlayer1 = {
 	anim: $author$project$Model$Crouch,
 	chargetime: 0,
@@ -5436,6 +5448,7 @@ var $author$project$Model$initPlayer1 = {
 	direction: $author$project$Message$Right,
 	effecttimeFive: 800,
 	effecttimeFour: 600,
+	effecttimeHalf: 0,
 	effecttimeOne: 0,
 	effecttimeThree: 400,
 	effecttimeTwo: 200,
@@ -5806,6 +5819,7 @@ var $author$project$Model$init = function (_v0) {
 		{
 			attrs: {},
 			audioList: _List_Nil,
+			boss: $author$project$Model$initBoss,
 			cgtime: 5000,
 			loadPack: $author$project$Load$initLoadPack,
 			map: $author$project$Model$initMap1,
@@ -5851,6 +5865,7 @@ var $author$project$Message$DebugDown = function (a) {
 var $author$project$Message$DebugLeft = function (a) {
 	return {$: 'DebugLeft', a: a};
 };
+var $author$project$Message$DebugPos = {$: 'DebugPos'};
 var $author$project$Message$DebugRight = function (a) {
 	return {$: 'DebugRight', a: a};
 };
@@ -5858,9 +5873,14 @@ var $author$project$Message$DebugUp = function (a) {
 	return {$: 'DebugUp', a: a};
 };
 var $author$project$Message$ExitDebugMode = {$: 'ExitDebugMode'};
+var $author$project$Message$Jump1 = {$: 'Jump1'};
+var $author$project$Message$Jump2 = {$: 'Jump2'};
+var $author$project$Message$Jump3 = {$: 'Jump3'};
+var $author$project$Message$JumpDiscoverI = {$: 'JumpDiscoverI'};
+var $author$project$Message$JumpDiscoverII = {$: 'JumpDiscoverII'};
 var $author$project$Message$Noop = {$: 'Noop'};
-var $author$project$Main$keyNormal = F2(
-	function (on, keycode) {
+var $author$project$Main$keyNormal = F3(
+	function (on, model, keycode) {
 		switch (keycode) {
 			case 65:
 				return A2($author$project$Message$AnimWalk, $author$project$Message$Left, on);
@@ -5880,8 +5900,20 @@ var $author$project$Main$keyNormal = F2(
 				return $author$project$Message$DebugRight(on);
 			case 40:
 				return $author$project$Message$DebugDown(on);
+			case 80:
+				return $author$project$Message$DebugPos;
 			case 13:
 				return $author$project$Message$ExitDebugMode;
+			case 49:
+				return $author$project$Message$Jump1;
+			case 50:
+				return $author$project$Message$JumpDiscoverI;
+			case 51:
+				return $author$project$Message$Jump2;
+			case 52:
+				return $author$project$Message$JumpDiscoverII;
+			case 53:
+				return $author$project$Message$Jump3;
 			default:
 				return $author$project$Message$Noop;
 		}
@@ -6475,20 +6507,27 @@ var $author$project$Main$subscriptions = function (model) {
 				$elm$browser$Browser$Events$onKeyUp(
 				A2(
 					$elm$json$Json$Decode$map,
-					$author$project$Main$keyNormal(false),
+					A2($author$project$Main$keyNormal, false, model),
 					$elm$html$Html$Events$keyCode)),
 				$elm$browser$Browser$Events$onKeyDown(
 				A2(
 					$elm$json$Json$Decode$map,
-					$author$project$Main$keyNormal(true),
+					A2($author$project$Main$keyNormal, true, model),
 					$elm$html$Html$Events$keyCode)),
 				$elm$browser$Browser$Events$onResize($author$project$Message$Resize)
 			]));
 };
+var $author$project$Model$About = {$: 'About'};
+var $author$project$Model$CG1_1 = {$: 'CG1_1'};
 var $author$project$Model$Charge = {$: 'Charge'};
+var $author$project$Model$DiscoverI = {$: 'DiscoverI'};
+var $author$project$Model$DiscoverII = {$: 'DiscoverII'};
 var $author$project$Model$Jump = {$: 'Jump'};
-var $author$project$Model$DebugMode = {$: 'DebugMode'};
+var $author$project$Model$One = {$: 'One'};
+var $author$project$Model$Start = {$: 'Start'};
+var $author$project$Model$Three = {$: 'Three'};
 var $author$project$Model$Two = {$: 'Two'};
+var $author$project$Model$DebugMode = {$: 'DebugMode'};
 var $author$project$Model$Attack = {$: 'Attack'};
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
@@ -6542,7 +6581,6 @@ var $author$project$AnimState$stand = function (player) {
 		{
 			anim: $author$project$Model$Stand,
 			frame: 0,
-			jumpdir: $author$project$Message$Up,
 			speed: A2($author$project$Model$Vector, 0, 0)
 		});
 };
@@ -6644,7 +6682,125 @@ var $author$project$Animate$attackedByPlayer = F2(
 			},
 			character.collisionPos);
 	});
+var $author$project$Animate$bossBackwardAttackRange = function (boss) {
+	var pos = boss.pos;
+	var y1 = (pos.y1 + pos.y2) / 2;
+	var dx = _Utils_eq(boss.direction, $author$project$Message$Left) ? (0.05 * 3000) : ((-0.05) * 3000);
+	return _Utils_update(
+		pos,
+		{x1: pos.x1 + dx, x2: pos.x2 + dx, y1: y1});
+};
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $author$project$Animate$turn = function (character) {
+	var _v0 = _Utils_eq(character.direction, $author$project$Message$Left) ? _Utils_Tuple2(
+		$author$project$Message$Right,
+		A2($author$project$Model$Vector, 0.05, 0)) : _Utils_Tuple2(
+		$author$project$Message$Left,
+		A2($author$project$Model$Vector, -0.05, 0));
+	var direction = _v0.a;
+	var speed = _v0.b;
+	return _Utils_update(
+		character,
+		{anim: $author$project$Model$Walk, direction: direction, speed: speed});
+};
+var $author$project$Animate$bossBackAttackPlayer = F2(
+	function (player, boss) {
+		var attackPos = $author$project$Animate$bossBackwardAttackRange(boss);
+		return ((!_Utils_eq(boss.anim, $author$project$Model$Attacked)) && ((!_Utils_eq(boss.anim, $author$project$Model$Attack)) && A2(
+			$elm$core$List$any,
+			function (pos) {
+				return A4(
+					$author$project$Collision$projectionOverlap,
+					function ($) {
+						return $.x1;
+					},
+					function ($) {
+						return $.x2;
+					},
+					attackPos,
+					pos) && A4(
+					$author$project$Collision$projectionOverlap,
+					function ($) {
+						return $.y1;
+					},
+					function ($) {
+						return $.y2;
+					},
+					attackPos,
+					pos);
+			},
+			player.collisionPos))) ? $author$project$AnimState$attack(
+			$author$project$Animate$turn(boss)) : boss;
+	});
+var $author$project$Animate$bossForwardAttackRange = function (boss) {
+	var pos = boss.pos;
+	var y1 = (pos.y1 + pos.y2) / 2;
+	var dx = _Utils_eq(boss.direction, $author$project$Message$Left) ? ((-0.05) * 3000) : (0.05 * 3000);
+	return _Utils_update(
+		pos,
+		{x1: pos.x1 + dx, x2: pos.x2 + dx, y1: y1});
+};
+var $author$project$Animate$bossAttackPlayer = F2(
+	function (player, boss) {
+		var attackPos = $author$project$Animate$bossForwardAttackRange(boss);
+		return ((!_Utils_eq(player.anim, $author$project$Model$Attacked)) && ((!_Utils_eq(boss.anim, $author$project$Model$Attack)) && A2(
+			$elm$core$List$any,
+			function (pos) {
+				return A4(
+					$author$project$Collision$projectionOverlap,
+					function ($) {
+						return $.x1;
+					},
+					function ($) {
+						return $.x2;
+					},
+					attackPos,
+					pos) && A4(
+					$author$project$Collision$projectionOverlap,
+					function ($) {
+						return $.y1;
+					},
+					function ($) {
+						return $.y2;
+					},
+					attackPos,
+					pos);
+			},
+			player.collisionPos))) ? $author$project$AnimState$attack(boss) : A2($author$project$Animate$bossBackAttackPlayer, player, boss);
+	});
+var $elm$core$Debug$log = _Debug_log;
+var $author$project$Animate$bossAttackedByPlayer = F2(
+	function (player, boss) {
+		return _Utils_eq(boss.anim, $author$project$Model$Attacked) ? boss : (A2($author$project$Animate$attackedByPlayer, player, boss) ? A2(
+			$author$project$Animate$loseBlood,
+			1,
+			A2(
+				$elm$core$Debug$log,
+				'attacked',
+				A2(
+					$author$project$AnimState$attacked,
+					A2($author$project$Model$Vector, 0, 0),
+					boss))) : boss);
+	});
+var $author$project$Model$Dead = {$: 'Dead'};
+var $author$project$AnimState$dead = function (player) {
+	return _Utils_update(
+		player,
+		{
+			anim: $author$project$Model$Dead,
+			frame: 0,
+			speed: A2($author$project$Model$Vector, 0, 0)
+		});
+};
+var $author$project$Animate$bossChangeAnim = function (boss) {
+	return ((_Utils_eq(boss.anim, $author$project$Model$Attack) && (boss.frame >= 120)) || (_Utils_eq(boss.anim, $author$project$Model$Attacked) && (boss.frame >= 350))) ? A2(
+		$elm$core$Debug$log,
+		'turn',
+		$author$project$Animate$turn(boss)) : (((!_Utils_eq(boss.anim, $author$project$Model$Dead)) && (boss.hp <= 0)) ? $author$project$AnimState$dead(boss) : boss);
+};
+var $author$project$Model$Getup = {$: 'Getup'};
 var $author$project$Model$Grovel = {$: 'Grovel'};
+var $author$project$Model$JumpEnd = {$: 'JumpEnd'};
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -6733,7 +6889,6 @@ var $author$project$AnimState$jump = function (player) {
 				});
 	}
 };
-var $elm$core$Basics$neq = _Utils_notEqual;
 var $author$project$Animate$nextPos = F3(
 	function (speed, time, pos) {
 		var dy = speed.y * time;
@@ -6755,35 +6910,100 @@ var $author$project$Animate$changeAnim = F3(
 		var newplayer = _Utils_update(
 			player,
 			{chargetime: 0});
-		return _Utils_eq(player.anim, $author$project$Model$Charge) ? player : (_Utils_eq(player.anim, $author$project$Model$Grovel) ? $author$project$AnimState$grovel(player) : ((_Utils_eq(player.anim, $author$project$Model$Jump) && (player.chargetime > 0)) ? $author$project$AnimState$jump(newplayer) : (((_Utils_eq(player.anim, $author$project$Model$Attack) && (player.frame >= 30)) || ((_Utils_eq(player.anim, $author$project$Model$Crouch) && (player.frame >= 60)) || (_Utils_eq(player.anim, $author$project$Model$Attacked) && (player.frame >= 60)))) ? $author$project$AnimState$stand(player) : ((_Utils_eq(player.anim, $author$project$Model$Walk) && ((!(!player.speed.y)) && (!A2(
+		return _Utils_eq(player.anim, $author$project$Model$Charge) ? player : (_Utils_eq(player.anim, $author$project$Model$Grovel) ? $author$project$AnimState$grovel(player) : ((_Utils_eq(player.anim, $author$project$Model$Jump) && (player.chargetime > 0)) ? $author$project$AnimState$jump(newplayer) : (((_Utils_eq(player.anim, $author$project$Model$Attack) && (player.frame >= 30)) || ((_Utils_eq(player.anim, $author$project$Model$Crouch) && (player.frame >= 60)) || ((_Utils_eq(player.anim, $author$project$Model$JumpEnd) && (_Utils_cmp(player.frame, 7 * 7) > -1)) || ((_Utils_eq(player.anim, $author$project$Model$Getup) && (player.frame >= 280)) || (_Utils_eq(player.anim, $author$project$Model$Attacked) && (player.frame >= 60)))))) ? $author$project$AnimState$stand(player) : ((_Utils_eq(player.anim, $author$project$Model$Walk) && ((!(!player.speed.y)) && (!A2(
 			$elm$core$List$any,
 			A3($author$project$Collision$downImpact, player.speed, time, posList),
 			player.collisionPos)))) ? _Utils_update(
 			newplayer,
 			{anim: $author$project$Model$Jump}) : newplayer))));
 	});
-var $author$project$Model$CG1_1 = {$: 'CG1_1'};
 var $author$project$Model$CG1_2 = {$: 'CG1_2'};
 var $author$project$Model$CG1_3 = {$: 'CG1_3'};
 var $author$project$Model$CG1_4 = {$: 'CG1_4'};
-var $author$project$Model$CG2_1 = {$: 'CG2_1'};
 var $author$project$Model$CG2_2 = {$: 'CG2_2'};
-var $author$project$Model$CG3_1 = {$: 'CG3_1'};
 var $author$project$Model$CG5_1 = {$: 'CG5_1'};
 var $author$project$Model$CG5_2 = {$: 'CG5_2'};
-var $author$project$Model$CG6_1 = {$: 'CG6_1'};
 var $author$project$Model$CG6_2 = {$: 'CG6_2'};
-var $author$project$Model$DiscoverI = {$: 'DiscoverI'};
-var $author$project$Model$DiscoverII = {$: 'DiscoverII'};
 var $author$project$Model$End = {$: 'End'};
-var $author$project$Model$One = {$: 'One'};
 var $author$project$Model$Story1_1 = {$: 'Story1_1'};
 var $author$project$Model$Story1_2 = {$: 'Story1_2'};
 var $author$project$Model$Story1_3 = {$: 'Story1_3'};
 var $author$project$Model$Story1_4 = {$: 'Story1_4'};
+var $author$project$Model$Story1_5 = {$: 'Story1_5'};
+var $author$project$Model$Story2_1 = {$: 'Story2_1'};
 var $author$project$Model$Story2_2 = {$: 'Story2_2'};
+var $author$project$Model$Story3_1 = {$: 'Story3_1'};
+var $author$project$Model$Story5_1 = {$: 'Story5_1'};
 var $author$project$Model$Story5_2 = {$: 'Story5_2'};
-var $author$project$Model$Three = {$: 'Three'};
+var $author$project$Model$Story6_1 = {$: 'Story6_1'};
+var $author$project$MapSetting$playerPos2 = A4($author$project$MapSetting$Pos, 300, 400, 4630, 4730);
+var $author$project$Model$initPlayer2 = function (player) {
+	return _Utils_update(
+		player,
+		{
+			anim: $author$project$Model$Getup,
+			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPos2),
+			direction: $author$project$Message$Right,
+			fallcount: 0,
+			frame: 0,
+			jumpdir: $author$project$Message$Up,
+			pos: $author$project$MapSetting$playerPos2,
+			speed: A2($author$project$Model$Vector, 0, 0),
+			text: 'I am Song Yuanhuai.',
+			textframe: 0
+		});
+};
+var $author$project$MapSetting$playerPos3 = A4($author$project$MapSetting$Pos, 200, 300, 500, 600);
+var $author$project$Model$initPlayer3 = function (player) {
+	return _Utils_update(
+		player,
+		{
+			anim: $author$project$Model$Crouch,
+			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPos3),
+			direction: $author$project$Message$Right,
+			fallcount: 0,
+			frame: 0,
+			jumpdir: $author$project$Message$Up,
+			pos: $author$project$MapSetting$playerPos3,
+			speed: A2($author$project$Model$Vector, 0, 0),
+			text: 'I am back... FOR REVENGE!',
+			textframe: 0
+		});
+};
+var $author$project$MapSetting$playerPosDiscoverI = A4($author$project$MapSetting$Pos, 200, 300, 3630, 3730);
+var $author$project$Model$initPlayerDiscoverI = function (player) {
+	return _Utils_update(
+		player,
+		{
+			anim: $author$project$Model$JumpEnd,
+			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPosDiscoverI),
+			direction: $author$project$Message$Right,
+			fallcount: 0,
+			frame: 0,
+			jumpdir: $author$project$Message$Up,
+			pos: $author$project$MapSetting$playerPosDiscoverI,
+			speed: A2($author$project$Model$Vector, 0, 0),
+			text: 'What\'s going on?',
+			textframe: 0
+		});
+};
+var $author$project$MapSetting$playerPosDiscoverII = A4($author$project$MapSetting$Pos, 200, 300, 3830, 3930);
+var $author$project$Model$initPlayerDiscoverII = function (player) {
+	return _Utils_update(
+		player,
+		{
+			anim: $author$project$Model$Crouch,
+			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPosDiscoverII),
+			direction: $author$project$Message$Right,
+			fallcount: 0,
+			frame: 0,
+			jumpdir: $author$project$Message$Up,
+			pos: $author$project$MapSetting$playerPosDiscoverII,
+			speed: A2($author$project$Model$Vector, 0, 0),
+			text: 'Life is a series of choices, and you don\'t know about the consequences.',
+			textframe: 0
+		});
+};
 var $author$project$ChangeState$changeCGandStory = F2(
 	function (time, model) {
 		var cgtime = model.cgtime - time;
@@ -6797,97 +7017,135 @@ var $author$project$ChangeState$changeCGandStory = F2(
 				case 'LOGO':
 					return (!model.player.teachtextstate) ? _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Story1_1}) : _Utils_update(
+						{cgtime: 5000, state: $author$project$Model$Start}) : _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$End});
-				case 'Story1_1':
-					return _Utils_update(
-						model,
-						{cgtime: 500, state: $author$project$Model$CG1_1});
+						{cgtime: 5000, state: $author$project$Model$End});
 				case 'CG1_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Story1_2});
-				case 'Story1_2':
+						{cgtime: 5000, state: $author$project$Model$Story1_1});
+				case 'Story1_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG1_2});
+						{cgtime: 5000, state: $author$project$Model$CG1_2});
 				case 'CG1_2':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Story1_3});
-				case 'Story1_3':
+						{cgtime: 5000, state: $author$project$Model$Story1_2});
+				case 'Story1_2':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG1_3});
+						{cgtime: 5000, state: $author$project$Model$CG1_3});
 				case 'CG1_3':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Story1_4});
-				case 'Story1_4':
+						{cgtime: 5000, state: $author$project$Model$Story1_3});
+				case 'Story1_3':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG1_4});
+						{cgtime: 5000, state: $author$project$Model$CG1_4});
 				case 'CG1_4':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$One});
-				case 'Story2_1':
+						{cgtime: 5000, state: $author$project$Model$Story1_4});
+				case 'Story1_4':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG2_1});
+						{cgtime: 5000, state: $author$project$Model$Story1_5});
+				case 'Story1_5':
+					return _Utils_update(
+						model,
+						{cgtime: 5000, player: $author$project$Model$initPlayer1, state: $author$project$Model$One, time: 0});
 				case 'CG2_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Story2_2});
-				case 'Story2_2':
+						{cgtime: 5000, state: $author$project$Model$Story2_1});
+				case 'Story2_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG2_2});
+						{cgtime: 5000, state: $author$project$Model$CG2_2});
 				case 'CG2_2':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$DiscoverI});
-				case 'Story3_1':
+						{cgtime: 5000, state: $author$project$Model$Story2_2});
+				case 'Story2_2':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG3_1});
+						{
+							cgtime: 5000,
+							player: $author$project$Model$initPlayerDiscoverI(model.player),
+							state: $author$project$Model$DiscoverI,
+							time: 0
+						});
 				case 'CG3_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, speedAI: $author$project$Model$initSpeedAI, state: $author$project$Model$Two, time: 0});
-				case 'Story4_1':
+						{cgtime: 5000, state: $author$project$Model$Story3_1});
+				case 'Story3_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$DiscoverII});
-				case 'Story5_1':
+						{
+							cgtime: 5000,
+							player: $author$project$Model$initPlayer2(model.player),
+							speedAI: $author$project$Model$initSpeedAI,
+							state: $author$project$Model$Two,
+							time: 0
+						});
+				case 'Story4_Lose':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG5_1});
+						{
+							cgtime: 5000,
+							player: $author$project$Model$initPlayerDiscoverII(model.player),
+							state: $author$project$Model$DiscoverII,
+							time: 0
+						});
+				case 'Story4_Win':
+					return _Utils_update(
+						model,
+						{
+							cgtime: 5000,
+							player: $author$project$Model$initPlayerDiscoverII(model.player),
+							state: $author$project$Model$DiscoverII,
+							time: 0
+						});
+				case 'Story5_0':
+					return _Utils_update(
+						model,
+						{cgtime: 5000, state: $author$project$Model$CG5_1});
 				case 'CG5_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Story5_2});
-				case 'Story5_2':
-					return _Utils_update(
-						model,
-						{cgtime: 500, state: $author$project$Model$CG5_2});
+						{cgtime: 5000, state: $author$project$Model$CG5_2});
 				case 'CG5_2':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$Three});
-				case 'Story6_1':
+						{cgtime: 5000, state: $author$project$Model$Story5_1});
+				case 'Story5_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG6_1});
+						{cgtime: 5000, state: $author$project$Model$Story5_2});
+				case 'Story5_2':
+					return _Utils_update(
+						model,
+						{
+							cgtime: 5000,
+							player: $author$project$Model$initPlayer3(model.player),
+							state: $author$project$Model$Three,
+							time: 0
+						});
 				case 'CG6_1':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$CG6_2});
+						{cgtime: 5000, state: $author$project$Model$CG6_2});
 				case 'CG6_2':
 					return _Utils_update(
 						model,
-						{cgtime: 500, state: $author$project$Model$LOGO});
+						{cgtime: 5000, state: $author$project$Model$Story6_1});
+				case 'Story6_1':
+					return _Utils_update(
+						model,
+						{cgtime: 5000, state: $author$project$Model$End});
 				default:
 					return model;
 			}
@@ -7046,6 +7304,9 @@ var $author$project$Animate$changeRageTime = F2(
 			newplayer,
 			{hp: 10 - (1 * player.ragecount), ragetime: 0}) : player);
 	});
+var $author$project$Model$JumpLoop = {$: 'JumpLoop'};
+var $author$project$Model$JumpStart = {$: 'JumpStart'};
+var $author$project$MapSetting$deceleratePos = A4($author$project$MapSetting$Pos, 3200, 4800, 830, 1150);
 var $author$project$Collision$leftImpact = F4(
 	function (speed, time, posList, playerPos) {
 		return !$elm$core$List$isEmpty(
@@ -7109,8 +7370,8 @@ var $author$project$Collision$upImpact = F4(
 						playerPos),
 					posList)));
 	});
-var $author$project$Animate$changeSpeed = F3(
-	function (time, bricks, player) {
+var $author$project$Animate$changeSpeed = F4(
+	function (time, model, bricks, player) {
 		var posList = A2(
 			$elm$core$List$map,
 			function ($) {
@@ -7121,27 +7382,46 @@ var $author$project$Animate$changeSpeed = F3(
 			$elm$core$List$map,
 			A2($author$project$Animate$nextPos, player.speed, time),
 			player.collisionPos);
-		var dy = A2(
+		var dy = _Utils_eq(player.anim, $author$project$Model$JumpStart) ? (-0.001) : ((_Utils_eq(player.anim, $author$project$Model$JumpLoop) && A4(
+			$author$project$Collision$projectionOverlap,
+			function ($) {
+				return $.y1;
+			},
+			function ($) {
+				return $.y2;
+			},
+			player.pos,
+			$author$project$MapSetting$deceleratePos)) ? (_Utils_eq(model.state, $author$project$Model$One) ? ((-0.014) * player.speed.y) : ((-0.06) * player.speed.y)) : (_Utils_eq(player.anim, $author$project$Model$JumpLoop) ? 0.01 : (A2(
 			$elm$core$List$any,
 			A3($author$project$Collision$upImpact, player.speed, time, posList),
-			playerPos) ? ((-1.8) * player.speed.y) : 0.03;
-		var dx = (A2(
+			playerPos) ? ((-1.8) * player.speed.y) : 0.03)));
+		var dx = _Utils_eq(player.anim, $author$project$Model$JumpStart) ? 0.001 : ((_Utils_eq(player.anim, $author$project$Model$JumpLoop) && A4(
+			$author$project$Collision$projectionOverlap,
+			function ($) {
+				return $.y1;
+			},
+			function ($) {
+				return $.y2;
+			},
+			player.pos,
+			$author$project$MapSetting$deceleratePos)) ? ((-0.5) * player.speed.x) : ((A2(
 			$elm$core$List$any,
 			A3($author$project$Collision$rightImpact, player.speed, time, posList),
 			playerPos) || A2(
 			$elm$core$List$any,
 			A3($author$project$Collision$leftImpact, player.speed, time, posList),
-			playerPos)) ? ((_Utils_eq(player.anim, $author$project$Model$Walk) || _Utils_eq(player.anim, $author$project$Model$Attacked)) ? (-player.speed.x) : ((-1.8) * player.speed.x)) : 0;
+			playerPos)) ? ((_Utils_eq(player.anim, $author$project$Model$Walk) || _Utils_eq(player.anim, $author$project$Model$Attacked)) ? (-player.speed.x) : ((-1.8) * player.speed.x)) : 0));
 		var speed = A2($author$project$Model$Vector, player.speed.x + dx, player.speed.y + dy);
 		return _Utils_update(
 			player,
 			{speed: speed});
 	});
-var $author$project$Model$Story2_1 = {$: 'Story2_1'};
-var $author$project$Model$Story3_1 = {$: 'Story3_1'};
-var $author$project$Model$Story4_1 = {$: 'Story4_1'};
-var $author$project$Model$Story5_1 = {$: 'Story5_1'};
-var $author$project$Model$Story6_1 = {$: 'Story6_1'};
+var $author$project$Model$CG2_1 = {$: 'CG2_1'};
+var $author$project$Model$CG3_1 = {$: 'CG3_1'};
+var $author$project$Model$CG6_1 = {$: 'CG6_1'};
+var $author$project$Model$Story4_Lose = {$: 'Story4_Lose'};
+var $author$project$Model$Story4_Win = {$: 'Story4_Win'};
+var $author$project$Model$Story5_0 = {$: 'Story5_0'};
 var $author$project$ChangeState$arriveExit = F2(
 	function (model, player) {
 		return (_Utils_cmp(player.pos.x2, model.map.exit.x1) > -1) && ((_Utils_cmp(player.pos.x1, model.map.exit.x2) < 1) && ((_Utils_cmp(player.pos.y1, model.map.exit.y2) < 1) && (_Utils_cmp(player.pos.y2, model.map.exit.y1) > -1)));
@@ -7167,13 +7447,13 @@ var $author$project$MapSetting$brickPosList2 = _List_fromArray(
 		A4($author$project$MapSetting$Pos, 1300, 1500, 1750, 1850),
 		A4($author$project$MapSetting$Pos, 500, 750, 2000, 2100),
 		A4($author$project$MapSetting$Pos, 500, 750, 1650, 1750),
-		A4($author$project$MapSetting$Pos, 1000, 1050, 850, 2200),
+		A4($author$project$MapSetting$Pos, 1000, 1050, 800, 2200),
 		A4($author$project$MapSetting$Pos, 1300, 1500, 1400, 1500),
 		A4($author$project$MapSetting$Pos, 1300, 1500, 1000, 1100),
 		A4($author$project$MapSetting$Pos, 500, 750, 1300, 1400),
 		A4($author$project$MapSetting$Pos, 100, 300, 1100, 1250),
-		A4($author$project$MapSetting$Pos, 575, 1200, 785, 850),
-		A4($author$project$MapSetting$Pos, 875, 1500, 500, 600),
+		A4($author$project$MapSetting$Pos, 575, 1200, 750, 800),
+		A4($author$project$MapSetting$Pos, 875, 1500, 500, 550),
 		A4($author$project$MapSetting$Pos, 700, 900, 250, 325)
 	]);
 var $author$project$MapSetting$brickWallList2 = _List_fromArray(
@@ -7230,60 +7510,60 @@ var $author$project$Model$initMap2 = {
 var $author$project$MapSetting$birdPosList3 = _List_Nil;
 var $author$project$MapSetting$brickPosList3 = _List_fromArray(
 	[
-		A4($author$project$MapSetting$Pos, 500, 800, 4600, 4735),
-		A4($author$project$MapSetting$Pos, 100, 350, 4250, 4350),
-		A4($author$project$MapSetting$Pos, 850, 1050, 4200, 4300),
-		A4($author$project$MapSetting$Pos, 1300, 1500, 3975, 4075),
-		A4($author$project$MapSetting$Pos, 250, 500, 3835, 3900),
-		A4($author$project$MapSetting$Pos, 1000, 1200, 3650, 3735),
-		A4($author$project$MapSetting$Pos, 650, 850, 3535, 3600),
-		A4($author$project$MapSetting$Pos, 250, 800, 3175, 3275),
-		A4($author$project$MapSetting$Pos, 1100, 1400, 3315, 3415),
-		A4($author$project$MapSetting$Pos, 100, 350, 2900, 3000),
-		A4($author$project$MapSetting$Pos, 1200, 1500, 2935, 3000),
+		A4($author$project$MapSetting$Pos, 500, 800, 4600, 4650),
+		A4($author$project$MapSetting$Pos, 100, 350, 4250, 4300),
+		A4($author$project$MapSetting$Pos, 850, 1050, 4200, 4250),
+		A4($author$project$MapSetting$Pos, 1300, 1500, 3975, 4000),
+		A4($author$project$MapSetting$Pos, 250, 500, 3835, 3885),
+		A4($author$project$MapSetting$Pos, 1000, 1200, 3650, 3700),
+		A4($author$project$MapSetting$Pos, 650, 850, 3535, 3585),
+		A4($author$project$MapSetting$Pos, 250, 800, 3175, 3200),
+		A4($author$project$MapSetting$Pos, 1100, 1400, 3315, 3365),
+		A4($author$project$MapSetting$Pos, 100, 350, 2900, 2950),
+		A4($author$project$MapSetting$Pos, 1200, 1500, 2935, 2980),
 		A4($author$project$MapSetting$Pos, 900, 1000, 2965, 3000),
 		A4($author$project$MapSetting$Pos, 1350, 1500, 2700, 2765),
-		A4($author$project$MapSetting$Pos, 900, 1200, 2700, 2765),
+		A4($author$project$MapSetting$Pos, 900, 1200, 2700, 2750),
 		A4($author$project$MapSetting$Pos, 550, 775, 2600, 2670),
-		A4($author$project$MapSetting$Pos, 500, 550, 2575, 2670),
 		A4($author$project$MapSetting$Pos, 250, 550, 2515, 2575),
 		A4($author$project$MapSetting$Pos, 950, 1300, 2200, 2225),
-		A4($author$project$MapSetting$Pos, 950, 1150, 2225, 2425),
-		A4($author$project$MapSetting$Pos, 950, 1300, 2425, 2450),
+		A4($author$project$MapSetting$Pos, 950, 1000, 2225, 2375),
+		A4($author$project$MapSetting$Pos, 950, 1300, 2375, 2400),
 		A4($author$project$MapSetting$Pos, 1250, 1300, 2100, 2200),
 		A4($author$project$MapSetting$Pos, 1350, 1500, 1800, 1865),
-		A4($author$project$MapSetting$Pos, 600, 950, 1650, 2300),
-		A4($author$project$MapSetting$Pos, 100, 600, 2200, 2300),
-		A4($author$project$MapSetting$Pos, 350, 600, 1900, 1965),
-		A4($author$project$MapSetting$Pos, 100, 250, 1705, 1770),
-		A4($author$project$MapSetting$Pos, 600, 1250, 1550, 1650),
-		A4($author$project$MapSetting$Pos, 250, 750, 1200, 1300),
-		A4($author$project$MapSetting$Pos, 1250, 1500, 1250, 1350),
-		A4($author$project$MapSetting$Pos, 900, 1250, 950, 1050),
-		A4($author$project$MapSetting$Pos, 100, 600, 700, 800),
-		A4($author$project$MapSetting$Pos, 400, 1200, 300, 400),
-		A4($author$project$MapSetting$Pos, -1600, 0, 1900, 2000),
-		A4($author$project$MapSetting$Pos, -1600, -1500, 2000, 4000),
-		A4($author$project$MapSetting$Pos, -1500, -100, 3900, 4000),
-		A4($author$project$MapSetting$Pos, -100, 0, 2200, 4000),
-		A4($author$project$MapSetting$Pos, -250, -100, 2530, 3200),
-		A4($author$project$MapSetting$Pos, -400, -250, 2610, 3200),
-		A4($author$project$MapSetting$Pos, -550, -400, 2690, 3200),
-		A4($author$project$MapSetting$Pos, -700, -550, 2770, 3200),
-		A4($author$project$MapSetting$Pos, -850, -700, 2850, 3200),
-		A4($author$project$MapSetting$Pos, -1000, -850, 2930, 3200),
-		A4($author$project$MapSetting$Pos, -1150, -1000, 3010, 3200),
-		A4($author$project$MapSetting$Pos, -1300, -1150, 3090, 3200),
-		A4($author$project$MapSetting$Pos, -1500, -1200, 3500, 3900),
-		A4($author$project$MapSetting$Pos, -1200, -900, 3700, 3900),
-		A4($author$project$MapSetting$Pos, -600, -100, 3800, 3900)
+		A4($author$project$MapSetting$Pos, 600, 650, 1650, 2000),
+		A4($author$project$MapSetting$Pos, 900, 950, 1650, 2000),
+		A4($author$project$MapSetting$Pos, 0, 600, 2200, 2250),
+		A4($author$project$MapSetting$Pos, 350, 600, 1900, 1950),
+		A4($author$project$MapSetting$Pos, 100, 300, 1705, 1755),
+		A4($author$project$MapSetting$Pos, 600, 1250, 1590, 1650),
+		A4($author$project$MapSetting$Pos, 250, 750, 1200, 1250),
+		A4($author$project$MapSetting$Pos, 1250, 1500, 1250, 1300),
+		A4($author$project$MapSetting$Pos, 900, 1250, 950, 1000),
+		A4($author$project$MapSetting$Pos, 100, 600, 700, 750),
+		A4($author$project$MapSetting$Pos, 300, 1300, 300, 350),
+		A4($author$project$MapSetting$Pos, -250, -100, 2530, 2580),
+		A4($author$project$MapSetting$Pos, -400, -250, 2610, 2660),
+		A4($author$project$MapSetting$Pos, -550, -400, 2690, 2740),
+		A4($author$project$MapSetting$Pos, -700, -550, 2770, 2820),
+		A4($author$project$MapSetting$Pos, -850, -700, 2850, 2900),
+		A4($author$project$MapSetting$Pos, -1000, -850, 2930, 2980),
+		A4($author$project$MapSetting$Pos, -1150, -1000, 3010, 3060),
+		A4($author$project$MapSetting$Pos, -1300, -1150, 3090, 3140),
+		A4($author$project$MapSetting$Pos, -1500, -1200, 3500, 3550),
+		A4($author$project$MapSetting$Pos, -1200, -900, 3700, 3750),
+		A4($author$project$MapSetting$Pos, -600, -100, 3800, 3850),
+		A4($author$project$MapSetting$Pos, -1600, 0, 1900, 1950),
+		A4($author$project$MapSetting$Pos, -1500, -100, 3900, 3950),
+		A4($author$project$MapSetting$Pos, -300, 0, 2200, 2250)
 	]);
 var $author$project$MapSetting$brickWallList3 = _List_fromArray(
 	[
 		A4($author$project$MapSetting$Pos, 0, 100, 0, 2000),
 		A4($author$project$MapSetting$Pos, 0, 100, 2200, 4800),
 		A4($author$project$MapSetting$Pos, 100, 1500, 4735, 4800),
-		A4($author$project$MapSetting$Pos, 1500, 1600, 0, 4800)
+		A4($author$project$MapSetting$Pos, 1500, 1600, 0, 4800),
+		A4($author$project$MapSetting$Pos, -1600, -1500, 2000, 4000)
 	]);
 var $author$project$MapSetting$characterPosList3 = _List_fromArray(
 	[
@@ -7298,12 +7578,11 @@ var $author$project$MapSetting$characterPosList3 = _List_fromArray(
 		A4($author$project$MapSetting$Pos, 150, 250, 2100, 2200),
 		A4($author$project$MapSetting$Pos, 400, 500, 1800, 1900),
 		A4($author$project$MapSetting$Pos, 125, 225, 1605, 1705),
-		A4($author$project$MapSetting$Pos, 650, 750, 1450, 1550),
-		A4($author$project$MapSetting$Pos, 800, 900, 1450, 1550),
+		A4($author$project$MapSetting$Pos, 650, 750, 1490, 1590),
+		A4($author$project$MapSetting$Pos, 800, 900, 1490, 1590),
 		A4($author$project$MapSetting$Pos, 400, 500, 1100, 1200),
 		A4($author$project$MapSetting$Pos, 425, 525, 200, 300),
 		A4($author$project$MapSetting$Pos, 1075, 1175, 200, 300),
-		A4($author$project$MapSetting$Pos, 750, 850, 100, 300),
 		A4($author$project$MapSetting$Pos, -500, -400, 3700, 3800),
 		A4($author$project$MapSetting$Pos, -300, -200, 3700, 3800)
 	]);
@@ -7339,7 +7618,10 @@ var $author$project$Model$initNpcs3 = function (posList) {
 		},
 		posList);
 };
-var $author$project$MapSetting$npcPosList3 = _List_Nil;
+var $author$project$MapSetting$npcPosList3 = _List_fromArray(
+	[
+		A4($author$project$MapSetting$Pos, 1300, 1400, 4630, 4730)
+	]);
 var $author$project$Model$initMap3 = {
 	birds: $author$project$Model$initBirds3($author$project$MapSetting$birdPosList3),
 	bricks: $author$project$Model$initBricks($author$project$MapSetting$brickPosList3),
@@ -7351,11 +7633,12 @@ var $author$project$Model$initMap3 = {
 var $author$project$MapSetting$birdPosListDiscoverI = _List_Nil;
 var $author$project$MapSetting$brickPosListDiscoverI = _List_fromArray(
 	[
+		A4($author$project$MapSetting$Pos, 1600, 1800, 750, 850),
 		A4($author$project$MapSetting$Pos, 400, 600, 3700, 3765),
 		A4($author$project$MapSetting$Pos, 800, 1000, 3475, 3540),
 		A4($author$project$MapSetting$Pos, 1200, 1500, 3175, 3275),
-		A4($author$project$MapSetting$Pos, 100, 200, 3195, 3395),
-		A4($author$project$MapSetting$Pos, 1325, 1375, 2975, 3175),
+		A4($author$project$MapSetting$Pos, 100, 200, 3125, 3325),
+		A4($author$project$MapSetting$Pos, 1325, 1375, 2925, 3125),
 		A4($author$project$MapSetting$Pos, 650, 950, 2900, 3000),
 		A4($author$project$MapSetting$Pos, 775, 825, 2700, 2900),
 		A4($author$project$MapSetting$Pos, 100, 400, 2675, 2775),
@@ -7375,8 +7658,7 @@ var $author$project$MapSetting$brickPosListDiscoverI = _List_fromArray(
 var $author$project$MapSetting$brickWallListDiscoverI = _List_fromArray(
 	[
 		A4($author$project$MapSetting$Pos, 0, 100, 0, 4000),
-		A4($author$project$MapSetting$Pos, 1500, 1600, 750, 4000),
-		A4($author$project$MapSetting$Pos, 1600, 1800, 750, 850),
+		A4($author$project$MapSetting$Pos, 1500, 1600, 850, 4000),
 		A4($author$project$MapSetting$Pos, 100, 3200, 0, 100),
 		A4($author$project$MapSetting$Pos, 100, 1500, 3935, 4000)
 	]);
@@ -7413,7 +7695,10 @@ var $author$project$Model$initNpcsDiscoverI = function (posList) {
 		},
 		posList);
 };
-var $author$project$MapSetting$npcPosListDiscoverI = _List_Nil;
+var $author$project$MapSetting$npcPosListDiscoverI = _List_fromArray(
+	[
+		A4($author$project$MapSetting$Pos, 1500, 1600, 3830, 3930)
+	]);
 var $author$project$Model$initMapDiscoverI = {
 	birds: $author$project$Model$initBirdsDiscoverI($author$project$MapSetting$birdPosListDiscoverI),
 	bricks: $author$project$Model$initBricks($author$project$MapSetting$brickPosListDiscoverI),
@@ -7425,28 +7710,24 @@ var $author$project$Model$initMapDiscoverI = {
 var $author$project$MapSetting$birdPosListDiscoverII = _List_Nil;
 var $author$project$MapSetting$brickPosListDiscoverII = _List_fromArray(
 	[
-		A4($author$project$MapSetting$Pos, 800, 1300, 3600, 3700),
-		A4($author$project$MapSetting$Pos, 800, 950, 3250, 3600),
-		A4($author$project$MapSetting$Pos, 800, 1300, 3195, 3295),
-		A4($author$project$MapSetting$Pos, 200, 600, 3150, 3250),
-		A4($author$project$MapSetting$Pos, 100, 200, 2900, 3000),
-		A4($author$project$MapSetting$Pos, 350, 550, 2700, 2950),
-		A4($author$project$MapSetting$Pos, 100, 350, 2450, 2550),
-		A4($author$project$MapSetting$Pos, 550, 800, 2350, 2950),
-		A4($author$project$MapSetting$Pos, 1050, 1500, 2845, 3000),
-		A4($author$project$MapSetting$Pos, 1400, 1500, 2525, 2625),
-		A4($author$project$MapSetting$Pos, 1250, 1400, 2525, 2575),
-		A4($author$project$MapSetting$Pos, 100, 400, 2100, 2200),
-		A4($author$project$MapSetting$Pos, 100, 550, 2000, 2100),
-		A4($author$project$MapSetting$Pos, 200, 300, 1900, 2000),
-		A4($author$project$MapSetting$Pos, 100, 200, 1550, 2000),
-		A4($author$project$MapSetting$Pos, 1400, 1500, 1550, 1700),
-		A4($author$project$MapSetting$Pos, 400, 500, 1300, 1365),
+		A4($author$project$MapSetting$Pos, 1100, 1300, 3600, 3650),
+		A4($author$project$MapSetting$Pos, 900, 1300, 3195, 3245),
+		A4($author$project$MapSetting$Pos, 400, 600, 3150, 3200),
+		A4($author$project$MapSetting$Pos, 100, 200, 2900, 2950),
+		A4($author$project$MapSetting$Pos, 350, 450, 2700, 2750),
+		A4($author$project$MapSetting$Pos, 200, 300, 2530, 2580),
+		A4($author$project$MapSetting$Pos, 850, 1300, 2845, 2895),
+		A4($author$project$MapSetting$Pos, 500, 800, 2900, 2950),
+		A4($author$project$MapSetting$Pos, 1250, 1500, 2790, 2840),
+		A4($author$project$MapSetting$Pos, 750, 850, 1900, 1950),
+		A4($author$project$MapSetting$Pos, 750, 850, 2300, 2350),
+		A4($author$project$MapSetting$Pos, 1300, 1400, 2050, 2100),
+		A4($author$project$MapSetting$Pos, 200, 300, 1550, 1600),
+		A4($author$project$MapSetting$Pos, 500, 700, 1350, 1400),
 		A4($author$project$MapSetting$Pos, 100, 200, 1050, 1115),
-		A4($author$project$MapSetting$Pos, 500, 600, 785, 1150),
-		A4($author$project$MapSetting$Pos, 500, 700, 1150, 1650),
-		A4($author$project$MapSetting$Pos, 1100, 1500, 1150, 1550),
-		A4($author$project$MapSetting$Pos, 800, 1200, 500, 850)
+		A4($author$project$MapSetting$Pos, 1400, 1500, 1150, 1200),
+		A4($author$project$MapSetting$Pos, 800, 1600, 500, 550),
+		A4($author$project$MapSetting$Pos, 450, 550, 650, 700)
 	]);
 var $author$project$MapSetting$brickWallListDiscoverII = _List_fromArray(
 	[
@@ -7456,7 +7737,7 @@ var $author$project$MapSetting$brickWallListDiscoverII = _List_fromArray(
 		A4($author$project$MapSetting$Pos, 100, 1500, 3935, 4000)
 	]);
 var $author$project$MapSetting$characterPosListDiscoverII = _List_Nil;
-var $author$project$MapSetting$exitPosDiscoverII = A4($author$project$MapSetting$Pos, 900, 1100, 400, 500);
+var $author$project$MapSetting$exitPosDiscoverII = A4($author$project$MapSetting$Pos, 1400, 1600, 400, 500);
 var $author$project$Model$initBirdsDiscoverII = function (posList) {
 	return A2(
 		$elm$core$List$map,
@@ -7488,7 +7769,10 @@ var $author$project$Model$initNpcsDiscoverII = function (posList) {
 		},
 		posList);
 };
-var $author$project$MapSetting$npcPosListDiscoverII = _List_Nil;
+var $author$project$MapSetting$npcPosListDiscoverII = _List_fromArray(
+	[
+		A4($author$project$MapSetting$Pos, 1400, 1500, 2690, 2790)
+	]);
 var $author$project$Model$initMapDiscoverII = {
 	birds: $author$project$Model$initBirdsDiscoverII($author$project$MapSetting$birdPosListDiscoverII),
 	bricks: $author$project$Model$initBricks($author$project$MapSetting$brickPosListDiscoverII),
@@ -7496,74 +7780,6 @@ var $author$project$Model$initMapDiscoverII = {
 	exit: $author$project$MapSetting$exitPosDiscoverII,
 	npcs: $author$project$Model$initNpcsDiscoverII($author$project$MapSetting$npcPosListDiscoverII),
 	wallbricks: $author$project$Model$initBricks($author$project$MapSetting$brickWallListDiscoverII)
-};
-var $author$project$MapSetting$playerPos2 = A4($author$project$MapSetting$Pos, 300, 400, 4630, 4730);
-var $author$project$Model$initPlayer2 = function (player) {
-	return _Utils_update(
-		player,
-		{
-			anim: $author$project$Model$Crouch,
-			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPos2),
-			direction: $author$project$Message$Left,
-			fallcount: 0,
-			frame: 0,
-			jumpdir: $author$project$Message$Up,
-			pos: $author$project$MapSetting$playerPos2,
-			speed: A2($author$project$Model$Vector, 0, 0),
-			text: 'I am Song Yuanhuai.',
-			textframe: 0
-		});
-};
-var $author$project$MapSetting$playerPos3 = A4($author$project$MapSetting$Pos, 200, 300, 4630, 4730);
-var $author$project$Model$initPlayer3 = function (player) {
-	return _Utils_update(
-		player,
-		{
-			anim: $author$project$Model$Crouch,
-			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPos3),
-			direction: $author$project$Message$Left,
-			fallcount: 0,
-			frame: 0,
-			jumpdir: $author$project$Message$Up,
-			pos: $author$project$MapSetting$playerPos3,
-			speed: A2($author$project$Model$Vector, 0, 0),
-			text: 'I am back... FOR REVENGE!',
-			textframe: 0
-		});
-};
-var $author$project$MapSetting$playerPosDiscoverI = A4($author$project$MapSetting$Pos, 200, 300, 3830, 3930);
-var $author$project$Model$initPlayerDiscoverI = function (player) {
-	return _Utils_update(
-		player,
-		{
-			anim: $author$project$Model$Crouch,
-			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPosDiscoverI),
-			direction: $author$project$Message$Left,
-			fallcount: 0,
-			frame: 0,
-			jumpdir: $author$project$Message$Up,
-			pos: $author$project$MapSetting$playerPosDiscoverI,
-			speed: A2($author$project$Model$Vector, 0, 0),
-			text: 'What\'s going on?',
-			textframe: 0
-		});
-};
-var $author$project$MapSetting$playerPosDiscoverII = A4($author$project$MapSetting$Pos, 200, 300, 3830, 3930);
-var $author$project$Model$initPlayerDiscoverII = function (player) {
-	return _Utils_update(
-		player,
-		{
-			anim: $author$project$Model$Crouch,
-			collisionPos: $author$project$Model$standcollisionPos($author$project$MapSetting$playerPosDiscoverII),
-			direction: $author$project$Message$Left,
-			fallcount: 0,
-			frame: 0,
-			jumpdir: $author$project$Message$Up,
-			pos: $author$project$MapSetting$playerPosDiscoverII,
-			speed: A2($author$project$Model$Vector, 0, 0),
-			text: 'Life is a series of choices, and you don\'t know about the consequences.',
-			textframe: 0
-		});
 };
 var $author$project$ChangeState$changeState = function (model) {
 	var playerDiscoverIIWin = $author$project$Model$initPlayerDiscoverII(model.player);
@@ -7579,85 +7795,38 @@ var $author$project$ChangeState$changeState = function (model) {
 			case 'One':
 				return _Utils_update(
 					model,
-					{map: $author$project$Model$initMapDiscoverI, player: playerDiscoverI, state: $author$project$Model$Story2_1, time: 0});
+					{cgtime: 5000, map: $author$project$Model$initMapDiscoverI, player: player2, state: $author$project$Model$CG2_1, time: 0});
 			case 'DiscoverI':
 				return _Utils_update(
 					model,
-					{map: $author$project$Model$initMap2, player: player2, state: $author$project$Model$Story3_1, time: 0});
+					{cgtime: 5000, map: $author$project$Model$initMap2, player: playerDiscoverI, state: $author$project$Model$CG3_1, time: 0});
 			case 'Two':
 				return A2($author$project$ChangeState$arriveExit, model, model.speedAI) ? _Utils_update(
 					model,
-					{map: $author$project$Model$initMapDiscoverII, player: playerDiscoverIILose, state: $author$project$Model$Story4_1, time: 0}) : _Utils_update(
+					{cgtime: 5000, map: $author$project$Model$initMapDiscoverII, player: playerDiscoverIILose, state: $author$project$Model$Story4_Lose, time: 0}) : _Utils_update(
 					model,
-					{map: $author$project$Model$initMapDiscoverII, player: playerDiscoverIIWin, state: $author$project$Model$Story4_1, time: 0});
+					{cgtime: 5000, map: $author$project$Model$initMapDiscoverII, player: playerDiscoverIIWin, state: $author$project$Model$Story4_Win, time: 0});
 			case 'DiscoverII':
 				return _Utils_update(
 					model,
-					{map: $author$project$Model$initMap3, player: player3, state: $author$project$Model$Story5_1, time: 0});
+					{cgtime: 5000, map: $author$project$Model$initMap3, player: player3, state: $author$project$Model$Story5_0, time: 0});
 			case 'Three':
 				return _Utils_update(
 					model,
-					{map: $author$project$Model$initMap1, player: $author$project$Model$initPlayer1, state: $author$project$Model$Story6_1, time: 0});
+					{cgtime: 5000, map: $author$project$Model$initMap1, player: $author$project$Model$initPlayer1, state: $author$project$Model$CG6_1, time: 0});
 			default:
 				return model;
 		}
 	} else {
-		return model;
+		if (_Utils_eq(model.state, $author$project$Model$Three) && (_Utils_eq(model.boss.anim, $author$project$Model$Dead) && (model.boss.frame >= 5000))) {
+			return _Utils_update(
+				model,
+				{cgtime: 5000, map: $author$project$Model$initMap1, player: $author$project$Model$initPlayer1, state: $author$project$Model$CG6_1, time: 0});
+		} else {
+			return model;
+		}
 	}
 };
-var $author$project$Text$changeStory = F2(
-	function (state, story) {
-		switch (state.$) {
-			case 'Story1_1':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Old man：\"Poor kid, to improve the status of your family, your father and I decide to send you to attend the experiments in our sect. For the rest of your life, you will need to practice all kinds' + ('of internal skills and receive all kinds of stimulations. Don’t feel unfair. This is the brutality of the sects. Without sacrifice, there will be no strong sects.\"' + ('A mysterious voice: \"Bullshit! How can anyone believe this old bastard? Sending your apprentice to be a testimony and feel sorry for him? You are one of a kind!\"' + ('Song：\"Who are you? What’s that voice in my head? What’s going on with me?\"' + 'A mysterious voice:\"You’re wondering who I am? My name is XUAN, and I can set you free.\"')))});
-			case 'Story1_2':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_2'});
-			case 'Story1_3':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_3'});
-			case 'Story1_4':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story2_1':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story2_2':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story3_1':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story4_1':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story5_1':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story5_2':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			case 'Story6_1':
-				return _Utils_update(
-					story,
-					{storyframe: 0, text: 'Story1_4'});
-			default:
-				return _Utils_update(
-					story,
-					{text: story.text});
-		}
-	});
 var $author$project$Text$changeText = F3(
 	function (state, speedAI, player) {
 		switch (state.$) {
@@ -7720,7 +7889,7 @@ var $author$project$Text$changeText = F3(
 					player,
 					{text: player.text})));
 			case 'DiscoverII':
-				return (player.pos.y2 <= 500) ? _Utils_update(
+				return ((player.pos.y2 <= 500) && _Utils_eq(player.anim, $author$project$Model$Stand)) ? _Utils_update(
 					player,
 					{text: 'It\'s been 10 years... Now I\'m back.', textframe: 0}) : _Utils_update(
 					player,
@@ -7750,11 +7919,12 @@ var $author$project$Animate$chargeEffectTime = F2(
 		var newEffectTimeTwo = (player.effecttimeTwo <= 1000) ? (player.effecttimeTwo + (1.25 * time)) : (-(player.effecttimeTwo + (1.25 * time)));
 		var newEffectTimeThree = (player.effecttimeThree <= 1000) ? (player.effecttimeThree + (1.5 * time)) : (-(player.effecttimeThree + (1.5 * time)));
 		var newEffectTimeOne = (player.effecttimeOne <= 1000) ? (player.effecttimeOne + time) : (-(player.effecttimeOne + time));
+		var newEffectTimeHalf = (player.effecttimeOne <= 1000) ? (player.effecttimeOne + (0.2 * time)) : (-(player.effecttimeOne + (0.2 * time)));
 		var newEffectTimeFour = (player.effecttimeFour <= 1000) ? (player.effecttimeFour + (1.75 * time)) : (-(player.effecttimeFour + (1.75 * time)));
 		var newEffectTimeFive = (player.effecttimeFive <= 1000) ? (player.effecttimeFive + (2 * time)) : (-(player.effecttimeFive + (2 * time)));
 		return _Utils_update(
 			player,
-			{effecttimeFive: newEffectTimeFive, effecttimeFour: newEffectTimeFour, effecttimeOne: newEffectTimeOne, effecttimeThree: newEffectTimeThree, effecttimeTwo: newEffectTimeTwo});
+			{effecttimeFive: newEffectTimeFive, effecttimeFour: newEffectTimeFour, effecttimeHalf: newEffectTimeHalf, effecttimeOne: newEffectTimeOne, effecttimeThree: newEffectTimeThree, effecttimeTwo: newEffectTimeTwo});
 	});
 var $author$project$Animate$chargeModeltime = function (model) {
 	var newtime = model.time + 17;
@@ -7779,8 +7949,11 @@ var $author$project$Animate$count = F2(
 			npc,
 			{count: newNPCCount}) : npc;
 	});
+var $author$project$Animate$debugBoss = function (boss) {
+	return _Utils_eq(boss.anim, $author$project$Model$Attacked) ? A2($elm$core$Debug$log, 'boss', boss) : boss;
+};
 var $author$project$Animate$health = function (player) {
-	var hp = (player.hp >= 10) ? 10 : (player.hp + 0.0013);
+	var hp = (player.hp >= 10) ? 10 : (player.hp + 0.002);
 	return _Utils_update(
 		player,
 		{hp: hp});
@@ -7882,6 +8055,44 @@ var $author$project$Animate$rage = function (player) {
 		player,
 		{mood: $author$project$Model$Rage, ragecount: ragecount}) : player;
 };
+var $author$project$MapSetting$collidePos2 = A4($author$project$MapSetting$Pos, 2650, 2950, 400, 3200);
+var $author$project$AnimState$jumpLoop = function (player) {
+	return _Utils_update(
+		player,
+		{anim: $author$project$Model$JumpLoop, frame: 0});
+};
+var $author$project$MapSetting$jumpPos1 = A4($author$project$MapSetting$Pos, 3950, 4050, 650, 750);
+var $author$project$AnimState$jumpStart = function (player) {
+	return _Utils_update(
+		player,
+		{
+			anim: $author$project$Model$JumpStart,
+			frame: 0,
+			speed: A2($author$project$Model$Vector, 0.01, -0.01)
+		});
+};
+var $author$project$Animate$stageAnim = F3(
+	function (time, model, player) {
+		var playerPos = A3($author$project$Animate$nextPos, player.speed, time, player.pos);
+		return (_Utils_eq(model.state, $author$project$Model$One) && ((!_Utils_eq(player.anim, $author$project$Model$JumpStart)) && A4(
+			$author$project$Collision$rightImpact,
+			player.speed,
+			time,
+			_List_fromArray(
+				[$author$project$MapSetting$jumpPos1]),
+			playerPos))) ? $author$project$AnimState$jumpStart(player) : ((_Utils_eq(model.state, $author$project$Model$Two) && A4(
+			$author$project$Collision$rightImpact,
+			player.speed,
+			time,
+			_List_fromArray(
+				[$author$project$MapSetting$collidePos2]),
+			playerPos)) ? $author$project$AnimState$jumpLoop(player) : ((_Utils_eq(player.anim, $author$project$Model$JumpStart) && (_Utils_cmp(player.frame, 14 * 5) > -1)) ? $author$project$AnimState$jumpLoop(player) : player));
+	});
+var $author$project$AnimState$releaseJumpdir = function (player) {
+	return _Utils_update(
+		player,
+		{jumpdir: $author$project$Message$Up});
+};
 var $author$project$Animate$touchDownBrick = F4(
 	function (brickSpeed, time, brickPos, player) {
 		if (A4($author$project$Collision$upImpact, brickSpeed, time, player.collisionPos, brickPos)) {
@@ -7894,10 +8105,11 @@ var $author$project$Animate$touchDownBrick = F4(
 			return _Utils_eq(player.anim, $author$project$Model$Jump) ? ((player.speed.y >= 1.8) ? $author$project$AnimState$grovel(
 				_Utils_update(
 					newplayer,
-					{collisionPos: collisionPos, fallcount: fallcount, pos: pos})) : $author$project$AnimState$stand(
-				_Utils_update(
-					player,
-					{collisionPos: collisionPos, pos: pos}))) : _Utils_update(
+					{collisionPos: collisionPos, fallcount: fallcount, pos: pos})) : $author$project$AnimState$releaseJumpdir(
+				$author$project$AnimState$stand(
+					_Utils_update(
+						player,
+						{collisionPos: collisionPos, pos: pos})))) : _Utils_update(
 				player,
 				{collisionPos: collisionPos, pos: pos, speed: speed});
 		} else {
@@ -7922,18 +8134,6 @@ var $author$project$Animate$touchDown = F3(
 			player,
 			posList);
 	});
-var $author$project$Animate$turn = function (character) {
-	var _v0 = _Utils_eq(character.direction, $author$project$Message$Left) ? _Utils_Tuple2(
-		$author$project$Message$Right,
-		A2($author$project$Model$Vector, 0.05, 0)) : _Utils_Tuple2(
-		$author$project$Message$Left,
-		A2($author$project$Model$Vector, -0.05, 0));
-	var direction = _v0.a;
-	var speed = _v0.b;
-	return _Utils_update(
-		character,
-		{anim: $author$project$Model$Walk, direction: direction, speed: speed});
-};
 var $author$project$Animate$tour = F2(
 	function (time, character) {
 		var pos = A3($author$project$Animate$nextPos, character.speed, time, character.pos);
@@ -7941,7 +8141,6 @@ var $author$project$Animate$tour = F2(
 	});
 var $author$project$Animate$animate = F2(
 	function (time, model) {
-		var story = A2($author$project$Text$changeStory, model.state, model.story);
 		var speedAI = _Utils_eq(model.state, $author$project$Model$Two) ? A2(
 			$author$project$Animate$changeFrame,
 			17,
@@ -7952,9 +8151,10 @@ var $author$project$Animate$animate = F2(
 					$author$project$Animate$touchDown,
 					17,
 					_Utils_ap(model.map.bricks, model.map.wallbricks),
-					A3(
+					A4(
 						$author$project$Animate$changeSpeed,
 						17,
+						model,
 						_Utils_ap(model.map.bricks, model.map.wallbricks),
 						A3(
 							$author$project$Animate$changeAnim,
@@ -7964,46 +8164,6 @@ var $author$project$Animate$animate = F2(
 								$author$project$Animate$changeChargeTime,
 								17,
 								A2($author$project$Animate$moveSpeedAI, model.time, model.speedAI))))))) : model.speedAI;
-		var player = _Utils_eq(model.player.anim, $author$project$Model$DebugMode) ? A2($author$project$Animate$changePos, time, model.player) : A2(
-			$author$project$Animate$changeFrame,
-			time,
-			A2(
-				$author$project$Animate$changePos,
-				time,
-				$author$project$Text$cleartext(
-					A3(
-						$author$project$Text$changeText,
-						model.state,
-						model.speedAI,
-						A2(
-							$author$project$Animate$changeTextframe,
-							time,
-							A3(
-								$author$project$Animate$touchDown,
-								time,
-								_Utils_ap(model.map.bricks, model.map.wallbricks),
-								A3(
-									$author$project$Animate$changeSpeed,
-									time,
-									_Utils_ap(model.map.bricks, model.map.wallbricks),
-									A3(
-										$author$project$Animate$changeAnim,
-										_Utils_ap(model.map.bricks, model.map.wallbricks),
-										time,
-										A2(
-											$author$project$Animate$changeChargeTime,
-											time,
-											A2(
-												$author$project$Animate$attackedByCharacters,
-												model.map.characters,
-												A2(
-													$author$project$Animate$changeRageTime,
-													time,
-													A2(
-														$author$project$Animate$chargeEffectTime,
-														time,
-														$author$project$Animate$health(
-															$author$project$Animate$rage(model.player))))))))))))));
 		var npcs = A2(
 			$elm$core$List$map,
 			function (npc) {
@@ -8016,6 +8176,69 @@ var $author$project$Animate$animate = F2(
 						A2($author$project$Animate$count, model.player, npc)));
 			},
 			model.map.npcs);
+		var boss = _Utils_eq(model.state, $author$project$Model$Three) ? $author$project$Animate$debugBoss(
+			A2(
+				$author$project$Animate$changeFrame,
+				time,
+				A2(
+					$author$project$Animate$changePos,
+					time,
+					A2(
+						$author$project$Animate$tour,
+						time,
+						A2(
+							$author$project$Animate$bossAttackedByPlayer,
+							model.player,
+							$author$project$Animate$bossChangeAnim(
+								A2($author$project$Animate$bossAttackPlayer, model.player, model.boss))))))) : model.boss;
+		var player = _Utils_eq(model.player.anim, $author$project$Model$DebugMode) ? A2($author$project$Animate$changePos, time, model.player) : A3(
+			$author$project$Animate$stageAnim,
+			time,
+			model,
+			A2(
+				$author$project$Animate$changeFrame,
+				time,
+				A2(
+					$author$project$Animate$changePos,
+					time,
+					$author$project$Text$cleartext(
+						A3(
+							$author$project$Text$changeText,
+							model.state,
+							model.speedAI,
+							A2(
+								$author$project$Animate$changeTextframe,
+								time,
+								A3(
+									$author$project$Animate$touchDown,
+									time,
+									_Utils_ap(model.map.bricks, model.map.wallbricks),
+									A4(
+										$author$project$Animate$changeSpeed,
+										time,
+										model,
+										_Utils_ap(model.map.bricks, model.map.wallbricks),
+										A3(
+											$author$project$Animate$changeAnim,
+											_Utils_ap(model.map.bricks, model.map.wallbricks),
+											time,
+											A2(
+												$author$project$Animate$changeChargeTime,
+												time,
+												A2(
+													$author$project$Animate$attackedByCharacter,
+													boss,
+													A2(
+														$author$project$Animate$attackedByCharacters,
+														model.map.characters,
+														A2(
+															$author$project$Animate$changeRageTime,
+															time,
+															A2(
+																$author$project$Animate$chargeEffectTime,
+																time,
+																$author$project$Animate$health(
+																	$author$project$Animate$rage(model.player))))))))))))))));
 		var characters = A2(
 			$elm$core$List$map,
 			function (character) {
@@ -8048,7 +8271,7 @@ var $author$project$Animate$animate = F2(
 				$author$project$Animate$chargeModeltime(
 					_Utils_update(
 						model,
-						{map: map, player: player, speedAI: speedAI, story: story}))));
+						{boss: boss, map: map, player: player, speedAI: speedAI}))));
 	});
 var $author$project$Update$setDebugSpeed = F2(
 	function (speed, player) {
@@ -8075,7 +8298,6 @@ var $author$project$AnimState$jumpdirection = F2(
 				{jumpdir: $author$project$Message$R});
 		}
 	});
-var $elm$core$Debug$log = _Debug_log;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Basics$not = _Basics_not;
 var $author$project$Update$update = F2(
@@ -8101,7 +8323,7 @@ var $author$project$Update$update = F2(
 				return $elm$core$List$isEmpty(loadPack) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{state: $author$project$Model$LOGO}),
+						{cgtime: 5000, state: $author$project$Model$LOGO}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
@@ -8118,7 +8340,7 @@ var $author$project$Update$update = F2(
 				return $elm$core$List$isEmpty(loadPack) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{state: $author$project$Model$LOGO}),
+						{cgtime: 5000, state: $author$project$Model$LOGO}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
@@ -8241,7 +8463,7 @@ var $author$project$Update$update = F2(
 						{
 							player: A3(
 								$author$project$Update$changeDebugSpeed,
-								A2($author$project$Model$Vector, 0.2, 0),
+								A2($author$project$Model$Vector, 1, 0),
 								on,
 								model.player)
 						}),
@@ -8254,7 +8476,7 @@ var $author$project$Update$update = F2(
 						{
 							player: A3(
 								$author$project$Update$changeDebugSpeed,
-								A2($author$project$Model$Vector, -0.2, 0),
+								A2($author$project$Model$Vector, -1, 0),
 								on,
 								model.player)
 						}),
@@ -8267,7 +8489,7 @@ var $author$project$Update$update = F2(
 						{
 							player: A3(
 								$author$project$Update$changeDebugSpeed,
-								A2($author$project$Model$Vector, 0, -0.2),
+								A2($author$project$Model$Vector, 0, -1),
 								on,
 								model.player)
 						}),
@@ -8280,7 +8502,7 @@ var $author$project$Update$update = F2(
 						{
 							player: A3(
 								$author$project$Update$changeDebugSpeed,
-								A2($author$project$Model$Vector, 0, 0.2),
+								A2($author$project$Model$Vector, 0, 1),
 								on,
 								model.player)
 						}),
@@ -8293,11 +8515,91 @@ var $author$project$Update$update = F2(
 							player: $author$project$AnimState$stand(model.player)
 						}),
 					$elm$core$Platform$Cmd$none);
+			case 'Start':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{cgtime: 5000, state: $author$project$Model$CG1_1}),
+					$elm$core$Platform$Cmd$none);
+			case 'Next':
+				var _v1 = model.state;
+				if (_v1.$ === 'End') {
+					return $author$project$Model$init(_Utils_Tuple0);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			case 'Back':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{state: $author$project$Model$Start}),
+					$elm$core$Platform$Cmd$none);
+			case 'About':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{state: $author$project$Model$About}),
+					$elm$core$Platform$Cmd$none);
+			case 'Jump1':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{map: $author$project$Model$initMap1, player: $author$project$Model$initPlayer1, state: $author$project$Model$One}),
+					$elm$core$Platform$Cmd$none);
+			case 'JumpDiscoverI':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							map: $author$project$Model$initMapDiscoverI,
+							player: $author$project$Model$initPlayerDiscoverI($author$project$Model$initPlayer1),
+							state: $author$project$Model$DiscoverI
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'Jump2':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							map: $author$project$Model$initMap2,
+							player: $author$project$Model$initPlayer2($author$project$Model$initPlayer1),
+							speedAI: $author$project$Model$initSpeedAI,
+							state: $author$project$Model$Two,
+							time: 0
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'JumpDiscoverII':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							map: $author$project$Model$initMapDiscoverII,
+							player: $author$project$Model$initPlayerDiscoverII($author$project$Model$initPlayer1),
+							state: $author$project$Model$DiscoverII
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'Jump3':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							map: $author$project$Model$initMap3,
+							player: $author$project$Model$initPlayer3($author$project$Model$initPlayer1),
+							state: $author$project$Model$Three
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'DebugPos':
+				var pos = A2($elm$core$Debug$log, 'Pos', model.player.pos);
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			default:
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Message$About = {$: 'About'};
+var $author$project$Message$Back = {$: 'Back'};
 var $author$project$Model$Loading = {$: 'Loading'};
+var $author$project$Message$Next = {$: 'Next'};
+var $author$project$Message$Start = {$: 'Start'};
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
@@ -8368,9 +8670,9 @@ var $author$project$Load$loadImg = function (url) {
 			]),
 		_List_Nil);
 };
-var $elm$svg$Svg$Attributes$opacity = _VirtualDom_attribute('opacity');
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$image = $elm$svg$Svg$trustedNode('image');
+var $elm$svg$Svg$Attributes$opacity = _VirtualDom_attribute('opacity');
 var $elm$core$List$member = F2(
 	function (x, xs) {
 		return A2(
@@ -8415,58 +8717,96 @@ var $author$project$View$renderImage = F3(
 			_List_Nil);
 	});
 var $author$project$View$renderBackground = function (model) {
+	var prefix = 'http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/';
 	return _Utils_eq(model.state, $author$project$Model$LOGO) ? A3(
 		$author$project$View$renderImage,
-		'img/background.png',
+		prefix + 'img/background.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$opacity(
+				$elm$core$String$fromFloat(0))
+			])) : (_Utils_eq(model.state, $author$project$Model$Start) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/Page/Start.png',
 		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
 		_List_fromArray(
 			[
 				$elm$svg$Svg$Attributes$opacity(
 				$elm$core$String$fromFloat(
-					1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
-			])) : (_Utils_eq(model.state, $author$project$Model$One) ? (((model.player.pos.y1 >= 3200) || ((model.player.pos.y1 <= 1600) && (model.player.pos.x1 >= 3200))) ? A3(
+					0.7 + ($elm$core$Basics$abs(model.player.effecttimeHalf) / 2000)))
+			])) : (_Utils_eq(model.state, $author$project$Model$End) ? A3(
 		$author$project$View$renderImage,
-		'img/background/background1_2.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil) : A3(
-		$author$project$View$renderImage,
-		'img/background/background1_1.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil)) : (_Utils_eq(model.state, $author$project$Model$DiscoverI) ? ((model.player.pos.y1 >= 3200) ? A3(
-		$author$project$View$renderImage,
-		'img/background/background2_2.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil) : A3(
-		$author$project$View$renderImage,
-		'img/background/background2_1.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil)) : (_Utils_eq(model.state, $author$project$Model$Two) ? A3(
-		$author$project$View$renderImage,
-		'img/background/background3_1.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil) : (_Utils_eq(model.state, $author$project$Model$DiscoverII) ? A3(
-		$author$project$View$renderImage,
-		'img/background/background4_1.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil) : (_Utils_eq(model.state, $author$project$Model$Three) ? A3(
-		$author$project$View$renderImage,
-		'img/background/background5_1.png',
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_Nil) : A3(
-		$author$project$View$renderImage,
-		'img/background.png',
+		prefix + 'img/Page/Exit.png',
 		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
 		_List_fromArray(
 			[
-				$elm$svg$Svg$Attributes$opacity('0')
-			])))))));
+				$elm$svg$Svg$Attributes$opacity(
+				$elm$core$String$fromFloat(
+					0.7 + ($elm$core$Basics$abs(model.player.effecttimeHalf) / 2000)))
+			])) : (_Utils_eq(model.state, $author$project$Model$About) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/Page/About.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$opacity('1')
+			])) : (_Utils_eq(model.state, $author$project$Model$Loading) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/Page/Load_1.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$opacity('1')
+			])) : (_Utils_eq(model.state, $author$project$Model$One) ? (((model.player.pos.y1 >= 3200) || ((model.player.pos.y2 <= 800) && (model.player.pos.x1 >= 3200))) ? ((model.player.pos.x1 <= 1600) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background1_1.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil) : (((model.player.pos.y2 <= 800) && (model.player.pos.x1 >= 3200)) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background1_4.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil) : A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background1_2.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil))) : A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background1_3.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil)) : (_Utils_eq(model.state, $author$project$Model$DiscoverI) ? ((model.player.pos.y1 >= 3200) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background2_1.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil) : A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background2_2.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil)) : (_Utils_eq(model.state, $author$project$Model$Two) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background3_1.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil) : (_Utils_eq(model.state, $author$project$Model$DiscoverII) ? ((model.player.pos.y1 >= 3200) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background4_1.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil) : A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background4_2.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil)) : (_Utils_eq(model.state, $author$project$Model$Three) ? A3(
+		$author$project$View$renderImage,
+		prefix + 'img/background/background5_1.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_Nil) : A2($elm$svg$Svg$image, _List_Nil, _List_Nil))))))))));
 };
 var $author$project$View$renderBlood = function (player) {
+	var prefix = 'http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/';
 	return _Utils_eq(player.mood, $author$project$Model$Normal) ? (((player.hp >= 7) && (player.hp < 10)) ? _List_fromArray(
 		[
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_1.png',
+			prefix + 'img/Effect/bloodFrame_1.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8478,7 +8818,7 @@ var $author$project$View$renderBlood = function (player) {
 		[
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_1.png',
+			prefix + 'img/Effect/bloodFrame_1.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8488,7 +8828,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_2.png',
+			prefix + 'img/Effect/bloodFrame_2.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8500,7 +8840,7 @@ var $author$project$View$renderBlood = function (player) {
 		[
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_1.png',
+			prefix + 'img/Effect/bloodFrame_1.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8510,7 +8850,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_2.png',
+			prefix + 'img/Effect/bloodFrame_2.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8520,7 +8860,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_3.png',
+			prefix + 'img/Effect/bloodFrame_3.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8532,7 +8872,7 @@ var $author$project$View$renderBlood = function (player) {
 		[
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_1.png',
+			prefix + 'img/Effect/bloodFrame_1.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8542,7 +8882,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_2.png',
+			prefix + 'img/Effect/bloodFrame_2.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8552,7 +8892,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_3.png',
+			prefix + 'img/Effect/bloodFrame_3.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8562,7 +8902,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_4.png',
+			prefix + 'img/Effect/bloodFrame_4.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8574,7 +8914,7 @@ var $author$project$View$renderBlood = function (player) {
 		[
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_1.png',
+			prefix + 'img/Effect/bloodFrame_1.png',
 			A4($author$project$MapSetting$Pos, 0, 0, 0, 0),
 			_List_fromArray(
 				[
@@ -8584,7 +8924,7 @@ var $author$project$View$renderBlood = function (player) {
 		[
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_1.png',
+			prefix + 'img/Effect/bloodFrame_1.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8594,7 +8934,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_2.png',
+			prefix + 'img/Effect/bloodFrame_2.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8604,7 +8944,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_3.png',
+			prefix + 'img/Effect/bloodFrame_3.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8614,7 +8954,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_4.png',
+			prefix + 'img/Effect/bloodFrame_4.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8624,7 +8964,7 @@ var $author$project$View$renderBlood = function (player) {
 				])),
 			A3(
 			$author$project$View$renderImage,
-			'img/Effect/bloodFrame_5.png',
+			prefix + 'img/Effect/bloodFrame_5.png',
 			A4($author$project$MapSetting$Pos, 0, 1600, 0, 800),
 			_List_fromArray(
 				[
@@ -8633,19 +8973,6 @@ var $author$project$View$renderBlood = function (player) {
 						$elm$core$Basics$abs(player.effecttimeFive) / 1000))
 				]))
 		]);
-};
-var $elm$core$Debug$toString = _Debug_toString;
-var $author$project$View$renderCG = function (model) {
-	return A3(
-		$author$project$View$renderImage,
-		'img/CG/' + ($elm$core$Debug$toString(model.state) + '.png'),
-		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
-		_List_fromArray(
-			[
-				$elm$svg$Svg$Attributes$opacity(
-				$elm$core$String$fromFloat(
-					1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
-			]));
 };
 var $author$project$View$clearOutsideImage = function (viewpos) {
 	return ((viewpos.x2 < 0) || ((_Utils_cmp(viewpos.x1, $author$project$View$viewAttrs.size.x) > 0) || ((viewpos.y2 < 0) || (_Utils_cmp(viewpos.y1, $author$project$View$viewAttrs.size.y) > 0)))) ? A4($author$project$MapSetting$Pos, -1600, -1600, 0, 0) : viewpos;
@@ -8658,11 +8985,15 @@ var $author$project$View$connectName = F3(
 			_Utils_chr('0'),
 			$elm$core$String$fromInt(id)))))));
 	});
+var $elm$core$Basics$min = F2(
+	function (x, y) {
+		return (_Utils_cmp(x, y) < 0) ? x : y;
+	});
 var $elm$core$Basics$modBy = _Basics_modBy;
 var $author$project$View$getAnimUrl = F4(
 	function (anim, frame, player, namePrefix) {
 		var surfix = '.png';
-		var prefix = 'img/character/color/';
+		var prefix = 'http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/character/color/';
 		var name = function () {
 			switch (anim.$) {
 				case 'Stand':
@@ -8683,11 +9014,43 @@ var $author$project$View$getAnimUrl = F4(
 				case 'Grovel':
 					return A3($author$project$View$connectName, namePrefix, 'grovel', 0);
 				case 'Attacked':
-					return (((player.speed.x < 0) && _Utils_eq(player.direction, $author$project$Message$Left)) || ((player.speed.x > 0) && _Utils_eq(player.direction, $author$project$Message$Right))) ? (namePrefix + ('attacked/' + (namePrefix + 'attackedBack_0000'))) : (namePrefix + ('attacked/' + (namePrefix + 'attackedFront_0000')));
+					if (namePrefix === '') {
+						return (((player.speed.x < 0) && _Utils_eq(player.direction, $author$project$Message$Left)) || ((player.speed.x > 0) && _Utils_eq(player.direction, $author$project$Message$Right))) ? (namePrefix + ('attacked/' + (namePrefix + 'attackedBack_0000'))) : (namePrefix + ('attacked/' + (namePrefix + 'attackedFront_0000')));
+					} else {
+						var id = A2($elm$core$Basics$modBy, 350, frame);
+						return A3($author$project$View$connectName, namePrefix, 'attacked', id);
+					}
 				case 'Fly':
 					return A3($author$project$View$connectName, namePrefix, 'jump', 0);
-				default:
+				case 'Dead':
+					var id = A2($elm$core$Basics$min, 239, frame);
+					return A3($author$project$View$connectName, namePrefix, 'dead', id);
+				case 'DebugMode':
 					return A3($author$project$View$connectName, namePrefix, 'walk', 0);
+				case 'JumpStart':
+					var id = A2(
+						$elm$core$Basics$min,
+						13,
+						$elm$core$Basics$floor(frame / 4));
+					return A3($author$project$View$connectName, namePrefix, 'jumpstart', id);
+				case 'JumpEnd':
+					var id = (frame <= 35) ? 0 : A2(
+						$elm$core$Basics$min,
+						7,
+						$elm$core$Basics$floor((frame - 35) / 2));
+					return A3($author$project$View$connectName, namePrefix, 'jumpend', id);
+				case 'JumpLoop':
+					var id = A2($elm$core$Basics$modBy, 20, frame);
+					return A3($author$project$View$connectName, namePrefix, 'jumploop', id);
+				default:
+					var id = A2(
+						$elm$core$Basics$min,
+						81,
+						A2(
+							$elm$core$Basics$max,
+							0,
+							$elm$core$Basics$floor((frame - 80) / 2)));
+					return A3($author$project$View$connectName, namePrefix, 'getup', id);
 			}
 		}();
 		return _Utils_ap(
@@ -8720,6 +9083,153 @@ var $author$project$View$resizePlayer = function (pos) {
 	var x2 = pos.x2 + dx;
 	return A4($author$project$MapSetting$Pos, x1, x2, y1, y2);
 };
+var $author$project$View$renderBoss = F2(
+	function (player, boss) {
+		var viewpos = $author$project$View$clearOutsideImage(
+			$author$project$View$resizePlayer(
+				A2($author$project$View$offset, player, boss.pos)));
+		var url = A4($author$project$View$getAnimUrl, boss.anim, boss.frame, boss, 'boss_');
+		var attr = $author$project$View$getDirectionAttr(boss.direction);
+		return _List_fromArray(
+			[
+				A3($author$project$View$renderImage, url, viewpos, attr)
+			]);
+	});
+var $author$project$View$cutBrickView = function (viewpos) {
+	var y2 = (_Utils_cmp(viewpos.y2, $author$project$View$viewAttrs.size.y) > 0) ? $author$project$View$viewAttrs.size.y : viewpos.y2;
+	var y1 = (viewpos.y1 < 0) ? 0 : viewpos.y1;
+	var x2 = (_Utils_cmp(viewpos.x2, $author$project$View$viewAttrs.size.x) > 0) ? $author$project$View$viewAttrs.size.x : viewpos.x2;
+	var x1 = (viewpos.x1 < 0) ? 0 : viewpos.x1;
+	return A4($author$project$MapSetting$Pos, x1, x2, y1, y2);
+};
+var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
+var $elm$svg$Svg$Attributes$rx = _VirtualDom_attribute('rx');
+var $elm$svg$Svg$Attributes$ry = _VirtualDom_attribute('ry');
+var $author$project$View$renderbrick = F3(
+	function (model, player, pos) {
+		var viewpos = $author$project$View$clearOutsideImage(
+			$author$project$View$cutBrickView(
+				A2($author$project$View$offset, player, pos)));
+		var rgb = function () {
+			var _v0 = model.state;
+			switch (_v0.$) {
+				case 'One':
+					return '#413447';
+				case 'DiscoverI':
+					return '#596E47';
+				case 'Two':
+					return '#6075AB';
+				case 'DiscoverII':
+					return '#67AF6D';
+				case 'Three':
+					return '#7C341E';
+				default:
+					return '#000000';
+			}
+		}();
+		return A2(
+			$elm$svg$Svg$rect,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$rx('10'),
+					$elm$svg$Svg$Attributes$ry('10'),
+					$elm$svg$Svg$Attributes$x(
+					$elm$core$String$fromFloat(viewpos.x1)),
+					$elm$svg$Svg$Attributes$y(
+					$elm$core$String$fromFloat(viewpos.y1)),
+					$elm$svg$Svg$Attributes$width(
+					$elm$core$String$fromFloat(viewpos.x2 - viewpos.x1)),
+					$elm$svg$Svg$Attributes$height(
+					$elm$core$String$fromFloat(viewpos.y2 - viewpos.y1)),
+					$elm$svg$Svg$Attributes$fill(rgb)
+				]),
+			_List_Nil);
+	});
+var $author$project$View$renderBricksShader = F2(
+	function (posList, model) {
+		return A2(
+			$elm$core$List$map,
+			A2($author$project$View$renderbrick, model, model.player),
+			posList);
+	});
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $author$project$View$toHtmlPos = F2(
+	function (size, pos) {
+		var x2 = (pos.x2 / 1600) * size.x;
+		var x1 = (pos.x1 / 1600) * size.x;
+		var dy = (size.y / 2) - ((size.x / 2) / 2);
+		var y1 = ((pos.y1 / 1600) * size.x) + dy;
+		var y2 = ((pos.y2 / 1600) * size.x) + dy;
+		return A4($author$project$MapSetting$Pos, x1, x2, y1, y2);
+	});
+var $author$project$View$renderButton = F4(
+	function (msg, url, size, svgpos) {
+		var pos = A2($author$project$View$toHtmlPos, size, svgpos);
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					A2($elm$html$Html$Attributes$style, 'border', '0'),
+					A2($elm$html$Html$Attributes$style, 'bottom', '30px'),
+					A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+					A2($elm$html$Html$Attributes$style, 'display', 'block'),
+					A2($elm$html$Html$Attributes$style, 'height', '0px'),
+					A2($elm$html$Html$Attributes$style, 'left', '0px'),
+					A2($elm$html$Html$Attributes$style, 'line-height', '60px'),
+					A2($elm$html$Html$Attributes$style, 'outline', 'none'),
+					A2($elm$html$Html$Attributes$style, 'padding', '0'),
+					A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+					A2(
+					$elm$html$Html$Attributes$style,
+					'left',
+					$elm$core$String$fromFloat(pos.x1) + 'px'),
+					A2(
+					$elm$html$Html$Attributes$style,
+					'top',
+					$elm$core$String$fromFloat(pos.y1) + 'px'),
+					A2($elm$html$Html$Attributes$style, 'width', '120px'),
+					$elm$html$Html$Events$onClick(msg)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$img,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$src(url),
+							$elm$svg$Svg$Attributes$height(
+							$elm$core$String$fromFloat(pos.y2 - pos.y1) + 'px'),
+							$elm$svg$Svg$Attributes$width(
+							$elm$core$String$fromFloat(pos.x2 - pos.x1) + 'px')
+						]),
+					_List_Nil)
+				]));
+	});
+var $elm$core$Debug$toString = _Debug_toString;
+var $author$project$View$renderCG = function (model) {
+	var prefix = 'http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/';
+	return A3(
+		$author$project$View$renderImage,
+		_Utils_ap(
+			prefix,
+			$elm$core$Debug$toString(model.state)) + '.png',
+		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$opacity(
+				$elm$core$String$fromFloat(
+					1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
+			]));
+};
 var $author$project$View$renderCharacter = F2(
 	function (player, character) {
 		var viewpos = $author$project$View$clearOutsideImage(
@@ -8739,7 +9249,7 @@ var $author$project$View$renderCharacters = F2(
 var $author$project$View$renderLOGO = function (model) {
 	return A3(
 		$author$project$View$renderImage,
-		'img/LOGO.png',
+		'img/Page/LOGO.png',
 		A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
 		_List_fromArray(
 			[
@@ -8769,8 +9279,6 @@ var $author$project$View$renderNPCs = F2(
 	});
 var $elm$svg$Svg$foreignObject = $elm$svg$Svg$trustedNode('foreignObject');
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$View$renderT = F5(
@@ -8854,6 +9362,18 @@ var $author$project$View$renderPlayerText = function (player) {
 		$elm$core$String$length(player.text) / 20) + 3;
 	return A5($author$project$View$renderT, size, pos, w, lines, text);
 };
+var $author$project$View$renderSpeedAI = F2(
+	function (player, speedAI) {
+		var viewpos = $author$project$View$clearOutsideImage(
+			$author$project$View$resizePlayer(
+				A2($author$project$View$offset, player, speedAI.pos)));
+		var url = A4($author$project$View$getAnimUrl, speedAI.anim, speedAI.frame, speedAI, '');
+		var attr = $author$project$View$getDirectionAttr(speedAI.direction);
+		return _List_fromArray(
+			[
+				A3($author$project$View$renderImage, url, viewpos, attr)
+			]);
+	});
 var $author$project$View$renderS = F4(
 	function (size, w, lines, text) {
 		return A2(
@@ -8884,18 +9404,6 @@ var $author$project$View$renderS = F4(
 						]))
 				]));
 	});
-var $author$project$View$renderSpeedAI = F2(
-	function (player, speedAI) {
-		var viewpos = $author$project$View$clearOutsideImage(
-			$author$project$View$resizePlayer(
-				A2($author$project$View$offset, player, speedAI.pos)));
-		var url = A4($author$project$View$getAnimUrl, speedAI.anim, speedAI.frame, speedAI, '');
-		var attr = $author$project$View$getDirectionAttr(speedAI.direction);
-		return _List_fromArray(
-			[
-				A3($author$project$View$renderImage, url, viewpos, attr)
-			]);
-	});
 var $author$project$View$renderStory = function (story) {
 	var w = 1000;
 	var text = story.text;
@@ -8904,22 +9412,123 @@ var $author$project$View$renderStory = function (story) {
 		$elm$core$String$length(story.text) / 20) + 2;
 	return A4($author$project$View$renderS, size, w, lines, text);
 };
-var $author$project$View$cutBrickView = function (viewpos) {
-	var y2 = (_Utils_cmp(viewpos.y2, $author$project$View$viewAttrs.size.y) > 0) ? $author$project$View$viewAttrs.size.y : viewpos.y2;
-	var y1 = (viewpos.y1 < 0) ? 0 : viewpos.y1;
-	var x2 = (_Utils_cmp(viewpos.x2, $author$project$View$viewAttrs.size.x) > 0) ? $author$project$View$viewAttrs.size.x : viewpos.x2;
-	var x1 = (viewpos.x1 < 0) ? 0 : viewpos.x1;
-	return A4($author$project$MapSetting$Pos, x1, x2, y1, y2);
-};
-var $author$project$View$toHtmlPos = F2(
-	function (size, pos) {
-		var x2 = (pos.x2 / 1600) * size.x;
-		var x1 = (pos.x1 / 1600) * size.x;
-		var dy = (size.y / 2) - ((size.x / 2) / 2);
-		var y1 = ((pos.y1 / 1600) * size.x) + dy;
-		var y2 = ((pos.y2 / 1600) * size.x) + dy;
-		return A4($author$project$MapSetting$Pos, x1, x2, y1, y2);
+var $elm$core$String$right = F2(
+	function (n, string) {
+		return (n < 1) ? '' : A3(
+			$elm$core$String$slice,
+			-n,
+			$elm$core$String$length(string),
+			string);
 	});
+var $author$project$View$renderStoryBackground = function (model) {
+	var prefix = 'img/CG/';
+	return _Utils_eq(model.state, $author$project$Model$Story1_5) ? _List_fromArray(
+		[
+			A3(
+			$author$project$View$renderImage,
+			prefix + 'CG1_4.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity('0.3')
+				])),
+			A3(
+			$author$project$View$renderImage,
+			_Utils_ap(
+				prefix,
+				$elm$core$Debug$toString(model.state)) + '.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity(
+					$elm$core$String$fromFloat(
+						1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
+				]))
+		]) : (_Utils_eq(model.state, $author$project$Model$Story5_0) ? _List_fromArray(
+		[
+			A3(
+			$author$project$View$renderImage,
+			'img/background.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity('0')
+				])),
+			A3(
+			$author$project$View$renderImage,
+			_Utils_ap(
+				prefix,
+				$elm$core$Debug$toString(model.state)) + '.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity(
+					$elm$core$String$fromFloat(
+						1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
+				]))
+		]) : ((_Utils_eq(model.state, $author$project$Model$Story5_2) || _Utils_eq(model.state, $author$project$Model$Story5_1)) ? _List_fromArray(
+		[
+			A3(
+			$author$project$View$renderImage,
+			prefix + 'CG5_2.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity('0.3')
+				])),
+			A3(
+			$author$project$View$renderImage,
+			_Utils_ap(
+				prefix,
+				$elm$core$Debug$toString(model.state)) + '.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity(
+					$elm$core$String$fromFloat(
+						1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
+				]))
+		]) : ((_Utils_eq(model.state, $author$project$Model$Story4_Lose) || _Utils_eq(model.state, $author$project$Model$Story4_Win)) ? _List_fromArray(
+		[
+			A3(
+			$author$project$View$renderImage,
+			_Utils_ap(
+				prefix,
+				$elm$core$Debug$toString(model.state)) + '.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity(
+					$elm$core$String$fromFloat(
+						1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
+				]))
+		]) : _List_fromArray(
+		[
+			A3(
+			$author$project$View$renderImage,
+			(prefix + ('CG' + A2(
+				$elm$core$String$right,
+				3,
+				$elm$core$Debug$toString(model.state)))) + '.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity('0.3')
+				])),
+			A3(
+			$author$project$View$renderImage,
+			_Utils_ap(
+				prefix,
+				$elm$core$Debug$toString(model.state)) + '.png',
+			A4($author$project$MapSetting$Pos, 0, $author$project$View$viewAttrs.size.x, 0, $author$project$View$viewAttrs.size.y),
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$opacity(
+					$elm$core$String$fromFloat(
+						1 - (A2($elm$core$Basics$pow, (model.cgtime / 1000) - 2.5, 4) / 40)))
+				]))
+		]))));
+};
 var $author$project$View$renderHtmlImg = F3(
 	function (size, url, svgpos) {
 		var pos = A2($author$project$View$toHtmlPos, size, svgpos);
@@ -8949,7 +9558,8 @@ var $author$project$View$renderbrick1 = F2(
 		var viewpos = $author$project$View$clearOutsideImage(
 			$author$project$View$cutBrickView(
 				A2($author$project$View$offset, model.player, pos)));
-		var text = _Utils_eq(model.state, $author$project$Model$One) ? 'img/Stone/map_1/stone_1.png' : (_Utils_eq(model.state, $author$project$Model$DiscoverI) ? 'img/Stone/map_2/stone_1.png' : (_Utils_eq(model.state, $author$project$Model$Two) ? 'img/Stone/map_3/stone_1.png' : (_Utils_eq(model.state, $author$project$Model$DiscoverII) ? 'img/Stone/map_4/stone_1.png' : (_Utils_eq(model.state, $author$project$Model$Three) ? 'img/Stone/map_5/stone_1.png' : 'img/Stone/map_1/stone_1.png'))));
+		var prefix = 'http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/';
+		var text = _Utils_eq(model.state, $author$project$Model$One) ? (prefix + 'img/Stone/map_1/stone_1.png') : (_Utils_eq(model.state, $author$project$Model$DiscoverI) ? ((_Utils_cmp(pos.x2 - pos.x1, pos.y2 - pos.y1) > -1) ? (prefix + 'img/Stone/map_2/stone_1.png') : (prefix + 'img/Stone/map_2/stone_2.png')) : (_Utils_eq(model.state, $author$project$Model$Two) ? ((_Utils_cmp(pos.x2 - pos.x1, pos.y2 - pos.y1) > -1) ? (prefix + 'img/Stone/map_3/stone_1.png') : (((pos.y2 - pos.y1) >= 1000) ? (prefix + 'img/Stone/map_3/stone_3.png') : (prefix + 'img/Stone/map_3/stone_2.png'))) : (_Utils_eq(model.state, $author$project$Model$DiscoverII) ? ((_Utils_cmp(pos.x2 - pos.x1, pos.y2 - pos.y1) > -1) ? (prefix + 'img/Stone/map_4/stone_1.png') : (prefix + 'img/Stone/map_4/stone_2.png')) : (_Utils_eq(model.state, $author$project$Model$Three) ? ((_Utils_cmp(pos.x2 - pos.x1, pos.y2 - pos.y1) > -1) ? (prefix + 'img/Stone/map_5/stone_1.png') : (prefix + 'img/Stone/map_5/stone_2.png')) : (prefix + 'img/Stone/map_1/stone_1.png')))));
 		return A3($author$project$View$renderHtmlImg, model.size, text, viewpos);
 	});
 var $author$project$View$renderbricks = F2(
@@ -8965,18 +9575,29 @@ var $author$project$View$view = function (model) {
 	var renderSvg = A2(
 		$elm$svg$Svg$svg,
 		$author$project$View$gameUIAttribute(model.size),
-		(_Utils_eq(model.state, $author$project$Model$Story1_1) || (_Utils_eq(model.state, $author$project$Model$Story1_2) || (_Utils_eq(model.state, $author$project$Model$Story1_3) || (_Utils_eq(model.state, $author$project$Model$Story1_4) || (_Utils_eq(model.state, $author$project$Model$Story2_1) || (_Utils_eq(model.state, $author$project$Model$Story2_2) || (_Utils_eq(model.state, $author$project$Model$Story3_1) || (_Utils_eq(model.state, $author$project$Model$Story4_1) || (_Utils_eq(model.state, $author$project$Model$Story5_1) || (_Utils_eq(model.state, $author$project$Model$Story5_2) || _Utils_eq(model.state, $author$project$Model$Story6_1))))))))))) ? _List_fromArray(
-			[
-				$author$project$View$renderStory(model.story)
-			]) : ((_Utils_eq(model.state, $author$project$Model$CG1_1) || (_Utils_eq(model.state, $author$project$Model$CG1_2) || (_Utils_eq(model.state, $author$project$Model$CG1_3) || (_Utils_eq(model.state, $author$project$Model$CG1_4) || (_Utils_eq(model.state, $author$project$Model$CG2_1) || (_Utils_eq(model.state, $author$project$Model$CG2_2) || (_Utils_eq(model.state, $author$project$Model$CG3_1) || (_Utils_eq(model.state, $author$project$Model$CG5_1) || (_Utils_eq(model.state, $author$project$Model$CG5_2) || (_Utils_eq(model.state, $author$project$Model$CG6_1) || _Utils_eq(model.state, $author$project$Model$CG6_2))))))))))) ? _List_fromArray(
+		(_Utils_eq(model.state, $author$project$Model$Story1_1) || (_Utils_eq(model.state, $author$project$Model$Story1_2) || (_Utils_eq(model.state, $author$project$Model$Story1_3) || (_Utils_eq(model.state, $author$project$Model$Story1_4) || (_Utils_eq(model.state, $author$project$Model$Story1_5) || (_Utils_eq(model.state, $author$project$Model$Story2_1) || (_Utils_eq(model.state, $author$project$Model$Story2_2) || (_Utils_eq(model.state, $author$project$Model$Story3_1) || (_Utils_eq(model.state, $author$project$Model$Story4_Lose) || (_Utils_eq(model.state, $author$project$Model$Story4_Win) || (_Utils_eq(model.state, $author$project$Model$Story5_1) || (_Utils_eq(model.state, $author$project$Model$Story5_0) || (_Utils_eq(model.state, $author$project$Model$Story5_2) || _Utils_eq(model.state, $author$project$Model$Story6_1)))))))))))))) ? _Utils_ap(
+			_List_fromArray(
+				[
+					$author$project$View$renderStory(model.story)
+				]),
+			$author$project$View$renderStoryBackground(model)) : ((_Utils_eq(model.state, $author$project$Model$CG1_1) || (_Utils_eq(model.state, $author$project$Model$CG1_2) || (_Utils_eq(model.state, $author$project$Model$CG1_3) || (_Utils_eq(model.state, $author$project$Model$CG1_4) || (_Utils_eq(model.state, $author$project$Model$CG2_1) || (_Utils_eq(model.state, $author$project$Model$CG2_2) || (_Utils_eq(model.state, $author$project$Model$CG3_1) || (_Utils_eq(model.state, $author$project$Model$CG5_1) || (_Utils_eq(model.state, $author$project$Model$CG5_2) || (_Utils_eq(model.state, $author$project$Model$CG6_1) || _Utils_eq(model.state, $author$project$Model$CG6_2))))))))))) ? _List_fromArray(
 			[
 				$author$project$View$renderCG(model)
 			]) : (_Utils_eq(model.state, $author$project$Model$Loading) ? _List_fromArray(
 			[
-				A4($author$project$View$renderS, 20, 100, 1, 'Loading...')
+				$author$project$View$renderBackground(model)
 			]) : (_Utils_eq(model.state, $author$project$Model$LOGO) ? _List_fromArray(
 			[
 				$author$project$View$renderLOGO(model),
+				$author$project$View$renderBackground(model)
+			]) : (_Utils_eq(model.state, $author$project$Model$Start) ? _List_fromArray(
+			[
+				$author$project$View$renderBackground(model)
+			]) : (_Utils_eq(model.state, $author$project$Model$End) ? _List_fromArray(
+			[
+				$author$project$View$renderBackground(model)
+			]) : (_Utils_eq(model.state, $author$project$Model$About) ? _List_fromArray(
+			[
 				$author$project$View$renderBackground(model)
 			]) : _Utils_ap(
 			_List_fromArray(
@@ -8987,18 +9608,31 @@ var $author$project$View$view = function (model) {
 			_Utils_ap(
 				A2($author$project$View$renderCharacters, model.player, model.map.characters),
 				_Utils_ap(
-					A2($author$project$View$renderNPCs, model.player, model.map.npcs),
+					A2(
+						$author$project$View$renderBricksShader,
+						A2(
+							$elm$core$List$map,
+							function ($) {
+								return $.pos;
+							},
+							model.map.bricks),
+						model),
 					_Utils_ap(
-						_Utils_eq(model.state, $author$project$Model$Two) ? A2($author$project$View$renderSpeedAI, model.player, model.speedAI) : _List_Nil,
+						A2($author$project$View$renderNPCs, model.player, model.map.npcs),
 						_Utils_ap(
-							_List_fromArray(
-								[
-									$author$project$View$renderPlayerText(model.player)
-								]),
+							_Utils_eq(model.state, $author$project$Model$Two) ? A2($author$project$View$renderSpeedAI, model.player, model.speedAI) : _List_Nil,
 							_Utils_ap(
-								A2($author$project$View$renderNPCsText, model.player, model.map.npcs),
-								$author$project$View$renderBlood(model.player)))))))))));
+								_Utils_eq(model.state, $author$project$Model$Three) ? A2($author$project$View$renderBoss, model.player, model.boss) : _List_Nil,
+								_Utils_ap(
+									_List_fromArray(
+										[
+											$author$project$View$renderPlayerText(model.player)
+										]),
+									_Utils_ap(
+										A2($author$project$View$renderNPCsText, model.player, model.map.npcs),
+										$author$project$View$renderBlood(model.player))))))))))))))));
 	var renderLoad = _Utils_eq(model.state, $author$project$Model$Loading) ? A2($elm$core$List$map, $author$project$Load$loadImg, $author$project$Load$initLoadPack) : _List_Nil;
+	var prefix = '';
 	var renderHtml = (_Utils_eq(model.state, $author$project$Model$One) || (_Utils_eq(model.state, $author$project$Model$DiscoverI) || (_Utils_eq(model.state, $author$project$Model$Two) || (_Utils_eq(model.state, $author$project$Model$DiscoverII) || _Utils_eq(model.state, $author$project$Model$Three))))) ? A2(
 		$author$project$View$renderbricks,
 		A2(
@@ -9007,12 +9641,43 @@ var $author$project$View$view = function (model) {
 				return $.pos;
 			},
 			model.map.bricks),
-		model) : _List_Nil;
+		model) : (_Utils_eq(model.state, $author$project$Model$Start) ? _List_fromArray(
+		[
+			A4(
+			$author$project$View$renderButton,
+			$author$project$Message$Start,
+			prefix + 'img/Button/StartBut.png',
+			model.size,
+			A4($author$project$MapSetting$Pos, 1100, 1300, 200, 350)),
+			A4(
+			$author$project$View$renderButton,
+			$author$project$Message$About,
+			prefix + 'img/Button/AboutBut.png',
+			model.size,
+			A4($author$project$MapSetting$Pos, 1100, 1300, 400, 550))
+		]) : (_Utils_eq(model.state, $author$project$Model$End) ? _List_fromArray(
+		[
+			A4(
+			$author$project$View$renderButton,
+			$author$project$Message$Next,
+			prefix + 'img/Button/NextBut.png',
+			model.size,
+			A4($author$project$MapSetting$Pos, 1100, 1300, 400, 500))
+		]) : (_Utils_eq(model.state, $author$project$Model$About) ? _List_fromArray(
+		[
+			A4(
+			$author$project$View$renderButton,
+			$author$project$Message$Back,
+			prefix + 'img/Button/BackBut.png',
+			model.size,
+			A4($author$project$MapSetting$Pos, 1100, 1300, 400, 500))
+		]) : _List_Nil)));
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
+				A2($elm$html$Html$div, _List_Nil, renderHtml),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -9029,8 +9694,7 @@ var $author$project$View$view = function (model) {
 								A2($elm$html$Html$Attributes$style, 'opacity', '0')
 							]),
 						renderLoad)
-					])),
-				A2($elm$html$Html$div, _List_Nil, renderHtml)
+					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(

@@ -30,7 +30,12 @@ type AnimState =
     | Attacked
     | Grovel
     | Fly
+    | Dead
     | DebugMode
+    | JumpStart
+    | JumpEnd
+    | JumpLoop
+    | Getup
 
 type Mood = 
     Normal
@@ -52,16 +57,21 @@ type Stage
     | DiscoverI
     | DiscoverII
     | LOGO
+    | Start
+    | About
     | End
     | Loading
     | Story1_1
     | Story1_2
     | Story1_3
-    | Story1_4    
+    | Story1_4 
+    | Story1_5   
     | Story2_1
     | Story2_2    
     | Story3_1
-    | Story4_1
+    | Story4_Win
+    | Story4_Lose
+    | Story5_0
     | Story5_1
     | Story5_2
     | Story6_1
@@ -109,6 +119,7 @@ type alias Player =
     , ragecount: Float
     , inrage: Bool
     , fallcount: Int
+    , effecttimeHalf: Float
     , effecttimeOne: Float
     , effecttimeTwo: Float
     , effecttimeThree: Float
@@ -162,6 +173,17 @@ type alias SpeedAI =
     , hp: Int
     , fallcount: Int
     }
+type alias Boss = 
+    { pos: Pos 
+    , collisionPos: List Pos 
+    , anim: AnimState 
+    , range: Vector Float
+    , frame: Int
+    , direction: MoveDirection
+    , speed: Speed
+    , hp: Int
+    }
+
 
 initSpeedAI = 
     { pos = speedAIPos2
@@ -177,6 +199,18 @@ initSpeedAI =
     , fallcount = 0
     }
 
+initBoss = 
+    { pos = bossPos3 
+    , collisionPos = standcollisionPos bossPos3
+    , anim = Walk
+    , range = bossRange
+    , frame = 0
+    , direction = Left
+    , speed = Vector -0.05 0
+    , hp = 3
+    }
+bossRange = Vector 650 950
+
 type alias Model =
     { player: Player
     , map: Map
@@ -190,6 +224,7 @@ type alias Model =
     , loadPack: List String
     , speedAI: SpeedAI
     , record: List SpeedAIAnim
+    , boss: Boss
     }
 
 type alias CustomAttribute ={ }
@@ -212,6 +247,7 @@ init _=
       ,loadPack = initLoadPack
       ,speedAI = initSpeedAI
       ,record = []
+      ,boss = initBoss
     },Cmd.batch 
         [ Task.perform GetViewport getViewport ])
 
@@ -245,6 +281,7 @@ initPlayer1 =
     , effecttimeThree = 400
     , effecttimeFour = 600
     , effecttimeFive = 800
+    , effecttimeHalf = 0
     }
 
 
@@ -253,10 +290,10 @@ initPlayerDiscoverI player=
       text = "What's going on?"
     , pos = MapSetting.playerPosDiscoverI
     , collisionPos = standcollisionPos MapSetting.playerPosDiscoverI
-    , anim = Crouch
+    , anim = JumpEnd
     , frame = 0
     , textframe = 0
-    , direction = Left
+    , direction = Right
     , jumpdir = Up
     , speed = Vector 0 0 
     , fallcount = 0
@@ -267,7 +304,7 @@ initPlayer2 player =
       text = "I am Song Yuanhuai."
     , pos = MapSetting.playerPos2
     , collisionPos = standcollisionPos MapSetting.playerPos2 
-    , anim = Crouch
+    , anim = Getup
     , frame = 0
     , textframe = 0
     , direction = Right

@@ -35,13 +35,13 @@ subscriptions model =
     else
     Sub.batch
         [ onAnimationFrameDelta Tick --the time in 1/1000s since the previous frame
-        , onKeyUp (Decode.map (keyNormal False) keyCode)
-        , onKeyDown (Decode.map (keyNormal True) keyCode)
+        , onKeyUp (Decode.map (keyNormal False model) keyCode)
+        , onKeyDown (Decode.map (keyNormal True model) keyCode)
         , onResize Resize
         ]
 
-keyNormal : Bool -> Int -> Msg
-keyNormal on keycode =
+keyNormal : Bool -> Model -> Int -> Msg
+keyNormal on model keycode =
     case keycode of 
         --A
         65 ->
@@ -71,12 +71,24 @@ keyNormal on keycode =
         -- Down
         40 ->
             DebugDown on
+        -- P
+        80 ->
+            DebugPos
         --Enter
         13 ->
             ExitDebugMode 
-
+        49 ->
+            Jump1
+        50 ->
+            JumpDiscoverI
+        51 ->
+            Jump2
+        52 ->
+            JumpDiscoverII
+        53 ->
+            Jump3
         _ ->
-            Noop
+            Noop 
 
 keyRage : Bool -> Int -> Msg
 keyRage on keycode =

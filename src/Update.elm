@@ -25,7 +25,8 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = Story1_1
+                            | state = LOGO
+                            , cgtime = 5000
                     }
                     , Cmd.none
                     )
@@ -42,7 +43,8 @@ update msg model =
             in
                 if List.isEmpty loadPack then
                     ( { model
-                            | state = Story1_1
+                            | state = LOGO
+                            , cgtime = 5000
                     }
                     , Cmd.none
                     )
@@ -100,25 +102,66 @@ update msg model =
 
         DebugRight on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0.2 0) on
+                        player=model.player |> changeDebugSpeed (Vector 1 0) on
                     }, Cmd.none )
         DebugLeft on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector -0.2 0) on
+                        player=model.player |> changeDebugSpeed (Vector -1 0) on
                     }, Cmd.none )
         DebugUp on ->
             ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0 -0.2) on
+                        player=model.player |> changeDebugSpeed (Vector 0 -1) on
                     }, Cmd.none )
         DebugDown on ->
                 ( {model |
-                        player=model.player |> changeDebugSpeed (Vector 0 0.2) on
+                        player=model.player |> changeDebugSpeed (Vector 0 1) on
                     }, Cmd.none )
         ExitDebugMode ->
             ( {model |
                     player=model.player |> stand
                     }, Cmd.none )
+        Message.Start ->
+            ( {model |
+                    state = CG1_1, cgtime = 5000 
+                    }, Cmd.none)
+        Next ->
+            case model.state of 
+                End ->
+                    Model.init ()
+                _ ->
+                    ( model, Cmd.none )
+        Back ->
+            ( {model |
+                    state = Model.Start
+                    }, Cmd.none  )
+        Message.About ->
+            ( {model |
+                    state = Model.About
+                    }, Cmd.none)
 
+        Jump1 ->
+            ( {model |
+                    player = initPlayer1, map = initMap1, state = One}, Cmd.none)
+        JumpDiscoverI ->
+            ( {model |
+                    player = initPlayerDiscoverI initPlayer1, map = initMapDiscoverI, state = DiscoverI}, Cmd.none)
+        Jump2 ->
+            ( {model |
+                    player = initPlayer2 initPlayer1, map = initMap2, state = Two, speedAI = initSpeedAI, time = 0}, Cmd.none)
+
+        JumpDiscoverII ->
+            ( {model |
+                    player = initPlayerDiscoverII initPlayer1, map = initMapDiscoverII, state = DiscoverII}, Cmd.none)
+
+        Jump3 ->
+            ( {model |
+                    player = initPlayer3 initPlayer1, map = initMap3, state = Three}, Cmd.none)
+
+        DebugPos ->
+            let
+                pos = Debug.log "Pos" model.player.pos
+            in
+            ( model, Cmd.none )
         _ ->
             ( model, Cmd.none )
 
