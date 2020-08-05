@@ -22,8 +22,8 @@ textStoryOne = "story one"
 view : Model -> Html Msg
 view model =
     let
-        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
-        prefix = ""
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/"
+        --prefix = ""
 
         renderSvg = svg
                         (gameUIAttribute model.size)
@@ -678,8 +678,8 @@ renderCG model =
 
 renderStoryBackground model = 
     let
-        --prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/"
-        prefix = "img/CG/" 
+        prefix = "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/CG/"
+        --prefix = "img/CG/" 
     in
     if  model.state == Story1_5 then
         [ renderImage  (prefix ++ "CG1_4.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
