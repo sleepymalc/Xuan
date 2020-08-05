@@ -317,7 +317,7 @@ birdPosList3 =
         
     ]
 
-playerPos3 = Pos 200 300 500 600--Pos 200 300 4630 4730
+playerPos3 = Pos 200 300 4630 4730
 
 speedAIPos3 = Pos 1300 1400 4630 4730
 

@@ -60,7 +60,7 @@ keyNormal on model keycode =
             AnimAttack on
         --Left
 
-        37 ->
+        {-37 ->
             DebugLeft on
         --Up
         38 ->
@@ -76,7 +76,7 @@ keyNormal on model keycode =
             DebugPos
         --Enter
         13 ->
-            ExitDebugMode 
+            ExitDebugMode -}
         49 ->
             Jump1
         50 ->

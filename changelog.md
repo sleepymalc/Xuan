@@ -67,3 +67,22 @@ bug fix
 fix charge animation bug
 
 fix loading bug
+
+2020.8.5
+
+complete expo version [1.0.1]
+
+bug fix 
+
+fix brick rendering bugs
+
+fix loading bugs
+
+features
+
+add cgs
+
+add animations for passing stage
+
+add UI
+
