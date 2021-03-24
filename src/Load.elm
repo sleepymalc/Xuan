@@ -114,7 +114,17 @@ initLoadPack =
                    ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/AboutBut.png"
                    ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/BackBut.png"
                    ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/NextBut.png"
-                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/StartBut.png"      
+                   ,"http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Button/StartBut.png"
+
+
+
+                   
+                   
+                   
+                   
+                   
+                   
+                   
                     ]
     in
         urls

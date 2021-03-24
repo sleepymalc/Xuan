@@ -25,9 +25,7 @@ animate time model =
                 |> changeFrame 17
             else
                 model.speedAI
-
-                
-
+    
         player = 
             if model.player.anim == DebugMode then
                 model.player

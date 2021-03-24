@@ -123,23 +123,7 @@ update msg model =
                     state = Model.About
                     }, Cmd.none)
 
-        Jump1 ->
-            ( {model |
-                    player = initPlayer1, map = initMap1, state = One}, Cmd.none)
-        JumpDiscoverI ->
-            ( {model |
-                    player = initPlayerDiscoverI initPlayer1, map = initMapDiscoverI, state = DiscoverI}, Cmd.none)
-        Jump2 ->
-            ( {model |
-                    player = initPlayer2 initPlayer1, map = initMap2, state = Two, speedAI = initSpeedAI, time = 0}, Cmd.none)
 
-        JumpDiscoverII ->
-            ( {model |
-                    player = initPlayerDiscoverII initPlayer1, map = initMapDiscoverII, state = DiscoverII}, Cmd.none)
-
-        Jump3 ->
-            ( {model |
-                    player = initPlayer3 initPlayer1, map = initMap3, state = Three}, Cmd.none)
 
         DebugPos ->
             let
