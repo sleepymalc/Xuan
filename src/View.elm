@@ -50,36 +50,32 @@ view model =
                         else if model.state == Model.About then
                             [ renderBackground model]
                         else
-                            ([ renderBackground model
+                            [ renderBackground model
                             , renderPlayer model.state model.player
                             ]
+                            ++  (if model.state == Two then
+                                    renderSpeedAI model.player model.speedAI
+                                else if model.state == Three then
+                                    renderBoss model.player model.boss
+                                else
+                                    [])
                             ++ renderCharacters model.player model.map.characters
-                            ++ renderBricksShader (List.map .pos model.map.bricks) model 
-                                --++ debugCollision model.map.characters model.player
+                            ++ (if model.state/= One && model.state /= DiscoverII then
+                                    renderBricksShader (List.map .pos model.map.bricks) model 
+                                else
+                                    [])
+                            --++ debugCollision model.map.characters model.player
                             --++ debugAttack model.map.characters model.player
                             ++ renderNPCs model.player model.map.npcs 
-                            ++ 
-                            ( 
-                               if model.state == Two then
-                                    renderSpeedAI model.player model.speedAI
-                               else
-                                    []
-                             )
-                            ++ 
-                            ( if model.state == Three then
-                                renderBoss model.player model.boss
-                           else
-                                []
-                            )
-                             ++ [renderPlayerText model.player]
-                             ++ renderNPCsText model.player model.map.npcs
-                             ++ renderBlood model.player
-                        ))                    
+                            ++ [renderPlayerText model.player]
+                            ++ renderNPCsText model.player model.map.npcs
+                            ++ renderBlood model.player
+                        )                   
         renderLoad = if model.state == Loading then
                         List.map loadImg initLoadPack
                     else 
                         []
-        renderHtml = if model.state == One || model.state == DiscoverI || model.state == Two ||
+        renderHtml = if model.state == One || model.state == Two ||
                         model.state == DiscoverII || model.state == Three then
                         renderbricks (List.map .pos model.map.bricks) model
                     else if model.state == Model.Start then 
@@ -90,7 +86,7 @@ view model =
                     else if model.state == Model.About then
                         [ renderButton Back (prefix++"img/Button/BackBut.png") model.size (Pos 1100 1300 400 500) ] 
                     else
-                        [ renderAudio  "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/bgm/kttbgm.mp3"]
+                        []--[ renderAudio  "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/bgm/kttbgm.mp3"]
     in  
     div[]
         [    
@@ -219,7 +215,10 @@ renderbrick model player pos=
             One ->
                 "#413447"
             DiscoverI ->
-                "#596E47"--
+                if viewpos.y2 > 600 || viewpos.y1 < 200 then
+                    "#6D96AB"
+                else 
+                    "#596E47"
             Two ->
                 "#6075AB"
             DiscoverII ->
@@ -322,7 +321,7 @@ renderCharacter player character =
         renderImage url viewpos attr
 
 clearOutsideImage viewpos=
-    if viewpos.x2<0 || viewpos.x1>viewAttrs.size.x || viewpos.y2<0 || viewpos.y1>viewAttrs.size.y then
+    if viewpos.x2<0 || viewpos.x1>viewAttrs.size.x || viewpos.y2<0 || (viewpos.y1> (viewAttrs.size.y-6)) then
         Pos -1600 -1600 0 0
     else
         viewpos
@@ -564,8 +563,8 @@ renderButton msg url size svgpos=
             , onClick msg
             ]
             [ Html.img [src url
-            , height ((String.fromFloat (pos.y2-pos.y1))++"px") 
-            , width ((String.fromFloat (pos.x2-pos.x1))++"px")][] ]
+            , height ((String.fromFloat (pos.y2 - pos.y1))++"px") 
+            , width ((String.fromFloat (pos.x2 - pos.x1))++"px")][] ]
 
 renderHtmlImg size url svgpos=
     let
@@ -697,4 +696,4 @@ renderStoryBackground model =
         [ renderImage ( (prefix ++ "CG" ++(String.right 3 (Debug.toString model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
         , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
 renderLOGO model = 
-    renderImage "img/Page/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
+    renderImage "http://focs.ji.sjtu.edu.cn/vg100/demo/p2team13/img/Page/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
