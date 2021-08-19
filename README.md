@@ -15,7 +15,7 @@
 
 ### 	Please first refer to instructional booklet :
 
-### 	http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet(Not available anymore)
+### 	http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet (Not available anymore)
 
 ## About Honor Code
 
