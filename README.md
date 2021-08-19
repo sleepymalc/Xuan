@@ -1,16 +1,5 @@
 # README - Xuan
 
-## Created by Pgroup 13(Contributors)
-
-
-	Jinyi Wu
-	
-	Yunfei Li
-	
-	Yi Wang
-	
-	Pingbang Hu
-
 ## Game introduction
 
 ### 	Please first refer to instructional booklet :
@@ -27,7 +16,13 @@ According to the SJTU student handbook (2019 version),
 
 ## Contribution
 
-Jinyi Wu, Yunfei Li, Yi Wang
+	Jinyi Wu
+	
+	Yunfei Li
+	
+	Yi Wang
+	
+	Pingbang Hu
 
 The work are partially contributed to some other students, TAs and professors in JI, which would be listed if known.
 
