@@ -1,4 +1,4 @@
-# README - Xuan
+# Xuan
 
 ## Game introduction
 
