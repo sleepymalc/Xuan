@@ -1,69 +1,55 @@
-2020.07.14
+# ChangeLog
 
-complete the mvp version [0.1.0]
+## 2020.07.14
 
-feature 
+1. Complete the mvp version [0.1.0]
 
-generating elements in the first map
+### Features
 
-adding basic images
+1. Generating elements in the first map
+2. Adding basic images
+3. Adding characters' animation
 
-adding characters' animation
+## 2020.7.19
 
-2020.7.19
+1. Complete the alpha version [0.2.0]
 
-complete the alpha version [0.2.0]
+### Features
 
-feature 
+1. Complete map
+2. Complete general npc behavior
+3. Complete player animations operation
+4. Basic level story narrative
 
-complete map
+## 2020.7.24
 
-complete genernal npc behavior
+1. Complete the alpha version [0.3.0] [0.4.0]
+2. Fix map bugs
+3. Fix animation bugs
+4. Fix load bugs
+5. Polish story line
 
-complete player animations operation
+## 2020.7.26
 
-basic level story narrative
+1. Complete the beta-version [0.6.0]
 
+### Features
 
-2020.7.24
+1. Complete speed competition AI (still unstable)
+2. Complete boss
+3. Update background
+4. Complete story narrative
 
-complete the alpha version [0.3.0] [0.4.0]
+### Bug Fix
 
-Fix map bugs
+1. Fix animation bugs
+2. Fix bug that scrolling down when player jump
 
-Fix animation bugs
+## 2020.7.27
 
-Fix load bugs
+1. Complete the alpha version [0.7.0]
 
-Polish story line
+### Bug Fix
 
-
-2020.7.26 
-
-complete the bata version [0.6.0]
-
-feature 
-
-complete speed competition AI (still unstable)
-
-complete boss
-
-update background
-
-complete story narrative
-
-bug fix
-
-fix animation bugs
-
-fix bug that scrolling down when player jump
-
-2020.7.27
-
-complete the alpha version [0.7.0] 
-
-bug fix 
-
-fix charge animation bug
-
-fix loading bug
+1. Fix charge animation bug
+2. Fix loading bug

@@ -12,7 +12,7 @@
 
 Please first refer to the ~~[instructional booklet](http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet)~~(unavailable anymore).
 
-> Due to copy-right of the source images we used, you can't build it on your local environment. If you're interested buying the images, please directly contact authors.
+> Due to copy-right of the source images we used, we didn't provide the source code and the source images. If you're interested buying the images, please directly contact authors.
 
 ### Other
 
