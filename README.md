@@ -1,5 +1,9 @@
 # Xuan
 
+<p align="center">
+	<img src="https://github.com/sleepymalc/Xuan/blob/master/TC/thumbnail.png"/>
+</p>
+
 <p align="center"><b><i>
 	🩸 Fight, in blood 🩸...
 </i></b></p>
@@ -7,6 +11,12 @@
 ## Introduction
 
 Please first refer to the ~~[instructional booklet](http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet)~~(unavilable anymore).
+
+### Other
+
+1. [Trailer](https://github.com/sleepymalc/Xuan/blob/master/TC/trailer.mp4).
+2. [Presentation](https://github.com/sleepymalc/Xuan/blob/master/TC/Slides.pdf)
+3. [Poster](https://github.com/sleepymalc/Xuan/blob/master/TC/poster.pdf)
 
 ## About Honor Code
 
