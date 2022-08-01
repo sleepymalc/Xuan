@@ -1,7 +1,7 @@
 # Xuan
 
 <p align="center">
-	<img src="https://github.com/sleepymalc/Xuan/blob/master/TC/thumbnail.png"/>
+	<img src="https://github.com/sleepymalc/Xuan/blob/master/preview.png"/>
 </p>
 
 <p align="center"><b><i>
