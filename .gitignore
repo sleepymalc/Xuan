@@ -1,4 +1,5 @@
 elm-stuff
-build/
+build
+TC/prepare
 src/img.zip
 index.html
