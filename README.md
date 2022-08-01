@@ -10,9 +10,7 @@
 
 ## Introduction
 
-Please first refer to the ~~[instructional booklet](http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet)~~(unavailable anymore).
-
-### Other
+Please first refer to the ~~[instructional booklet](http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet)~~(unavailable anymore) and also the followings:
 
 1. [Trailer](https://github.com/sleepymalc/Xuan/blob/master/TC/trailer.mp4).
 2. [Presentation](https://github.com/sleepymalc/Xuan/blob/master/TC/Slides.pdf)
