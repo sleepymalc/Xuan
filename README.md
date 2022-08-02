@@ -10,13 +10,11 @@
 
 > The project is now somehow broken, fixing is needed...
 
-## Introduction
+## Abstract
 
-Please first refer to the ~~[instructional booklet](http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet)~~(unavailable anymore) and also the followings:
+Please refer to the ~~[instructional booklet](http://focs.ji.sjtu.edu.cn:2143/projects/team-13/wiki/Instructional_Booklet)~~ (unavailable anymore).
 
-1. [Trailer](https://github.com/sleepymalc/Xuan/blob/master/TC/trailer.mp4)
-2. [Presentation](https://github.com/sleepymalc/Xuan/blob/master/TC/Slides.pdf)
-3. [Poster](https://github.com/sleepymalc/Xuan/blob/master/TC/poster.pdf)
+<p align="center"><a href="https://github.com/sleepymalc/Xuan/blob/master/TC/trailer.mp4">Trailer</a> | <a href="https://github.com/sleepymalc/Xuan/blob/master/TC/Slides.pdf">Presentation</a> | <a href="https://github.com/sleepymalc/Xuan/blob/master/TC/poster.pdf">Poster</a></p>
 
 ## Launch
 
