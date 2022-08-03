@@ -5,7 +5,7 @@
 </p>
 
 <p align="center"><b><i>
-	🩸 Fight, in blood... 🩸
+	Fight, in blood... 🩸
 </i></b></p>
 
 > The project is now somehow broken, fixing is needed...
